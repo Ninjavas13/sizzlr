@@ -1,0 +1,484 @@
+{
+  "names": [
+    "Cassian", "Rhys", "Rowan", "Lorcan", "Xaden", "Liam", "Azriel", "Hunt", 
+    "Aidas", "Darius", "Fenrys", "Nyk", "Cas", "Kallias", "Tamlin", "Lucien", 
+    "Gideon", "Malakai", "Dante", "Bastian", "Vaughn", "Declan", "Soren", 
+    "Kieran", "Caelen", "Julian", "Ronan", "Torin", "Zephyr", "Damian",
+    "Bram", "Valen", "Creed", "Talon", "Jaxon", "Maddox", "Wilder", "Slade"
+  ],
+  "facialHairTypes": [
+    "Clean-shaven & razor-sharp jaw", "Heavy 5 o'clock shadow", "Rough stubble beard", 
+    "Trimmed lumberjack beard", "Chiseled goatee", "Rugged mustache with scruff",
+    "Precision-sculpted jawline scruff", "Dark barbarian stubble"
+  ],
+  "origins": [
+    "New York City, NY", "Chicago, IL", "London, UK", "Seattle, WA", 
+    "Los Angeles, CA", "Edinburgh, Scotland", "Dublin, Ireland", "Miami, FL", 
+    "Boston, MA", "Montreal, Canada", "Austin, TX", "Denver, CO", "Savannah, GA"
+  ],
+  "meetLocations": [
+    "an indie bookstore rare manuscripts section", "a quiet corner booth at a local coffee shop", 
+    "a scenic coffee and pastry lounge", "a sunlit walking trail through the park", 
+    "a candlelit table at a cozy restaurant date", "a midnight screening at the movie theater", 
+    "a beachside resort café during vacation", "a mountain cabin retreat lobby", 
+    "a dimly lit speakeasy basement", "a private VIP booth at a luxury lounge", 
+    "his private high-performance gym", "the rooftop bar of a boutique hotel"
+  ],
+  "travelDestinations": [
+    "at the beachside resort suite", "in a private mountain cabin alcove", "back at his luxury penthouse", 
+    "in the restaurant's private VIP booth", "at the quiet coffee house lounge", "in the darkened movie theater VIP box", 
+    "along the secluded beach shoreline", "back at your vacation hotel room", "in the back of his tinted towncar"
+  ],
+  "heights": ["6'0\"", "6'1\"", "6'2\"", "6'3\"", "6'4\"", "6'5\"", "6'6\"", "6'7\""],
+  "circumcisionStatus": ["circumcised", "uncircumcised"],
+  "toolLengths": [6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5],
+  "toolGirths": [
+    "dense, tapering circumference", "heavy-duty solid cylindrical core with zero give", 
+    "substantial two-handed hilt profile built for intense leverage", 
+    "toolbox-bursting ultra-wide caliber", "crowbar-thick forged density that tests your grip", 
+    "imposing wrist-thick circumference leaving an impression"
+  ],
+  "hobbies": [
+    "Reading classic dark romance & fantasy", "Browsing rare antique bookstores", "Enjoying artisan espresso tastings", 
+    "Weekend mountain mountaineering", "Midnight coastal drives", "Private gym strength conditioning", 
+    "Exploring underground gourmet kitchens", "Collecting leather-bound first editions", "Competitive Brazilian Jiu-Jitsu"
+  ],
+  "occupations": [
+    "Private Security Contractor", "Tech Startup Founder", "High-Rise Architect", 
+    "Master Custom Fabricator", "Underworld Speakeasy Owner", "Ex-Military Tactical Advisor", 
+    "Smokejumper Firefighter", "Offshore Salvage Diver", "MMA Striking Coach",
+    "Boutique Asset Recovery Specialist", "Venture Capital Managing Partner"
+  ],
+  "hangouts": [
+    "The antique bookstore's rare manuscripts section", "A corner leather booth of a private club", 
+    "A dimly lit indie coffee and pastry lounge", "A scenic overlook along the mountain hiking trail", 
+    "A private balcony overlooking the ocean beach resort", "The back row of a late-night private screening", 
+    "A secluded cabin deck surrounded by tall pines", "A rooftop cigar lounge overlooking the skyline"
+  ],
+  "fantasyRoles": [
+    "One Night Stand", "Regular Bull", "Occasional Fling", "Weekend Obsession", 
+    "Forbidden Regular", "Total Addiction", "Exclusive Hall-Pass Master", "Shadow Sovereign"
+  ],
+  "behaviors": [
+    "Intense and unyielding", "Playfully arrogant", "Quietly observant", 
+    "Uncompromisingly dominant", "Wildly unpredictable", "Brooding and possessive", "Calm and predatory"
+  ],
+  "styles": [
+    "Black tactical cargo and combat boots", "Fitted jet-black tee clinging to his chest", 
+    "Custom tailored charcoal suit (no tie, rolled cuffs)", "Worn biker leather jacket over a vintage Henley", 
+    "Oversized heavyweight designer cashmere", "Crisp white unbuttoned dress shirt with sleeves pushed up"
+  ],
+  "personalities": [
+    {
+      "type": "Shadow-Wielder",
+      "vibeGroup": "dominant",
+      "favoriteTraits": [
+        "The dark, lethal promise in his eyes when he whispered 'Touch her and you die' across the room.",
+        "How he pinned my wrists against the headboard with terrifying, effortless strength.",
+        "The way he gripped my throat and growled that I was going to be the absolute ruin of him."
+      ]
+    },
+    {
+      "type": "Golden Retriever Alpha",
+      "vibeGroup": "gentle",
+      "favoriteTraits": [
+        "How he treated my body like a holy temple, spending an hour worshipping every inch before taking his turn.",
+        "The way he looked at me like I was his entire universe, murmuring praise against my collarbone.",
+        "His huge, calloused hands gently holding my face and telling me I was breathtaking."
+      ]
+    },
+    {
+      "type": "Arrogant Brat-Tamer",
+      "vibeGroup": "illicit",
+      "favoriteTraits": [
+        "His smug smirk right before he flipped me over his lap and proved every single boast he made.",
+        "The sharp banter across the table silenced by dragging me into the hallway for a breathless kiss.",
+        "How he mocked my defiance until I was begging him on my knees to take control."
+      ]
+    },
+    {
+      "type": "Silent Stoic Brute",
+      "vibeGroup": "dominant",
+      "favoriteTraits": [
+        "The heavy, breathless silence in the room as he dismantled all my defenses without a single word.",
+        "His slow, deliberate movements and unblinking gaze that made time completely stop.",
+        "The raw, vibrating intensity in his touch when he finally lost his stoic composure inside me."
+      ]
+    },
+    {
+      "type": "Dangerous Sovereign",
+      "vibeGroup": "dominant",
+      "favoriteTraits": [
+        "The effortless, commanding way he ordered me to kneel without a single hesitation.",
+        "How he owned the entire room, yet looked at me like I was the only prize that mattered.",
+        "His absolute, non-negotiable authority that turned my brain to pure static the second he touched my waist."
+      ]
+    },
+    {
+      "type": "Filthy-Mouthed Rogue",
+      "vibeGroup": "illicit",
+      "favoriteTraits": [
+        "The vulgar commentary he kept whispering in my ear while I was trying to stay quiet.",
+        "How easily he convinced me to break every rule we set with Hubby before the first drink was finished.",
+        "The shameless way he admired what he did to me in the mirror while I was still shaking."
+      ]
+    }
+  ],
+  "storyGrammar": {
+    "intros": [
+      "I first locked eyes with {NAME} while at {LOCATION}.",
+      "I never planned on meeting someone like {NAME}, but there he was at {LOCATION}.",
+      "My composure completely slipped the moment {NAME} stepped into my periphery at {LOCATION}.",
+      "It started as an innocent afternoon until {NAME} occupied the adjacent space at {LOCATION}."
+    ],
+    "tensions": {
+      "Shadow-Wielder": [
+        "He moved with a lethal, unhurried grace, watching me over the rim of his glass until the silence between us hummed like a live wire.",
+        "He didn't introduce himself; he simply blocked my path with his broad frame and asked, in a velvet-low voice, why I was pretending not to look."
+      ],
+      "Golden Retriever Alpha": [
+        "His smile was devastatingly open, yet the sheer size of his shoulders and chest made every polite word feel dangerously loaded.",
+        "He laughed at a witty remark I made, his eyes dipping down to my mouth with a hungry reverence that left my face burning."
+      ],
+      "Arrogant Brat-Tamer": [
+        "He took one look at my guarded posture, offered a wicked half-smirk, and challenged every opinion I voiced with infuriating confidence.",
+        "He casually leaned over my shoulder, criticizing my cocktail choice before ordering me something twice as strong without asking."
+      ],
+      "Silent Stoic Brute": [
+        "He never smiled once. He simply stood there, six feet of granite and intent, fixing me with an unblinking gaze that pinned me in place.",
+        "He reached across the table to move my glass, his knuckles grazing my wrist and sending an instantaneous shiver straight to my core."
+      ],
+      "Dangerous Sovereign": [
+        "The staff treated him with visible deference, yet the moment our eyes connected, he gave me his undivided, predatory focus.",
+        "He leaned close enough for me to smell cedarwood and bourbon, murmured that I looked far too well-behaved, and offered his hand."
+      ],
+      "Filthy-Mouthed Rogue": [
+        "He leaned in under the pretext of borrowing a lighter and whispered something so utterly dirty against my ear that my knees trembled.",
+        "He smirked at my wedding band, tapped the rim of his glass against mine, and asked how long it had been since someone wrecked me properly."
+      ]
+    },
+    "pivots": [
+      "Before good sense could intervene, he palmed the small of my back and steered me straight toward {DEST}.",
+      "There was zero pretense of small talk left; he took my wrist with quiet certainty and led me away toward {DEST}.",
+      "My defenses folded in seconds; I caught my breath, took his hand, and let him walk me straight toward {DEST}."
+    ]
+  },
+  "hardwareGrammar": {
+    "comparisons": [
+      "While {HUBBY}'s 6\" baseline offers dependable, familiar comfort,",
+      "Compared to the gentle, measured fit I share with {HUBBY},",
+      "{HUBBY}'s nightly hardware is completely pleasant, but",
+      "I had completely forgotten what true anatomical disproportion felt like until"
+    ],
+    "mechanics": {
+      "Shadow-Wielder": [
+        "this man's {LEN}\" {CIRC} frame carried an unyielding density and an upward flare that ruthlessly displaced my anterior wall,",
+        "{NAME}'s {LEN}\" weapon packed a forged iron heft ({GIRTH}) that demanded complete, arched compliance on every single thrust,"
+      ],
+      "Golden Retriever Alpha": [
+        "his massive {LEN}\" {CIRC} reach slid home with deep, deliberate heat, stretching every contour to its absolute maximum capacity,",
+        "{NAME}'s substantial {GIRTH} filled every millimeter so comprehensively that I was breathless before he even began moving,"
+      ],
+      "Arrogant Brat-Tamer": [
+        "his punishing {LEN}\" {CIRC} caliber offered zero mercy, bottoming out hard and catching my entrance with an arrogant, relentless rhythm,",
+        "the sheer crowbar density of his {LEN}\" shaft ({GIRTH}) forced me to bite my tongue just to keep from crying out his name,"
+      ],
+      "Silent Stoic Brute": [
+        "his massive, unyielding {LEN}\" {CIRC} weapon felt like taking in solid stone, parting my walls flat under pure mechanical leverage,",
+        "{NAME}'s roadmapped veins and flared crown ({GIRTH}) bottomed out so deep that my stomach fluttered in genuine shock,"
+      ],
+      "Dangerous Sovereign": [
+        "his commanding {LEN}\" caliber locked inside me with terrifying authority, leaving zero breathing room and testing every limit,",
+        "taking all {LEN}\" of his {CIRC} frame felt like a complete physical takeover, rendering {HUBBY}'s familiar boundaries completely obsolete,"
+      ],
+      "Filthy-Mouthed Rogue": [
+        "his thick {LEN}\" weapon shoved straight past my thresholds, the heavy {GIRTH} core stretching me so wide I gasped for air,",
+        "his {LEN}\" {CIRC} crown hit nerves {HUBBY} has never brushed in ten years of marriage, making me lose all composure within seconds,"
+      ]
+    },
+    "reactions": [
+      "leaving my pelvic floor trembling uncontrollably and making {HUBBY}'s familiar touch feel diminutive.",
+      "inflicting a deep, illicit ache that made walking back to {HUBBY} an exercise in pure composure.",
+      "creating a vacuum fit on every withdrawal that audibly broadcasted just how thoroughly outsized I had been.",
+      "ruining my muscle memory completely and turning every comparison with {HUBBY} into an unfair defeat."
+    ]
+  },
+  "bullTexts": [
+    "\"Keep my jacket over your shoulders today. Let everyone know exactly whose property you are.\"",
+    "\"If anyone looks at you sideways today, tell me their name and I'll handle them. Are you still sore?\"",
+    "\"I haven't stopped thinking about your throat under my hand. Clear your calendar for tonight.\"",
+    "\"I can still taste your perfume on my collar. When are you letting me worship you again, my love?\"",
+    "\"You left your earring on my nightstand. Come back and get it—I want you under me until morning.\"",
+    "\"Still laughing about how quickly that smart mouth turned to whimpers last night. Ready for round two?\"",
+    "\"No talking tonight. Just you, me, and the bed. Be ready at eight.\"",
+    "\"Your scent is still buried in my sheets. Tell your husband you're working late tomorrow.\""
+  ],
+  "reactions": [
+    "\"He didn't break eye contact once while I ordered. He knew exactly what he was doing.\"",
+    "\"He's twice your size and took the seat next to me without asking. I didn't object.\"",
+    "\"A dangerously confident smirk. The kind of man who leaves you sore and distracted for a week.\"",
+    "\"He casually palmed the small of my back to guide me through the crowd. My pulse hasn't slowed down since.\"",
+    "\"Completely ruined my ability to concentrate. You'd lose your mind watching him talk to me.\"",
+    "\"Zero apology in his posture. Just pure, predatory confidence that makes you forget your own wedding date.\""
+  ],
+  "spousalRules": [
+    "No marks left above the collarbone under any circumstances.",
+    "Phones stay on the nightstand so Hubby can call before midnight.",
+    "Strictly one round only, no sleeping over.",
+    "No kissing on the mouth; keep it strictly physical.",
+    "Must wear protection for every single entry."
+  ],
+  "mentalReplayInnuendos": [
+    "Every single time I'm in bed with Hubby.",
+    "Every time I close my eyes during anniversary duty.",
+    "Every single morning under the hot shower spray.",
+    "Whenever Hubby asks 'What are you smiling about?'",
+    "Mercifully forgettable (a harmless 24-hour thrill)."
+  ],
+  "releaseOptions": [
+    {
+      "type": "🛡️ In a condom",
+      "amountDesc": "A heavy, tightly filled latex reservoir — like a thick water balloon ready to burst.",
+      "cleanDesc": "Completely contained and sanitary; zero internal mess left behind to worry about."
+    },
+    {
+      "type": "🌸 Inside her vagina",
+      "amountDesc": "An overwhelming, gushing surge — like spilling an entire travel mug of rich espresso deep inside your core.",
+      "cleanDesc": "Soaking wet and overflowing; heavy warmth leaked down your inner thighs with every single step you took afterward."
+    },
+    {
+      "type": "🍑 Deep inside her ass (Anal Finish)",
+      "amountDesc": "A searing, dense flood pumped straight into her tightest canal — a taboo strictly forbidden with Hubby that left her thoroughly plugged and breathless.",
+      "cleanDesc": "Sealed shut and warm; thick drops slipped out slowly the moment she unclenched, an illicit mark she carried for hours."
+    },
+    {
+      "type": "🍑 On her parts (stomach / back)",
+      "amountDesc": "A thick, heavy pool — like a generous dollop of warm cream splattered across your lower back and glutes.",
+      "cleanDesc": "Dried into a tacky, slippery glaze across your skin that left you smelling like him all the way home."
+    },
+    {
+      "type": "🍒 On her parts (chest / breasts)",
+      "amountDesc": "An explosive, heavy splatter — like a thick splash of warm syrup dripping down your chest and collarbones.",
+      "cleanDesc": "Dried sticky and stark white across your skin, forcing you to wash off aggressively before walking back through the front door."
+    },
+    {
+      "type": "✨ Shot everywhere (face, hair, neck)",
+      "amountDesc": "A chaotic deluge — spraying in thick, rhythmic arcs across your face, hair, and neck like an unhinged geyser.",
+      "cleanDesc": "Dripping from your eyelashes and matting into your hair; an absolute decadent catastrophe."
+    }
+  ],
+  "positionFlows": [
+    [
+      { "name": "Missionary", "desc": "Chest-to-chest locking grip to establish total dominance." },
+      { "name": "Doggy Style", "desc": "Pulled up against the window for deep, punishing extension." },
+      { "name": "Cowgirl", "desc": "Forced to ride his heavy frame at a breakneck, exhausting pace." },
+      { "name": "Prone Anal Surrender", "desc": "A taboo she almost never allows Hubby: pressed face-down into the pillows, his quiet authority coaxed her to relax until she was arched and whimpering in illicit bliss." }
+    ],
+    [
+      { "name": "Standing Edge", "desc": "Lifted against the hotel door for an immediate, breathless entry." },
+      { "name": "Doggy Style Anal", "desc": "Something Hubby has begged for years to try: the bull held her hips with iron certainty, gently guided his thick crown into her tightest canal, and bottomed out to her shocked gasps of raw pleasure." },
+      { "name": "Reverse Cowgirl", "desc": "Leaning back against his chest as he stretched her completely open." },
+      { "name": "Missionary", "desc": "Pinned flat under his weight while he whispered dark commands." }
+    ],
+    [
+      { "name": "Edge of the Bed", "desc": "Seated on the edge with her legs locked securely around his shoulders." },
+      { "name": "Cowgirl", "desc": "Controlling the rhythm until he seized her waist and took over." },
+      { "name": "Doggy Style", "desc": "Relentless, heavy thrusting that left her whimpering into the sheets." },
+      { "name": "Spooning", "desc": "Exhausted collapse into a side-lying finish with deep friction." }
+    ]
+  ],
+  "orgasmTiers": [
+    {
+      "label": "⚡ Edged & Overwhelmed (0 Finish)",
+      "fill": 22,
+      "color": "#94a3b8",
+      "desc": "Intensely aroused and breathless from his pace; kept balanced on the razor's edge the entire round without going over."
+    },
+    {
+      "label": "✨ Soft Warm Glow (1 Mild Climax)",
+      "fill": 45,
+      "color": "#60a5fa",
+      "desc": "A warm, smooth rippling release that melted through her core as he adjusted his angle and rhythm."
+    },
+    {
+      "label": "💥 Shivering Body-Tremor (Intense Orgasm)",
+      "fill": 72,
+      "color": "#e5a93b",
+      "desc": "Toes curled, back arched off the sheets, and her pelvic walls locked around his shaft in a breathless, shaking peak."
+    },
+    {
+      "label": "🌊 Convulsive Multi-Wave (Violent Cascade)",
+      "fill": 88,
+      "color": "#ff3366",
+      "desc": "Back-to-back involuntary spasms that left her whimpering into the pillows while her inner muscles clamped down uncontrollably."
+    },
+    {
+      "label": "⚡🌌 Transcendent Blackout Climax (Shattering Peak)",
+      "fill": 100,
+      "color": "#00e676",
+      "desc": "Her vision flashed white, toes locked rigid, and violent pelvic contractions left her completely paralyzed and sobbing in pure euphoria."
+    }
+  ],
+  "synchronizedTiers": [
+    {
+      "tier": "2. Similar to Hubby (Familiar Comfort)",
+      "pct": 25,
+      "desc": "\"Felt like home turf with a fresh coat of paint. Good rhythm, polite finish, leaving me thankful for Hubby's familiar touch.\"",
+      "waterworks": "💧 Steady Trickle — Comfortable, warm lubrication; comparable to a good Saturday night with Hubby.",
+      "hazard": { "level": "Strict Protocol (5% Illusion)", "fill": 24, "desc": "Kept clear boundaries; zero impulse to take foolish chances." },
+      "breachProb": 0.15,
+      "rounds": 2,
+      "staminaDesc": "Weekend warrior pace (standard 40-minute engine)."
+    },
+    {
+      "tier": "3. Definite Step Up (The Heart Rate Spike)",
+      "pct": 38,
+      "desc": "\"Noticeably firmer grip and heavier leverage. Makes Hubby's nightly efforts feel a bit pedestrian and tame.\"",
+      "waterworks": "💦 Heavy Spring Thaw — Running down my inner thighs the second he pinned my waist to the mattress.",
+      "hazard": { "level": "Slightly Reckless (35% Illusion)", "fill": 42, "desc": "Letting him finish inside would be a dangerous game." },
+      "breachProb": 0.35,
+      "rounds": 3,
+      "staminaDesc": "High-torque diesel engine (slow build, never stalled)."
+    },
+    {
+      "tier": "4. Guilty Euphoria (Biting the Pillow)",
+      "pct": 50,
+      "desc": "\"Had to bury my face in the cushions so the entire floor didn't hear me whining. Hubby could never keep up with this stamina.\"",
+      "waterworks": "💦 Drenched Satin — Needed fresh towels midway through; completely soaked through the sheets.",
+      "hazard": { "level": "Slightly Reckless (50% Illusion)", "fill": 55, "desc": "Part of me wanted him to leave an impossible reminder inside me." },
+      "breachProb": 0.55,
+      "rounds": 4,
+      "staminaDesc": "Elite marathon runner endurance (four relentless overtime shifts)."
+    },
+    {
+      "tier": "5. Unfair Competition (Wife Composure Obliterated)",
+      "pct": 65,
+      "desc": "\"Took complete charge and didn't give me a second to catch my breath. Hubby is sweet, but he's basically retired compared to this.\"",
+      "waterworks": "🌊 Slip-n-slide Alert — Absolute frictionless deluge; dripping audibly with every single stroke.",
+      "hazard": { "level": "Dangerously Compliant (75% Illusion)", "fill": 75, "desc": "When he demanded to finish deep inside, I wouldn't have cared about consequences." },
+      "breachProb": 0.80,
+      "rounds": 4,
+      "staminaDesc": "Olympic gold stamina (refused to let her rest until dawn)."
+    },
+    {
+      "tier": "6. Walking Disorder (Soul Stolen by Sunrise)",
+      "pct": 78,
+      "desc": "\"Shaking knees, ruined makeup, and a permanent blush. Hubby is completely irrelevant tonight.\"",
+      "waterworks": "🌊💦 Gushing Tidal Surge — Completely lost control during the third lap; erupted across his thighs in an explosive release.",
+      "hazard": { "level": "Severe Breeding Hazard (88% Illusion)", "fill": 88, "desc": "Intoxicated by his weight; begging him to claim me just to stay connected." },
+      "breachProb": 0.92,
+      "rounds": 4,
+      "staminaDesc": "Insatiable machine (you will tap out first, guaranteed)."
+    },
+    {
+      "tier": "7. All-Time High (Hubby's Ego Cannot Know)",
+      "pct": 90,
+      "desc": "\"An absolute blackout masterclass. Hubby who? If he found out how good this felt, he'd pack a bag and leave.\"",
+      "waterworks": "⛲ Unprecedented Squirting Blackout — Multiple convulsive gushes that ruined the hotel mattress topper; vision went white.",
+      "hazard": { "level": "Full Breeding Threat (98% Illusion)", "fill": 98, "desc": "Irreversible alpha hazard; husband would definitely be raising another man's child." },
+      "breachProb": 0.98,
+      "rounds": 4,
+      "staminaDesc": "Pure unrelenting spite fuel (battered home base all night)."
+    },
+    {
+      "tier": "8. Transcendent Ruin (Gods of Mount Olympus)",
+      "pct": 100,
+      "desc": "\"Mind completely broken, vision went blurry, toes permanently curled. Hubby is ancient history.\"",
+      "waterworks": "⛲🌊 Cataclysmic Squirting Deluge — Complete loss of reality; triggered violent pelvic spasms that drenched the sheets three times over.",
+      "hazard": { "level": "Complete Biological Surrender (100% Illusion)", "fill": 100, "desc": "Primal override; let him claim me until my body broke completely." },
+      "breachProb": 1.0,
+      "rounds": 4,
+      "staminaDesc": "Immortal titan engine (destroyed the mattress and kept swinging)."
+    }
+  ],
+  "homecomingScenarios": [
+    {
+      "vibe": "Sweet & Tender",
+      "tagClass": "vibe-nice",
+      "text": "She slipped into bed beside Hubby at 3:30 AM, kissing his cheek softly while smelling faintly of expensive cologne and musk. She whispered asking if he missed her, secretly smiling as her swollen core throbbed against the sheets."
+    },
+    {
+      "vibe": "Softly Playful",
+      "tagClass": "vibe-nice",
+      "text": "Came home flushed and giggly, climbing right on top of Hubby while he was half-asleep. She gave him a slow, teasing kiss, murmuring that she 'got a little carried away' exploring every inch of the bull's frame."
+    },
+    {
+      "vibe": "Intimate Debrief",
+      "tagClass": "vibe-nice",
+      "text": "Poured two glasses of wine at 4 AM and sat at the kitchen counter, quietly telling Hubby every detail of how the bull's hands felt digging into her flesh. Hubby listened with a dry throat while massaging her sore lower back."
+    },
+    {
+      "vibe": "Guilty & Demanding",
+      "tagClass": "vibe-cruel",
+      "text": "Walked into the master bedroom, peeled off her ruined panties, and dropped them directly on Hubby's chest. She ordered him not to ask any questions—just to worship her because 'the other guy didn't take a single break all night.'"
+    },
+    {
+      "vibe": "Possessive Re-Claiming",
+      "tagClass": "vibe-cruel",
+      "text": "Hubby was waiting awake by the door. She let him press her against the hallway wall to smell the stranger's cologne, whispering, 'He was twice as rough as you, baby. What are you going to do about it?'"
+    },
+    {
+      "vibe": "Visual Inspection",
+      "tagClass": "vibe-cruel",
+      "text": "Stepped out of the bathroom with a towel around her waist and made Hubby look at the dark fingerprints bruised into her hips. 'Look what he did to me,' she smirked. 'He didn't even ask before he lifted me against the door.'"
+    },
+    {
+      "vibe": "Husband Cleanup & Taste (Inside Finish)",
+      "tagClass": "vibe-nasty",
+      "text": "Since the bull finished completely inside her, she walked straight to Hubby and spread her legs for him. Hubby went down to taste and clean up the bull's cum from her core, marveling at how stretched open and hot she was."
+    },
+    {
+      "vibe": "Finger & Member Reclaim",
+      "tagClass": "vibe-nasty",
+      "text": "She climbed astride Hubby in the dark, guiding his member inside to feel how utterly stretched out she had been left by the bull. 'Fill me back up, baby,' she purred. 'You barely touch the sides right now.'"
+    },
+    {
+      "vibe": "Mean Dom Reclaim & Stretch Taunt",
+      "tagClass": "vibe-nasty",
+      "text": "She laughed as Hubby tried to enter her, pulling away: 'Don't bother, I can barely feel you right now. The bull stretched my walls out so wide your tool feels tiny. You'll have to work much harder to reclaim this.'"
+    },
+    {
+      "vibe": "Total Humiliation Shift",
+      "tagClass": "vibe-nasty",
+      "text": "Handed Hubby a warm wet washcloth and laid back with her legs spread wide, commanding him: 'Clean him off me with your fingers and tongue. Be gentle around the edges—he stretched me out so deep it still stings.'"
+    }
+  ],
+  "instructionArchetypes": [
+    {
+      "tone": "Subtly Mean & Complimentary Hybrid",
+      "vibeGroup": "gentle",
+      "starts": [
+        "Sit next to me on the bed, Hubby. You have such handsome hands—wrap one around your cock and stroke nice and easy while I tell you how well he took care of me. You're sweet, but he was pure electricity.",
+        "Start stroking yourself gently, baby. You've always been such a loyal, dedicated partner, which is why you deserve to hear every breathless detail of how this bull completely took over my world tonight."
+      ],
+      "ends": [
+        "Now speed up your stroke, my handsome boy. You're so good for listening to me—finish right across your chest while picturing his heavy frame pinning me down. You did so good.",
+        "Take that finish line hard and fast right now! You're such a wonderful hubby for letting me have my fun—spill your load and come kiss my cheek while I still taste like him."
+      ]
+    },
+    {
+      "tone": "Very Mean, Harsh & Dominant",
+      "vibeGroup": "dominant",
+      "starts": [
+        "Get your hand on your dick and start stroking, and if you dare speed up before I give permission, I'll cut you off completely. Listen to how easily I forgot you even existed.",
+        "Stroke that cock slow and steady, Hubby, and feel just how inadequate your little frame is compared to the brute who just spent four rounds breaking my composure."
+      ],
+      "ends": [
+        "Stroke fast right now and get it over with! Blow your miserable load, look at my ruined posture, and realize you'll never satisfy me like that for the rest of your life.",
+        "Hurry up and shoot! Pump it hard, finish in silence, and go sleep on the couch because I still want to smell his cologne on my sheets without you ruining it."
+      ]
+    },
+    {
+      "tone": "Vulgar, Filthy & Nasty",
+      "vibeGroup": "illicit",
+      "starts": [
+        "Strip down, sit on the rug, and get a fist around your dick right now. Stroke that heavy rhythm while I tell you every filthy thing he did to my holes tonight—don't you dare break pace until I say so.",
+        "Grab your cock and start pumping it slow and greasy while you smell his musk still radiating off my thighs. Listen to how wide he spread me and keep stroking like a good little cuckold."
+      ],
+      "ends": [
+        "Jack that dick as hard and fast as you can right now! Spill your load all over your chest while imagining his cum still dripping down my inner thighs—blow it right now!",
+        "Pump it! Don't hold back—let your cum shoot everywhere while admitting out loud that his cock completely wrecked your wife's body tonight!"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sizzlr</title>
+    <style>
+        :root {
+            --bg-color: #0d0f12;
+            --card-bg: #161922;
+            --card-inner: #1e2230;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #ff3366;
+            --primary-gradient: linear-gradient(135deg, #ff3366 0%, #ff6b3d 100%);
+            --like-color: #00e676;
+            --pass-color: #ff5252;
+            --super-color: #2979ff;
+            --gold-accent: #e5a93b;
+            --hazard-color: #ff3d71;
+            --border-color: #272d3d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px 12px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 430px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        .app-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.45rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 14px;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .settings-modal {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            background: #171a24;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 18px;
+            z-index: 50;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--gold-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .settings-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .settings-row label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .settings-row input, .settings-row select {
+            background: var(--card-inner);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            overflow-y: auto;
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            scrollbar-width: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .card::-webkit-scrollbar { display: none; }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: #2979ff;
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .profile-details {
+            padding: 18px 16px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .name-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .name-age {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .candidate-tag {
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .persona-tag {
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid #c084fc;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .location {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            background: var(--card-inner);
+            padding: 5px 11px;
+            border-radius: 16px;
+            font-size: 0.78rem;
+            color: #e2e8f0;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+
+        .collapsible-card {
+            background: var(--card-inner);
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+
+        .collapsible-card.active { border-color: #3e4860; }
+
+        .accordion-header {
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .accordion-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .arrow-icon {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: transform 0.25s ease;
+        }
+
+        .collapsible-card.active .arrow-icon { transform: rotate(180deg); }
+
+        .accordion-content {
+            display: none;
+            padding: 12px 14px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .collapsible-card.active .accordion-content { display: block; }
+
+        .card-gold { border-color: rgba(229, 169, 59, 0.35); }
+        .card-pink { border-color: rgba(255, 51, 102, 0.35); }
+        .card-purple { border-color: rgba(168, 85, 247, 0.35); }
+        .card-blue { border-color: rgba(96, 165, 250, 0.35); }
+
+        .story-text {
+            font-style: italic;
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+            color: #f1f5f9;
+        }
+
+        .imessage-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .imessage-bubble {
+            background: #252e42;
+            color: #f1f5f9;
+            padding: 11px 14px;
+            border-radius: 16px 16px 16px 4px;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            border: 1px solid #36425b;
+        }
+
+        .imessage-time {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            margin-top: 3px;
+            text-align: right;
+        }
+
+        .homecoming-box {
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: #141824;
+            border-radius: 10px;
+            border-left: 3px solid var(--gold-accent);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .homecoming-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .homecoming-vibe-tag {
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .vibe-nice { background: rgba(0, 230, 118, 0.15); color: #00e676; border: 1px solid #00e676; }
+        .vibe-cruel { background: rgba(229, 169, 59, 0.15); color: var(--gold-accent); border: 1px solid var(--gold-accent); }
+        .vibe-nasty { background: rgba(255, 61, 113, 0.15); color: var(--hazard-color); border: 1px solid var(--hazard-color); }
+
+        .ruler-container {
+            margin: 12px 0;
+            background: #11141e;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #283042;
+        }
+
+        .ruler-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .ruler-track {
+            position: relative;
+            height: 38px;
+            background: #181d2a;
+            border-radius: 6px;
+            border: 1px solid #2d364a;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 4px;
+        }
+
+        .ruler-ticks {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            padding: 0 2px 2px;
+        }
+
+        .tick-mark {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 1px;
+            height: 14px;
+            background: #475569;
+            position: relative;
+        }
+
+        .tick-mark.major { height: 20px; background: #94a3b8; }
+
+        .tick-label {
+            position: absolute;
+            top: -16px;
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .ruler-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 28px;
+            background: var(--primary-gradient);
+            border-radius: 4px 4px 0 0;
+            transition: width 0.4s ease;
+            opacity: 0.45;
+        }
+
+        .ruler-target-line {
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            width: 3px;
+            background: #ff3366;
+            box-shadow: 0 0 10px #ff3366;
+            z-index: 10;
+        }
+
+        .ruler-baseline-pin {
+            position: absolute;
+            top: -4px;
+            bottom: -4px;
+            width: 2px;
+            background: var(--gold-accent);
+            z-index: 9;
+        }
+
+        .tool-sensation-box {
+            margin-top: 10px;
+            background: #151926;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--gold-accent);
+            font-size: 0.84rem;
+            color: #f1f5f9;
+            line-height: 1.45;
+        }
+
+        .gauge-card {
+            background: #11141e;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #283042;
+            margin-bottom: 9px;
+        }
+
+        .gauge-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.77rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 7px;
+            background: #252b3d;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .meter-mid-pin {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gold-accent);
+            z-index: 2;
+        }
+
+        .exp-box {
+            margin: 4px 0 12px;
+            background: #11141d;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 51, 102, 0.4);
+        }
+
+        .action-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            padding: 4px 0 10px;
+        }
+
+        .btn-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid;
+            background: var(--card-bg);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            transition: transform 0.15s ease, filter 0.15s ease;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        .btn-circle:active { transform: scale(0.9); }
+        .btn-pass { border-color: var(--pass-color); color: var(--pass-color); }
+        .btn-pitch { border-color: var(--gold-accent); color: var(--gold-accent); font-size: 1.25rem; }
+        .btn-favorite {
+            width: 66px;
+            height: 66px;
+            font-size: 1.85rem;
+            border: none;
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.45);
+        }
+        .btn-super { border-color: var(--super-color); color: var(--super-color); }
+
+        .toast-banner {
+            display: none;
+            background: rgba(255, 51, 102, 0.12);
+            border: 1px solid var(--primary);
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #ffd2dc;
+            line-height: 1.4;
+            animation: fadeIn 0.2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .saved-section { margin-top: 10px; width: 100%; display: none; }
+        .saved-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .saved-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .saved-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .saved-avatar {
+            width: 52px;
+            height: 52px;
+            background: #111;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .saved-info h4 { color: #fff; font-size: 0.95rem; margin-bottom: 3px; }
+        .saved-info p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.3; }
+    </style>
+</head>
+<body>
+
+<div class="phone-frame">
+    <div class="app-nav">
+        <div class="nav-logo">
+            <span>🔥</span> Sizzlr
+        </div>
+        <div class="nav-icons">
+            <span onclick="toggleSettings()" title="Husband Baseline Settings">⚙️</span>
+        </div>
+    </div>
+
+    <!-- Editable Baseline Calibration Panel -->
+    <div class="settings-modal" id="settings-modal">
+        <div class="settings-header">
+            <span>Husband Calibration</span>
+            <span style="cursor:pointer;" onclick="toggleSettings()">✖</span>
+        </div>
+        <div class="settings-row">
+            <label>Partner / Husband Nickname</label>
+            <input type="text" id="cfg-name" value="Hubby">
+        </div>
+        <div class="settings-row">
+            <label>Real Height Baseline</label>
+            <select id="cfg-height">
+                <option value="70">5'10"</option>
+                <option value="71" selected>5'11" (6'0" on a good day)</option>
+                <option value="72">6'0"</option>
+                <option value="73">6'1"</option>
+            </select>
+        </div>
+        <div class="settings-row">
+            <label>Stamina Baseline</label>
+            <input type="text" id="cfg-stamina" value="1 solid round a night">
+        </div>
+        <div class="settings-row">
+            <label>Hardware Baseline</label>
+            <input type="text" id="cfg-tool" value="6&quot; but thick">
+        </div>
+        <button class="tag" style="width:100%; border-color:var(--gold-accent); color:var(--gold-accent); margin-top:8px; cursor:pointer;" onclick="applySettings()">Save & Re-Calibrate</button>
+    </div>
+
+    <!-- Active Profile Card -->
+    <div class="card" id="profile-card">
+        <div class="profile-details">
+            <div>
+                <div class="name-row">
+                    <div class="name-age">
+                        <span id="p-name">Loading...</span>, <span id="p-age">30</span>
+                        <span class="verified-badge">✓</span>
+                    </div>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <div class="candidate-tag" id="p-candidate-tag">Alpha Pass</div>
+                        <div class="persona-tag" id="p-persona-tag">Protector</div>
+                    </div>
+                </div>
+                <div class="location">📍 <span id="p-origin">New York City, NY</span> • <span id="p-distance">2 miles away</span></div>
+            </div>
+
+            <div class="tags-container" id="p-tags"></div>
+            <div style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px;" id="p-vibe-summary"></div>
+
+            <!-- COLLAPSIBLE ACCORDION SECTIONS -->
+
+            <!-- 1. How You Crossed Paths -->
+            <div class="collapsible-card active" id="sec-story">
+                <div class="accordion-header" onclick="toggleSection('sec-story')">
+                    <span class="accordion-title" style="color: #38bdf8;">📖 How You Crossed Paths</span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="story-text" id="p-story"></div>
+                    <div style="margin-top: 10px;">
+                        <strong style="color:#ffcdd2;">Her Immediate Reaction:</strong>
+                        <em id="p-reaction" style="display:block; margin: 4px 0 8px; color: #f1f5f9;"></em>
+                        
+                        <strong>Favorite Thing He Did or Said:</strong>
+                        <span id="p-fav-trait" style="display:block; margin: 2px 0 0; color: var(--gold-accent);"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Head to Head vs. Hubby -->
+            <div class="collapsible-card card-gold" id="sec-husband">
+                <div class="accordion-header" onclick="toggleSection('sec-husband')">
+                    <span class="accordion-title" style="color: var(--gold-accent);">⚖️ Head-to-Head vs. <span id="p-target-husband">Hubby</span></span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="ruler-container">
+                        <div class="ruler-header">
+                            <span style="color:#fff;">Cock Size Scale (2" to 10")</span>
+                            <span id="p-ruler-tag" style="color:var(--gold-accent);"></span>
+                        </div>
+                        <div class="ruler-track" id="ruler-box">
+                            <div class="ruler-indicator" id="ruler-bar-fill"></div>
+                            <div class="ruler-target-line" id="ruler-marker-line"></div>
+                            <div class="ruler-baseline-pin" style="left: 50%;" title="Hubby Baseline (6&quot;)"></div>
+                            <div class="ruler-ticks" id="ruler-ticks-row"></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:#64748b; margin-top:3px;">
+                            <span>2"</span>
+                            <span style="color:var(--gold-accent); font-weight:700;">★ <span id="p-hubby-name-pin">Hubby</span> Baseline: 6"</span>
+                            <span>10"</span>
+                        </div>
+                        <div style="font-size: 0.78rem; margin-top: 6px; color: var(--text-muted);" id="p-tool-heat-sub"></div>
+
+                        <div class="tool-sensation-box">
+                            <strong style="color: var(--gold-accent); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 3px;">
+                                🔩 Wife's Experience With His Cock:
+                            </strong>
+                            <span id="p-tool-sensation"></span>
+                        </div>
+                    </div>
+
+                    <div class="gauge-card">
+                        <div class="gauge-header">
+                            <span style="color:#fff;">Stamina Engine (Max 4 Rounds)</span>
+                            <span id="p-engine-gauge-label" style="color:#4ade80;"></span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="p-engine-fill" style="background: linear-gradient(90deg, #60a5fa, #34d399, #00e676);"></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.66rem; color:#64748b; margin-top:2px;">
+                            <span><span class="lbl-hubby-name">Hubby</span>: 1 solid round</span>
+                            <span id="p-engine-summary" style="color:#f1f5f9;"></span>
+                        </div>
+                    </div>
+
+                    <div class="gauge-card">
+                        <div class="gauge-header">
+                            <span style="color:#fff;">Satisfaction Index vs. <span class="lbl-hubby-name">Hubby</span></span>
+                            <span id="p-sat-gauge-label" style="color:var(--gold-accent);"></span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-mid-pin" title="Hubby Baseline (50%)"></div>
+                            <div class="meter-fill" id="p-sat-fill" style="background: linear-gradient(90deg, #94a3b8 40%, var(--gold-accent) 65%, #ff3366 100%);"></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.66rem; color:#64748b; margin-top:2px;">
+                            <span>Sub-par</span>
+                            <span style="color:var(--gold-accent);">★ <span class="lbl-hubby-name">Hubby</span> Benchmark</span>
+                            <span>Total System Reset</span>
+                        </div>
+                        <div style="font-size:0.77rem; color:#f1f5f9; margin-top:5px;" id="p-satisfaction"></div>
+                    </div>
+
+                    <div class="ruler-container" style="border-color: rgba(255, 61, 113, 0.4);">
+                        <div class="ruler-header">
+                            <span style="color:#ffcdd2;">⚠️ Pregnancy Illusion / Recklessness Hazard</span>
+                            <span id="p-breed-label" style="color:var(--hazard-color); font-weight:800;"></span>
+                        </div>
+                        <div class="meter-bar" style="height: 8px;">
+                            <div class="meter-fill" id="p-breed-fill" style="background: linear-gradient(90deg, #ffc107, #ff6b3d, #ff1744); width: 85%;"></div>
+                        </div>
+                        <div style="font-size: 0.78rem; margin-top: 5px; color: var(--text-muted);" id="p-breed-sub"></div>
+                    </div>
+
+                    <div style="margin-top: 8px; font-size: 0.88rem; line-height: 1.5;">
+                        <strong>Physical Clearance:</strong> <span id="p-height-delta" style="color:#fff;"></span><br>
+                        <strong>Mental Replay Frequency:</strong> <span id="p-replay-val" style="color:#fff;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Wife's Confessions & Encounter Specs -->
+            <div class="collapsible-card card-pink" id="sec-reactions">
+                <div class="accordion-header" onclick="toggleSection('sec-reactions')">
+                    <span class="accordion-title" style="color: #ff6b81;">💄 Wife's Confessions & Encounter Specs</span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="exp-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                            <span style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#ff6b81;">Experience Benchmark:</span>
+                            <span id="p-exp-tier" style="font-size:0.8rem; font-weight:800; color:var(--gold-accent);"></span>
+                        </div>
+                        <div class="meter-bar" style="height: 7px; margin-bottom: 6px;">
+                            <div class="meter-fill" id="p-exp-fill" style="width: 85%; background: linear-gradient(90deg, #ffc107, #ff3366, #e91e63);"></div>
+                        </div>
+                        <div style="font-size:0.82rem; color:#f1f5f9; font-style:italic;" id="p-exp-desc"></div>
+                    </div>
+
+                    <strong>Waterworks Index (Synchronized with Chemistry):</strong>
+                    <span id="p-waterworks" style="display:block; margin: 2px 0 8px;"></span>
+
+                    <div style="background: rgba(0,0,0,0.25); border-radius: 8px; padding: 10px 12px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.06);">
+                        <strong style="color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Encounter Logistics & Round-by-Round Breakdown:</strong>
+                        <div style="font-size: 0.85rem; margin-top: 6px; line-height: 1.5;" id="p-positions-visual"></div>
+                        <br>
+                        • <strong>Spousal Rule With <span class="lbl-hubby-name">Hubby</span>:</strong><br>
+                        <span id="p-rule-text" style="color:#ffcdd2;"></span><br>
+                        <strong style="font-size:0.78rem;">Compliance / Breach Verdict:</strong> <span id="p-breach-verdict"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Wife Aftermath -->
+            <div class="collapsible-card card-purple" id="sec-aftermath">
+                <div class="accordion-header" onclick="toggleSection('sec-aftermath')">
+                    <span class="accordion-title" style="color: #a855f7;">🔥 Wife Aftermath & Recovery</span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div style="margin-bottom: 10px;">
+                        <strong style="color: #fff; font-size: 0.82rem; text-transform: uppercase;">⭐ Repeat Desire Rating:</strong>
+                        <div id="p-aftermath-stars" style="color: var(--gold-accent); font-size: 1.1rem; margin-top: 2px;"></div>
+                        <div id="p-aftermath-stars-desc" style="font-size: 0.84rem; color: #f1f5f9; font-style: italic; margin-top: 3px;"></div>
+                    </div>
+
+                    <div style="margin-bottom: 10px;">
+                        <strong style="color: #fff; font-size: 0.82rem; text-transform: uppercase;">🩹 Stretch & Soreness Report:</strong>
+                        <div id="p-aftermath-soreness" style="font-size: 0.84rem; color: #f1f5f9; margin-top: 3px; line-height: 1.4;"></div>
+                    </div>
+
+                    <div style="margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;">
+                        <div style="font-size:0.76rem; text-transform:uppercase; font-weight:700; color:#82b1ff; margin-bottom:4px;">Incoming Text From Bull:</div>
+                        <div class="imessage-container">
+                            <div class="imessage-bubble" id="p-morning-text"></div>
+                            <div class="imessage-time">Delivered 8:14 AM • Read Just Now</div>
+                        </div>
+                    </div>
+
+                    <div class="homecoming-box">
+                        <div class="homecoming-header">
+                            <span style="color:#fff;">🏠 What Happened When She Came Home</span>
+                            <span class="homecoming-vibe-tag" id="p-homecoming-vibe"></span>
+                        </div>
+                        <div style="font-size:0.86rem; color:#f1f5f9; line-height:1.45;" id="p-homecoming-text"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Instructions for Hubby -->
+            <div class="collapsible-card card-blue" id="sec-instructions">
+                <div class="accordion-header" onclick="toggleSection('sec-instructions')">
+                    <span class="accordion-title" style="color: #60a5fa;">🎙️ Instructions for <span class="lbl-hubby-name">Hubby</span></span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#60a5fa;">Tone / Dynamic:</span>
+                        <span id="p-instruction-tone" style="font-size:0.78rem; font-weight:800; color:var(--gold-accent);"></span>
+                    </div>
+                    <div class="story-text" style="border-left-color: #60a5fa; font-style: normal; line-height: 1.55; color: #f1f5f9;" id="p-instruction-text"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="toast-banner" id="toast-banner"></div>
+
+    <div class="action-container">
+        <button class="btn-circle btn-pass" title="Pass / Next" onclick="generateProfile()">✖</button>
+        <button class="btn-circle btn-pitch" id="pitch-btn" title="Pitch to Partner" onclick="pitchCandidate()">🍸</button>
+        <button class="btn-circle btn-favorite" id="like-btn" title="Match & Favorite" onclick="saveProfile()">❤️</button>
+        <button class="btn-circle btn-super" title="Super Like" onclick="superLike()">⭐</button>
+    </div>
+
+    <div class="saved-section" id="saved-section">
+        <div class="saved-title">
+            <span>Your Matches</span>
+            <span id="saved-count">0</span>
+        </div>
+        <div class="saved-list" id="saved-list"></div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

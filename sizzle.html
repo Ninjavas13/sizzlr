@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sizzlr</title>
+    <style>
+        :root {
+            --bg-color: #0d0f12;
+            --card-bg: #161922;
+            --card-inner: #1e2230;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #ff3366;
+            --primary-gradient: linear-gradient(135deg, #ff3366 0%, #ff6b3d 100%);
+            --like-color: #00e676;
+            --pass-color: #ff5252;
+            --super-color: #2979ff;
+            --gold-accent: #e5a93b;
+            --hazard-color: #ff3d71;
+            --border-color: #272d3d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px 12px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 430px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        .app-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.45rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 14px;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        /* Settings Drawer */
+        .settings-modal {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            background: #171a24;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 18px;
+            z-index: 50;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--gold-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .settings-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .settings-row label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .settings-row input, .settings-row select {
+            background: var(--card-inner);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            overflow-y: auto;
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            scrollbar-width: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .card::-webkit-scrollbar { display: none; }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: #2979ff;
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .profile-details {
+            padding: 18px 16px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .name-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .name-age {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .candidate-tag {
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .persona-tag {
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid #c084fc;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .location {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            background: var(--card-inner);
+            padding: 5px 11px;
+            border-radius: 16px;
+            font-size: 0.78rem;
+            color: #e2e8f0;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Collapsible Cards */
+        .collapsible-card {
+            background: var(--card-inner);
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+
+        .collapsible-card.active { border-color: #3e4860; }
+
+        .accordion-header {
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .accordion-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .arrow-icon {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: transform 0.25s ease;
+        }
+
+        .collapsible-card.active .arrow-icon { transform: rotate(180deg); }
+
+        .accordion-content {
+            display: none;
+            padding: 12px 14px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .collapsible-card.active .accordion-content { display: block; }
+
+        .card-gold { border-color: rgba(229, 169, 59, 0.35); }
+        .card-pink { border-color: rgba(255, 51, 102, 0.35); }
+        .card-purple { border-color: rgba(168, 85, 247, 0.35); }
+        .card-blue { border-color: rgba(96, 165, 250, 0.35); }
+
+        .story-text {
+            font-style: italic;
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+            color: #f1f5f9;
+        }
+
+        /* Message Bubble UI */
+        .imessage-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .imessage-bubble {
+            background: #252e42;
+            color: #f1f5f9;
+            padding: 11px 14px;
+            border-radius: 16px 16px 16px 4px;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            border: 1px solid #36425b;
+        }
+
+        .imessage-time {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            margin-top: 3px;
+            text-align: right;
+        }
+
+        /* Homecoming Box */
+        .homecoming-box {
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: #141824;
+            border-radius: 10px;
+            border-left: 3px solid var(--gold-accent);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .homecoming-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .homecoming-vibe-tag {
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .vibe-nice { background: rgba(0, 230, 118, 0.15); color: #00e676; border: 1px solid #00e676; }
+        .vibe-cruel { background: rgba(229, 169, 59, 0.15); color: var(--gold-accent); border: 1px solid var(--gold-accent); }
+        .vibe-nasty { background: rgba(255, 61, 113, 0.15); color: var(--hazard-color); border: 1px solid var(--hazard-color); }
+
+        /* Ruler Scale */
+        .ruler-container {
+            margin: 12px 0;
+            background: #11141e;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #283042;
+        }
+
+        .ruler-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .ruler-track {
+            position: relative;
+            height: 38px;
+            background: #181d2a;
+            border-radius: 6px;
+            border: 1px solid #2d364a;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 4px;
+        }
+
+        .ruler-ticks {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            padding: 0 2px 2px;
+        }
+
+        .tick-mark {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 1px;
+            height: 14px;
+            background: #475569;
+            position: relative;
+        }
+
+        .tick-mark.major { height: 20px; background: #94a3b8; }
+
+        .tick-label {
+            position: absolute;
+            top: -16px;
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .ruler-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 28px;
+            background: var(--primary-gradient);
+            border-radius: 4px 4px 0 0;
+            transition: width 0.4s ease;
+            opacity: 0.45;
+        }
+
+        .ruler-target-line {
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            width: 3px;
+            background: #ff3366;
+            box-shadow: 0 0 10px #ff3366;
+            z-index: 10;
+        }
+
+        .ruler-baseline-pin {
+            position: absolute;
+            top: -4px;
+            bottom: -4px;
+            width: 2px;
+            background: var(--gold-accent);
+            z-index: 9;
+        }
+
+        .tool-sensation-box {
+            margin-top: 10px;
+            background: #151926;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--gold-accent);
+            font-size: 0.84rem;
+            color: #f1f5f9;
+            line-height: 1.45;
+        }
+
+        /* Generic Gauges */
+        .gauge-card {
+            background: #11141e;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #283042;
+            margin-bottom: 9px;
+        }
+
+        .gauge-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.77rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 7px;
+            background: #252b3d;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .meter-mid-pin {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gold-accent);
+            z-index: 2;
+        }
+
+        .exp-box {
+            margin: 4px 0 12px;
+            background: #11141d;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 51, 102, 0.4);
+        }
+
+        .action-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            padding: 4px 0 10px;
+        }
+
+        .btn-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid;
+            background: var(--card-bg);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            transition: transform 0.15s ease, filter 0.15s ease;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        .btn-circle:active { transform: scale(0.9); }
+        .btn-pass { border-color: var(--pass-color); color: var(--pass-color); }
+        .btn-pitch { border-color: var(--gold-accent); color: var(--gold-accent); font-size: 1.25rem; }
+        .btn-favorite {
+            width: 66px;
+            height: 66px;
+            font-size: 1.85rem;
+            border: none;
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.45);
+        }
+        .btn-super { border-color: var(--super-color); color: var(--super-color); }
+
+        .toast-banner {
+            display: none;
+            background: rgba(255, 51, 102, 0.12);
+            border: 1px solid var(--primary);
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #ffd2dc;
+            line-height: 1.4;
+            animation: fadeIn 0.2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .saved-section { margin-top: 10px; width: 100%; display: none; }
+        .saved-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .saved-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .saved-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .saved-avatar {
+            width: 52px;
+            height: 52px;
+            background: #111;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .saved-info h4 { color: #fff; font-size: 0.95rem; margin-bottom: 3px; }
+        .saved-info p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.3; }
+    </style>
+</head>
+<body>
+
+<div class="phone-frame">
+    <div class="app-nav">
+        <div class="nav-logo">
+            <span>🔥</span> Sizzlr
+        </div>
+        <div class="nav-icons">
+            <span onclick="toggleSettings()" title="Husband Baseline Settings">⚙️</span>
+        </div>
+    </div>
+
+    <!-- Editable Baseline Calibration Panel -->
+    <div class="settings-modal" id="settings-modal">
+        <div class="settings-header">
+            <span>Husband Calibration</span>
+            <span style="cursor:pointer;" onclick="toggleSettings()">✖</span>
+        </div>
+        <div class="settings-row">
+            <label>Partner / Husband Nickname</label>
+            <input type="text" id="cfg-name" value="Hubby">
+        </div>
+        <div class="settings-row">
+            <label>Real Height Baseline</label>
+            <select id="cfg-height">
+                <option value="70">5'10"</option>
+                <option value="71" selected>5'11" (6'0" on a good day)</option>
+                <option value="72">6'0"</option>
+                <option value="73">6'1"</option>
+            </select>
+        </div>
+        <div class="settings-row">
+            <label>Stamina Baseline</label>
+            <input type="text" id="cfg-stamina" value="1 solid round a night">
+        </div>
+        <div class="settings-row">
+            <label>Hardware Baseline</label>
+            <input type="text" id="cfg-tool" value="6&quot; but thick">
+        </div>
+        <button class="tag" style="width:100%; border-color:var(--gold-accent); color:var(--gold-accent); margin-top:8px; cursor:pointer;" onclick="applySettings()">Save & Re-Calibrate</button>
+    </div>
+
+    <!-- Active Profile Card -->
+    <div class="card" id="profile-card">
+        <div class="profile-details">
+            <!-- MAIN VISIBLE INFORMATION -->
+            <div>
+                <div class="name-row">
+                    <div class="name-age">
+                        <span id="p-name">Loading...</span>, <span id="p-age">30</span>
+                        <span class="verified-badge">✓</span>
+                    </div>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <div class="candidate-tag" id="p-candidate-tag">Alpha Pass</div>
+                        <div class="persona-tag" id="p-persona-tag">Protector</div>
+                    </div>
+                </div>
+                <div class="location">📍 <span id="p-origin">New York City, NY</span> • <span id="p-distance">2 miles away</span></div>
+            </div>
+
+            <div class="tags-container" id="p-tags"></div>
+            <div style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px;" id="p-vibe-summary"></div>
+
+            <!-- COLLAPSIBLE ACCORDION SECTIONS -->
+
+            <!-- 1. How You Crossed Paths -->
+            <div class="collapsible-card active" id="sec-story">
+                <div class="accordion-header" onclick="toggleSection('sec-story')">
+                    <span class="accordion-title" style="color: #38bdf8;">📖 How You Crossed Paths</span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="story-text" id="p-story"></div>
+                    <div style="margin-top: 10px;">
+                        <strong style="color:#ffcdd2;">Her Immediate Reaction:</strong>
+                        <em id="p-reaction" style="display:block; margin: 4px 0 8px; color: #f1f5f9;"></em>
+                        
+                        <strong>Favorite Thing He Did or Said:</strong>
+                        <span id="p-fav-trait" style="display:block; margin: 2px 0 0; color: var(--gold-accent);"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Head to Head vs. Hubby -->
+            <div class="collapsible-card card-gold" id="sec-husband">
+                <div class="accordion-header" onclick="toggleSection('sec-husband')">
+                    <span class="accordion-title" style="color: var(--gold-accent);">⚖️ Head-to-Head vs. <span id="p-target-husband">Hubby</span></span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="ruler-container">
+                        <div class="ruler-header">
+                            <span style="color:#fff;">Cock Size Scale (2" to 10")</span>
+                            <span id="p-ruler-tag" style="color:var(--gold-accent);"></span>
+                        </div>
+                        <div class="ruler-track" id="ruler-box">
+                            <div class="ruler-indicator" id="ruler-bar-fill"></div>
+                            <div class="ruler-target-line" id="ruler-marker-line"></div>
+                            <div class="ruler-baseline-pin" style="left: 50%;" title="Hubby Baseline (6&quot;)"></div>
+                            <div class="ruler-ticks" id="ruler-ticks-row"></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:#64748b; margin-top:3px;">
+                            <span>2"</span>
+                            <span style="color:var(--gold-accent); font-weight:700;">★ <span id="p-hubby-name-pin">Hubby</span> Baseline: 6"</span>
+                            <span>10"</span>
+                        </div>
+                        <div style="font-size: 0.78rem; margin-top: 6px; color: var(--text-muted);" id="p-tool-heat-sub"></div>
+
+                        <div class="tool-sensation-box">
+                            <strong style="color: var(--gold-accent); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 3px;">
+                                🔩 Wife's Experience With His Cock:
+                            </strong>
+                            <span id="p-tool-sensation"></span>
+                        </div>
+                    </div>
+
+                    <div class="gauge-card">
+                        <div class="gauge-header">
+                            <span style="color:#fff;">Stamina Engine (Max 4 Rounds)</span>
+                            <span id="p-engine-gauge-label" style="color:#4ade80;"></span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="p-engine-fill" style="background: linear-gradient(90deg, #60a5fa, #34d399, #00e676);"></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.66rem; color:#64748b; margin-top:2px;">
+                            <span><span class="lbl-hubby-name">Hubby</span>: 1 solid round</span>
+                            <span id="p-engine-summary" style="color:#f1f5f9;"></span>
+                        </div>
+                    </div>
+
+                    <div class="gauge-card">
+                        <div class="gauge-header">
+                            <span style="color:#fff;">Satisfaction Index vs. <span class="lbl-hubby-name">Hubby</span></span>
+                            <span id="p-sat-gauge-label" style="color:var(--gold-accent);"></span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-mid-pin" title="Hubby Baseline (50%)"></div>
+                            <div class="meter-fill" id="p-sat-fill" style="background: linear-gradient(90deg, #94a3b8 40%, var(--gold-accent) 65%, #ff3366 100%);"></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.66rem; color:#64748b; margin-top:2px;">
+                            <span>Sub-par</span>
+                            <span style="color:var(--gold-accent);">★ <span class="lbl-hubby-name">Hubby</span> Benchmark</span>
+                            <span>Total System Reset</span>
+                        </div>
+                        <div style="font-size:0.77rem; color:#f1f5f9; margin-top:5px;" id="p-satisfaction"></div>
+                    </div>
+
+                    <div class="ruler-container" style="border-color: rgba(255, 61, 113, 0.4);">
+                        <div class="ruler-header">
+                            <span style="color:#ffcdd2;">⚠️ Pregnancy Illusion / Recklessness Hazard</span>
+                            <span id="p-breed-label" style="color:var(--hazard-color); font-weight:800;"></span>
+                        </div>
+                        <div class="meter-bar" style="height: 8px;">
+                            <div class="meter-fill" id="p-breed-fill" style="background: linear-gradient(90deg, #ffc107, #ff6b3d, #ff1744); width: 85%;"></div>
+                        </div>
+                        <div style="font-size: 0.78rem; margin-top: 5px; color: var(--text-muted);" id="p-breed-sub"></div>
+                    </div>
+
+                    <div style="margin-top: 8px; font-size: 0.88rem; line-height: 1.5;">
+                        <strong>Physical Clearance:</strong> <span id="p-height-delta" style="color:#fff;"></span><br>
+                        <strong>Mental Replay Frequency:</strong> <span id="p-replay-val" style="color:#fff;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Wife's Confessions & Encounter Specs -->
+            <div class="collapsible-card card-pink" id="sec-reactions">
+                <div class="accordion-header" onclick="toggleSection('sec-reactions')">
+                    <span class="accordion-title" style="color: #ff6b81;">💄 Wife's Confessions & Encounter Specs</span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="exp-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                            <span style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#ff6b81;">Experience Benchmark:</span>
+                            <span id="p-exp-tier" style="font-size:0.8rem; font-weight:800; color:var(--gold-accent);"></span>
+                        </div>
+                        <div class="meter-bar" style="height: 7px; margin-bottom: 6px;">
+                            <div class="meter-fill" id="p-exp-fill" style="width: 85%; background: linear-gradient(90deg, #ffc107, #ff3366, #e91e63);"></div>
+                        </div>
+                        <div style="font-size:0.82rem; color:#f1f5f9; font-style:italic;" id="p-exp-desc"></div>
+                    </div>
+
+                    <strong>Waterworks Index (Synchronized with Chemistry):</strong>
+                    <span id="p-waterworks" style="display:block; margin: 2px 0 8px;"></span>
+
+                    <div style="background: rgba(0,0,0,0.25); border-radius: 8px; padding: 10px 12px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.06);">
+                        <strong style="color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Encounter Logistics & Round-by-Round Breakdown:</strong>
+                        <div style="font-size: 0.85rem; margin-top: 6px; line-height: 1.5;" id="p-positions-visual"></div>
+                        <br>
+                        • <strong>Spousal Rule With <span class="lbl-hubby-name">Hubby</span>:</strong><br>
+                        <span id="p-rule-text" style="color:#ffcdd2;"></span><br>
+                        <strong style="font-size:0.78rem;">Compliance / Breach Verdict:</strong> <span id="p-breach-verdict"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Wife Aftermath -->
+            <div class="collapsible-card card-purple" id="sec-aftermath">
+                <div class="accordion-header" onclick="toggleSection('sec-aftermath')">
+                    <span class="accordion-title" style="color: #a855f7;">🔥 Wife Aftermath & Recovery</span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div style="margin-bottom: 10px;">
+                        <strong style="color: #fff; font-size: 0.82rem; text-transform: uppercase;">⭐ Repeat Desire Rating:</strong>
+                        <div id="p-aftermath-stars" style="color: var(--gold-accent); font-size: 1.1rem; margin-top: 2px;"></div>
+                        <div id="p-aftermath-stars-desc" style="font-size: 0.84rem; color: #f1f5f9; font-style: italic; margin-top: 3px;"></div>
+                    </div>
+
+                    <div style="margin-bottom: 10px;">
+                        <strong style="color: #fff; font-size: 0.82rem; text-transform: uppercase;">🩹 Stretch & Soreness Report:</strong>
+                        <div id="p-aftermath-soreness" style="font-size: 0.84rem; color: #f1f5f9; margin-top: 3px; line-height: 1.4;"></div>
+                    </div>
+
+                    <div style="margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;">
+                        <div style="font-size:0.76rem; text-transform:uppercase; font-weight:700; color:#82b1ff; margin-bottom:4px;">Incoming Text From Bull:</div>
+                        <div class="imessage-container">
+                            <div class="imessage-bubble" id="p-morning-text"></div>
+                            <div class="imessage-time">Delivered 8:14 AM • Read Just Now</div>
+                        </div>
+                    </div>
+
+                    <div class="homecoming-box">
+                        <div class="homecoming-header">
+                            <span style="color:#fff;">🏠 What Happened When She Came Home</span>
+                            <span class="homecoming-vibe-tag" id="p-homecoming-vibe"></span>
+                        </div>
+                        <div style="font-size:0.86rem; color:#f1f5f9; line-height:1.45;" id="p-homecoming-text"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Instructions for Hubby -->
+            <div class="collapsible-card card-blue" id="sec-instructions">
+                <div class="accordion-header" onclick="toggleSection('sec-instructions')">
+                    <span class="accordion-title" style="color: #60a5fa;">🎙️ Instructions for <span class="lbl-hubby-name">Hubby</span></span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#60a5fa;">Tone / Dynamic:</span>
+                        <span id="p-instruction-tone" style="font-size:0.78rem; font-weight:800; color:var(--gold-accent);"></span>
+                    </div>
+                    <div class="story-text" style="border-left-color: #60a5fa; font-style: normal; line-height: 1.55; color: #f1f5f9;" id="p-instruction-text"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="toast-banner" id="toast-banner"></div>
+
+    <div class="action-container">
+        <button class="btn-circle btn-pass" title="Pass / Next" onclick="generateProfile()">✖</button>
+        <button class="btn-circle btn-pitch" id="pitch-btn" title="Pitch to Partner" onclick="pitchCandidate()">🍸</button>
+        <button class="btn-circle btn-favorite" id="like-btn" title="Match & Favorite" onclick="saveProfile()">❤️</button>
+        <button class="btn-circle btn-super" title="Super Like" onclick="superLike()">⭐</button>
+    </div>
+
+    <div class="saved-section" id="saved-section">
+        <div class="saved-title">
+            <span>Your Matches</span>
+            <span id="saved-count">0</span>
+        </div>
+        <div class="saved-list" id="saved-list"></div>
+    </div>
+</div>
+
+<script>
+    let husbandBaseline = {
+        name: "Hubby",
+        heightInches: 71,
+        stamina: "1 solid round a night",
+        tool: "6\" but thick"
+    };
+
+    function parseHeight(htStr) {
+        if (!htStr) return 72;
+        const parts = htStr.replace(/"/g, '').split("'");
+        return parseInt(parts[0], 10) * 12 + parseInt(parts[1] || '0', 10);
+    }
+
+    function toggleSettings() {
+        const modal = document.getElementById('settings-modal');
+        if (modal) modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function applySettings() {
+        husbandBaseline.name = document.getElementById('cfg-name').value || "Hubby";
+        husbandBaseline.heightInches = parseInt(document.getElementById('cfg-height').value, 10);
+        husbandBaseline.stamina = document.getElementById('cfg-stamina').value;
+        husbandBaseline.tool = document.getElementById('cfg-tool').value;
+        toggleSettings();
+        if (currentProfile && currentProfile.name) {
+            renderProfile(currentProfile);
+        }
+    }
+
+    function toggleSection(secId) {
+        const card = document.getElementById(secId);
+        if (card) card.classList.toggle('active');
+    }
+
+    const data = {
+        names: [
+            "Cassian", "Rhys", "Rowan", "Lorcan", "Xaden", "Liam", "Azriel", "Hunt", 
+            "Aidas", "Darius", "Fenrys", "Nyk", "Cas", "Kallias", "Tamlin", "Lucien", 
+            "Gideon", "Malakai", "Dante", "Bastian", "Vaughn", "Declan", "Soren", 
+            "Kieran", "Caelen", "Julian", "Ronan", "Torin", "Zephyr", "Damian"
+        ],
+        facialHairTypes: [
+            "Clean-shaven & razor-sharp jaw", "Heavy 5 o'clock shadow", "Rough stubble beard", 
+            "Trimmed lumberjack beard", "Chiseled goatee", "Rugged mustache with scruff"
+        ],
+        origins: [
+            "New York City, NY", "Chicago, IL", "London, UK", "Seattle, WA", 
+            "Los Angeles, CA", "Edinburgh, Scotland", "Dublin, Ireland", "Miami, FL", 
+            "Boston, MA", "Montreal, Canada", "Austin, TX", "Denver, CO"
+        ],
+        meetLocations: [
+            "an indie bookstore rare manuscripts section", "a quiet corner booth at a local coffee shop", 
+            "a scenic coffee and pastry lounge", "a sunlit walking trail through the park", 
+            "a candlelit table at a cozy restaurant date", "a midnight screening at the movie theater", 
+            "a beachside resort café during vacation", "a mountain cabin retreat lobby", 
+            "slow dancing close on a dimly lit dance floor", "a private VIP booth at a male strip club", 
+            "his professional massage studio table", "sweating together on a crowded club dance floor"
+        ],
+        heights: ["6'0\"", "6'1\"", "6'2\"", "6'3\"", "6'4\"", "6'5\"", "6'6\"", "6'7\""],
+        circumcisionStatus: ["circumcised", "uncircumcised"],
+        toolLengths: [6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5],
+        toolGirths: [
+            "dense, tapering circumference", "heavy-duty solid cylindrical core with zero give", 
+            "substantial two-handed hilt profile built for intense leverage", 
+            "toolbox-bursting ultra-wide caliber", "crowbar-thick forged density that tests your grip", 
+            "imposing wrist-thick circumference leaving an impression"
+        ],
+        hobbies: [
+            "Reading classic gothic literature", "Browsing rare antique bookstores", "Enjoying artisan coffee dates", 
+            "Planning weekend mountain getaways", "Strolling along coastal beach walks", "Late-night movie theater dates", 
+            "Exploring local gourmet restaurants", "Backpacking through rugged mountain trails", "Collecting vintage paperbacks"
+        ],
+        occupations: [
+            "Private Security Contractor", "Tech Startup Founder", "VIP Head Bouncer", 
+            "Master Custom Mechanic", "High-Rise Architect", "Underworld Speakeasy Owner", 
+            "Ex-Military Tactical Advisor", "Smokejumper Firefighter", "Offshore Salvage Specialist", 
+            "Antiquities Smuggler", "MMA Striking Coach"
+        ],
+        hangouts: [
+            "The antique bookstore's rare manuscripts section", "A cozy corner booth of a downtown restaurant", 
+            "A dimly lit indie coffee and pastry lounge", "A scenic overlook along the mountain hiking trail", 
+            "A private balcony overlooking the ocean beach resort", "The back row of a late-night movie theater showing", 
+            "A quiet bistro patio sharing fresh pastries and coffee", "A secluded cabin deck surrounded by tall pines"
+        ],
+        fantasyRoles: ["One Night Stand", "Regular Bull", "Occasional Fling", "Weekend Obsession", "Forbidden Regular", "Total Addiction"],
+
+        positionFlows: [
+            [
+                { name: "Missionary", desc: "Chest-to-chest locking grip to establish total dominance." },
+                { name: "Doggy Style", desc: "Pulled up against the window for deep, punishing extension." },
+                { name: "Cowgirl", desc: "Forced to ride his heavy frame at a breakneck, exhausting pace." },
+                { name: "Prone Anal Surrender", desc: "A taboo she almost never allows Hubby: pressed face-down into the pillows, his quiet authority coaxed her to relax until she was arched and whimpering in illicit bliss." }
+            ],
+            [
+                { name: "Standing Edge", desc: "Lifted against the hotel door for an immediate, breathless entry." },
+                { name: "Doggy Style Anal", desc: "Something Hubby has begged for years to try: the bull held her hips with iron certainty, gently guided his thick crown into her tightest canal, and bottomed out to her shocked gasps of raw pleasure." },
+                { name: "Reverse Cowgirl", desc: "Leaning back against his chest as he stretched her completely open." },
+                { name: "Missionary", desc: "Pinned flat under his weight while he whispered dark commands." }
+            ],
+            [
+                { name: "Edge of the Bed", desc: "Seated on the edge with her legs locked securely around his shoulders." },
+                { name: "Cowgirl", desc: "Controlling the rhythm until he seized her waist and took over." },
+                { name: "Doggy Style", desc: "Relentless, heavy thrusting that left her whimpering into the sheets." },
+                { name: "Spooning", desc: "Exhausted collapse into a side-lying finish with deep friction." }
+            ],
+            [
+                { name: "Kitchen Counter", desc: "Lifted onto the marble counter for a surprise, high-leverage opening round." },
+                { name: "Deep Spooning Anal", desc: "Curled on her side while he stroked her hip; he whispered filthy reassurances, easing all his length into her tight rear until she was trembling and pushing back against him." },
+                { name: "Missionary", desc: "Wrapped around his torso with his hands pinning her wrists overhead." },
+                { name: "Standing Lean", desc: "Pressed against the wall for a breathless, quivering conclusion." }
+            ]
+        ],
+
+        orgasmTiers: [
+            {
+                label: "⚡ Edged & Overwhelmed (0 Finish)",
+                fill: 22,
+                color: "#94a3b8",
+                desc: "Intensely aroused and breathless from his pace; kept balanced on the razor's edge the entire round without going over."
+            },
+            {
+                label: "✨ Soft Warm Glow (1 Mild Climax)",
+                fill: 45,
+                color: "#60a5fa",
+                desc: "A warm, smooth rippling release that melted through her core as he adjusted his angle and rhythm."
+            },
+            {
+                label: "💥 Shivering Body-Tremor (Intense Orgasm)",
+                fill: 72,
+                color: "#e5a93b",
+                desc: "Toes curled, back arched off the sheets, and her pelvic walls locked around his shaft in a breathless, shaking peak."
+            },
+            {
+                label: "🌊 Convulsive Multi-Wave (Violent Cascade)",
+                fill: 88,
+                color: "#ff3366",
+                desc: "Back-to-back involuntary spasms that left her whimpering into the pillows while her inner muscles clamped down uncontrollably."
+            },
+            {
+                label: "⚡🌌 Transcendent Blackout Climax (Shattering Peak)",
+                fill: 100,
+                color: "#00e676",
+                desc: "Her vision flashed white, toes locked rigid, and violent pelvic contractions left her completely paralyzed and sobbing in pure euphoria."
+            }
+        ],
+
+        behaviors: ["Intense and unyielding", "Playfully arrogant", "Quietly observant", "Uncompromisingly dominant", "Wildly unpredictable"],
+        styles: [
+            "Black tactical cargo and combat boots", "Fitted jet-black tee clinging to his chest", 
+            "Custom tailored charcoal suit (no tie, rolled cuffs)", "Worn biker leather jacket over a vintage Henley", 
+            "Oversized heavyweight designer hoodie", "Crisp white unbuttoned dress shirt"
+        ],
+
+        personalities: [
+            {
+                type: "Shadow-Wielder",
+                tag: "Morally Grey Protector",
+                favoriteTraits: [
+                    "The dark, lethal promise in his eyes when he whispered 'Touch her and you die' across the room.",
+                    "How he pinned my wrists against the headboard with terrifying, effortless strength.",
+                    "The way he gripped my throat and growled that I was going to be the absolute ruin of him."
+                ]
+            },
+            {
+                type: "Golden Retriever Alpha",
+                tag: "Devoted Worshipper",
+                favoriteTraits: [
+                    "How he treated my body like a holy temple, spending an hour kissing every inch before touching himself.",
+                    "The way he looked at me like I hung the stars, murmuring poetry against my collarbone.",
+                    "His huge, calloused hands gently holding my face and telling me I was breathtaking."
+                ]
+            },
+            {
+                type: "Arrogant Brat-Tamer",
+                tag: "Fated Rival",
+                favoriteTraits: [
+                    "His smug smirk right before he flipped me over his lap and proved every single boast he made.",
+                    "The witty banter across the table silenced by dragging me into the hallway for a breathless kiss.",
+                    "How he mocked my defiance until I was begging him on my knees to take control."
+                ]
+            },
+            {
+                type: "Silent Stoic",
+                tag: "Quiet Intensity",
+                favoriteTraits: [
+                    "The heavy, breathless silence in the room as he dismantled all my defenses without a single word.",
+                    "His slow, deliberate movements and unblinking gaze that made time completely stop.",
+                    "The raw, vibrating intensity in his touch when he finally lost his stoic composure inside me."
+                ]
+            },
+            {
+                type: "Dangerous Sovereign",
+                tag: "Absolute Authority",
+                favoriteTraits: [
+                    "The effortless, commanding way he ordered me to kneel without a single hesitation.",
+                    "How he owned the entire VIP lounge, yet looked at me like I was the only conquest that mattered.",
+                    "His absolute, non-negotiable authority that made my brain turn to mush the second he touched my hips."
+                ]
+            },
+            {
+                type: "Romantic & Sensitive",
+                tag: "Devoted Adorer",
+                favoriteTraits: [
+                    "How he traced my jawline and told me my mind and beauty were intoxicating.",
+                    "The way he held me close after we finished, whispering praises into my ear.",
+                    "How he made love like a romance novel brought to life, completely present in every touch."
+                ]
+            }
+        ],
+
+        bullTexts: [
+            "\"Keep my jacket on your shoulders today. Let everyone know exactly whose property you are.\"",
+            "\"If anyone looks at you sideways today, tell me their name and I'll burn their world down. Are you still sore?\"",
+            "\"I haven't stopped thinking about your throat under my hand. Clear your calendar for tonight.\"",
+            "\"I can still taste your vanilla perfume on my skin. When are you letting me worship you again, my love?\"",
+            "\"You left your favorite earrings on my nightstand. Come back and get them—I want to spend all night kissing you.\"",
+            "\"You looked entirely too defiant at the coffee shop yesterday. I'm going to teach you some manners tonight.\"",
+            "\"Still laughing about how quickly your smart mouth turned into whimpers last night. Ready for round two?\"",
+            "\"Clear your Thursday evening. I need to hear you unravelling again in total silence.\"",
+            "\"No talking tonight. Just you, me, and the bed. Be ready at eight.\"",
+            "\"Your scent is still on my sheets. Come back where you belong.\""
+        ],
+
+        releaseOptions: [
+            {
+                type: "🛡️ In a condom",
+                amountDesc: "A heavy, tightly filled latex reservoir — like a thick water balloon ready to burst.",
+                cleanDesc: "Completely contained and sanitary; zero internal mess left behind to worry about."
+            },
+            {
+                type: "🌸 Inside her vagina",
+                amountDesc: "An overwhelming, gushing surge — like spilling an entire travel mug of rich espresso deep inside your core.",
+                cleanDesc: "Soaking wet and overflowing; heavy warmth leaked down your inner thighs with every single step you took afterward."
+            },
+            {
+                type: "🍑 Deep inside her ass (Anal Finish)",
+                amountDesc: "A searing, dense flood pumped straight into her tightest canal — a taboo strictly forbidden with Hubby that left her thoroughly plugged and breathless.",
+                cleanDesc: "Sealed shut and warm; thick drops slipped out slowly the moment she unclenched, an illicit mark she carried for hours."
+            },
+            {
+                type: "🍑 On her parts (stomach / back)",
+                amountDesc: "A thick, heavy pool — like a generous dollop of warm cream splattered across your lower back and glutes.",
+                cleanDesc: "Dried into a tacky, slippery glaze across your skin that left you smelling like him all the way home."
+            },
+            {
+                type: "🍒 On her parts (chest / breasts)",
+                amountDesc: "An explosive, heavy splatter — like a thick splash of warm vanilla syrup dripping down your chest and collarbones.",
+                cleanDesc: "Dried sticky and stark white across your skin, forcing you to wash off aggressively before walking back through the front door."
+            },
+            {
+                type: "✨ Shot everywhere (face, hair, neck)",
+                amountDesc: "A chaotic deluge — spraying in thick, rhythmic arcs across your face, hair, and neck like an unhinged geyser.",
+                cleanDesc: "Dripping from your eyelashes and matting into your hair; an absolute decadent catastrophe."
+            },
+            {
+                type: "🔥 Coated on her intimate outer parts",
+                amountDesc: "A thick, heavy coating — pooling lavishly across your sensitive folds and outer lips like melting hot wax.",
+                cleanDesc: "Glazed heavily across your external parts; tacky and warm, making your panties stick to your skin."
+            },
+            {
+                type: "👣 On her feet, between her toes",
+                amountDesc: "A heavy, warm stream coating her arches and pooling thickly right between every single toe.",
+                cleanDesc: "Slippery and warm across your soles and toes, leaving you barefoot until it dried into a sticky glaze."
+            }
+        ],
+
+        travelDestinations: [
+            "at the beachside resort suite", "in a private mountain cabin alcove", "back at his luxury penthouse", 
+            "in the restaurant's private VIP booth", "at the quiet coffee house lounge", "in the darkened movie theater VIP box", 
+            "along the secluded beach shoreline", "back at your vacation hotel room"
+        ],
+        conversationTopics: [
+            "which classic gothic novel had the most intense romantic tension",
+            "the best local coffee roasters and artisan pastry shops",
+            "why escaping to a remote cabin in the mountains sounds irresistible right now",
+            "the emotional impact of a great rainy-day reading session",
+            "how easily he could whisk you away on a surprise beach vacation"
+        ],
+
+        synchronizedTiers: [
+            {
+                tier: "2. Similar to Hubby (Familiar Comfort)",
+                pct: 25,
+                desc: "\"Felt like home turf with a fresh coat of paint. Good rhythm, polite finish, leaving me thankful for Hubby's familiar touch.\"",
+                waterworks: "💧 Steady Trickle — Comfortable, warm lubrication; comparable to a good Saturday night with Hubby.",
+                hazard: { level: "Strict Protocol (5% Illusion)", fill: 24, desc: "Kept clear boundaries; zero impulse to take foolish chances." },
+                breachProb: 0.15,
+                rounds: 2,
+                staminaDesc: "Weekend warrior pace (standard 40-minute engine)."
+            },
+            {
+                tier: "3. Definite Step Up (The Heart Rate Spike)",
+                pct: 38,
+                desc: "\"Noticeably firmer grip and heavier leverage. Makes Hubby's nightly efforts feel a bit pedestrian and tame.\"",
+                waterworks: "💦 Heavy Spring Thaw — Running down my inner thighs the second he pinned my waist to the mattress.",
+                hazard: { level: "Slightly Reckless (35% Illusion)", fill: 42, desc: "Letting him finish inside would be a dangerous game." },
+                breachProb: 0.35,
+                rounds: 3,
+                staminaDesc: "High-torque diesel engine (slow build, never stalled)."
+            },
+            {
+                tier: "4. Guilty Euphoria (Biting the Pillow)",
+                pct: 50,
+                desc: "\"Had to bury my face in the cushions so the entire floor didn't hear me whining. Hubby could never keep up with this stamina.\"",
+                waterworks: "💦 Drenched Satin — Needed fresh towels midway through; completely soaked through the sheets.",
+                hazard: { level: "Slightly Reckless (50% Illusion)", fill: 55, desc: "Part of me wanted him to leave an impossible reminder inside me." },
+                breachProb: 0.55,
+                rounds: 4,
+                staminaDesc: "Elite marathon runner endurance (four relentless overtime shifts)."
+            },
+            {
+                tier: "5. Unfair Competition (Wife Composure Obliterated)",
+                pct: 65,
+                desc: "\"Took complete charge and didn't give me a second to catch my breath. Hubby is sweet, but he's basically retired compared to this.\"",
+                waterworks: "🌊 Slip-n-slide Alert — Absolute frictionless deluge; dripping audibly with every single stroke.",
+                hazard: { level: "Dangerously Compliant (75% Illusion)", fill: 75, desc: "When he demanded to finish deep inside, I wouldn't have cared about consequences." },
+                breachProb: 0.80,
+                rounds: 4,
+                staminaDesc: "Olympic gold stamina (refused to let her rest until dawn)."
+            },
+            {
+                tier: "6. Walking Disorder (Soul Stolen by Sunrise)",
+                pct: 78,
+                desc: "\"Shaking knees, ruined makeup, and a permanent blush. Hubby is completely irrelevant tonight.\"",
+                waterworks: "🌊💦 Gushing Tidal Surge — Completely lost control during the third lap; erupted across his thighs in an explosive release.",
+                hazard: { level: "Severe Breeding Hazard (88% Illusion)", fill: 88, desc: "Intoxicated by his weight; begging him to claim me just to stay connected." },
+                breachProb: 0.92,
+                rounds: 4,
+                staminaDesc: "Insatiable machine (you will tap out first, guaranteed)."
+            },
+            {
+                tier: "7. All-Time High (Hubby's Ego Cannot Know)",
+                pct: 90,
+                desc: "\"An absolute blackout masterclass. Hubby who? If he found out how good this felt, he'd pack a bag and leave.\"",
+                waterworks: "⛲ Unprecedented Squirting Blackout — Multiple convulsive gushes that ruined the hotel mattress topper; vision went white.",
+                hazard: { level: "Full Breeding Threat (98% Illusion)", fill: 98, desc: "Irreversible alpha hazard; husband would definitely be raising another man's child." },
+                breachProb: 0.98,
+                rounds: 4,
+                staminaDesc: "Pure unrelenting spite fuel (battered home base all night)."
+            },
+            {
+                tier: "8. Transcendent Ruin (Gods of Mount Olympus)",
+                pct: 100,
+                desc: "\"Mind completely broken, vision went blurry, toes permanently curled. Hubby is ancient history.\"",
+                waterworks: "⛲🌊 Cataclysmic Squirting Deluge — Complete loss of reality; triggered violent pelvic spasms that drenched the sheets three times over.",
+                hazard: { level: "Complete Biological Surrender (100% Illusion)", fill: 100, desc: "Primal override; let him claim me until my body broke completely." },
+                breachProb: 1.0,
+                rounds: 4,
+                staminaDesc: "Immortal titan engine (destroyed the mattress and kept swinging)."
+            }
+        ],
+
+        homecomingScenarios: [
+            {
+                vibe: "Sweet & Tender",
+                tagClass: "vibe-nice",
+                text: "She slipped into bed beside Hubby at 3:30 AM, kissing his cheek softly while smelling faintly of expensive cologne and musk. She whispered asking if he missed her, secretly smiling as her swollen core throbbed against the sheets."
+            },
+            {
+                vibe: "Softly Playful",
+                tagClass: "vibe-nice",
+                text: "Came home flushed and giggly, climbing right on top of Hubby while he was half-asleep. She gave him a slow, teasing kiss, murmuring that she 'got a little carried away' exploring every inch of the bull's frame."
+            },
+            {
+                vibe: "Intimate Debrief",
+                tagClass: "vibe-nice",
+                text: "Poured two glasses of wine at 4 AM and sat at the kitchen counter, quietly telling Hubby every detail of how the bull's hands felt digging into her flesh. Hubby listened with a dry throat while massaging her sore lower back."
+            },
+            {
+                vibe: "Guilty & Demanding",
+                tagClass: "vibe-cruel",
+                text: "Walked into the master bedroom, peeled off her ruined panties, and dropped them directly on Hubby's chest. She ordered him not to ask any questions—just to worship her because 'the other guy didn't take a single break all night.'"
+            },
+            {
+                vibe: "Possessive Re-Claiming",
+                tagClass: "vibe-cruel",
+                text: "Hubby was waiting awake by the door. She let him press her against the hallway wall to smell the stranger's cologne, whispering, 'He was twice as rough as you, baby. What are you going to do about it?'"
+            },
+            {
+                vibe: "Visual Inspection",
+                tagClass: "vibe-cruel",
+                text: "Stepped out of the bathroom with a towel around her waist and made Hubby look at the dark fingerprints bruised into her hips. 'Look what he did to me,' she smirked. 'He didn't even ask before he lifted me against the door.'"
+            },
+            {
+                vibe: "Husband Cleanup & Taste (Inside Finish)",
+                tagClass: "vibe-nasty",
+                text: "Since the bull finished completely inside her, she walked straight to Hubby and spread her legs for him. Hubby went down to taste and clean up the bull's cum from her core, marveling at how stretched open and hot she was."
+            },
+            {
+                vibe: "Finger & Member Reclaim",
+                tagClass: "vibe-nasty",
+                text: "She climbed astride Hubby in the dark, guiding his member inside to feel how utterly stretched out she had been left by the bull. 'Fill me back up, baby,' she purred. 'You barely touch the sides right now.'"
+            },
+            {
+                vibe: "Mean Dom Reclaim & Stretch Taunt",
+                tagClass: "vibe-nasty",
+                text: "She laughed as Hubby tried to enter her, pulling away: 'Don't bother, I can barely feel you right now. The bull stretched my walls out so wide your tool feels tiny. You'll have to work much harder to reclaim this.'"
+            },
+            {
+                vibe: "Total Humiliation Shift",
+                tagClass: "vibe-nasty",
+                text: "Handed Hubby a warm wet washcloth and laid back with her legs spread wide, commanding him: 'Clean him off me with your fingers and tongue. Be gentle around the edges—he stretched me out so deep it still stings.'"
+            }
+        ],
+
+        toolSensationsTemplates: [
+            "Hubby's 6 inches has always been comfortable, but this man's {LEN}\" {CIRC} frame carried an imposing upward curve and a flared mushroom head that pressed ruthlessly against my anterior wall, displacing corners Hubby has never once reached.",
+            "Hubby has solid thickness, but this man's {LEN}\" shaft felt like taking in an unyielding solid timber; his wide ridge right below the glans caught my entrance with every deliberate drag, making Hubby's familiar fit feel diminutive.",
+            "At {LEN}\" with thick, roadmapped veins, he didn't just slide in—he stretched me completely open. Where Hubby bottoms out gently, this bull's heavy crown repeatedly tapped the back of my canal on every single stroke.",
+            "The sheer caliber difference compared to Hubby was shocking. Even half-erect he was thicker than Hubby fully hard, and when he locked all {LEN}\" in, the dense {CIRC} heft left my pelvic floor trembling uncontrollably.",
+            "His thick, heavy shaft felt twice the weight of Hubby's 6\" baseline. Every thrust parted me so wide I could feel the pulsating ridge along his underside rubbing pure friction against my G-spot.",
+            "Hubby's 6\" tool gives gentle company, but this man's {LEN}\" reach and flared blunt head plugged me so airtight that every pull-out created an audible vacuum gasp, reminding me how outsized he was.",
+            "He carried an intimidating downward taper that forced my hips to twist on entry. Sliding past Hubby's 6\" threshold and pushing deep into untouched territory made my stomach drop in pure illicit shock.",
+            "A crowbar-dense {LEN}\" weapon with zero give. Where Hubby leaves plenty of breathing room, this man's girth spread my walls flat and pinned me to the bed with terrifying mechanical leverage."
+        ],
+
+        reactions: [
+            "\"He didn't break eye contact once while I ordered. He knew exactly what he was doing.\"",
+            "\"He's twice your size and took the seat next to me without asking. I didn't object.\"",
+            "\"A dangerously confident smirk. The kind of man who leaves you sore and distracted for a week.\"",
+            "\"He casually palmed the small of my back to guide me through the crowd. My pulse hasn't slowed down since.\"",
+            "\"Completely ruined my ability to concentrate. You'd lose your mind watching him talk to me.\"",
+            "\"He leaned in to whisper his drink order and his breath against my neck made my knees buckle.\"",
+            "\"He took my phone straight out of my hands, put his number in, and told me when to call him.\"",
+            "\"Zero apology in his posture. Just pure, predatory confidence that makes you forget your own wedding date.\"",
+            "\"He caught me staring at his shoulders and gave me that slow, wicked nod that said 'Go ahead, look.'\"",
+            "\"He held my wrist just a little too long when handing me my coat. One second longer and I would've kissed him right there.\""
+        ],
+
+        spousalRules: [
+            "No marks left above the collarbone under any circumstances.",
+            "Phones stay on the nightstand so Hubby can call before midnight.",
+            "Strictly one round only, no sleeping over.",
+            "No kissing on the mouth; keep it strictly physical.",
+            "Must wear protection for every single entry."
+        ],
+
+        mentalReplayInnuendos: [
+            "Every single time I'm in bed with Hubby.",
+            "Every time I close my eyes during anniversary duty.",
+            "Every single morning under the hot shower spray.",
+            "Whenever Hubby asks 'What are you smiling about?'",
+            "Mercifully forgettable (a harmless 24-hour thrill)."
+        ],
+
+        instructionArchetypes: [
+            {
+                tone: "Subtly Mean & Teasing",
+                starts: [
+                    "Sit right there at the foot of our bed, Hubby. Put your hand on yourself and take a slow stroke every time I describe a new position—don't speed up, keep your pace slow and obedient while you hear about someone who actually knows how to handle me.",
+                    "Look right at my swollen lips while you touch yourself, baby. One slow stroke for every detail I give you, and keep your eyes locked on mine so you can see how exhausted and satisfied another man left me.",
+                    "Hands on your lap, Hubby. Start stroking yourself slowly while I tell you how he took charge. Don't rush; you're going to drag this out and listen to every single word before you get any relief.",
+                    "Sit back and start working your hand over yourself nice and steady. Every time I mention how deep he was, take a breath and remember whose scent is still lingering in our sheets.",
+                    "Keep your strokes measured and calm, baby. Wrap your fingers around yourself and listen carefully—I want you feeling every bit of jealousy while you work up your own finish."
+                ],
+                ends: [
+                    "Now speed up your hand, Hubby. Look right at the marks on my hips, hold that exact rhythm, and finish right now while whispering how much better he took care of me.",
+                    "You're right at the edge, aren't you? Take five hard, rapid strokes and let it go on your stomach—just don't forget who gave me four orgasms before you even got one.",
+                    "Pick up the pace right now. Pump yourself fast, watch my face while I smile thinking about his hands, and cross the finish line knowing you're cleaning both of us up tonight.",
+                    "Don't you dare stop stroking—speed it up! Finish right into your palm while picturing how easily he lifted me, and tell me you're glad I let him have his way with me.",
+                    "Take yourself over the edge right now, baby. Hard and fast—spill for me while acknowledging that you could never stretch me out the way he just did."
+                ]
+            },
+            {
+                tone: "Vulgar, Filthy & Nasty",
+                starts: [
+                    "Strip down, sit on the rug, and get a fist around your dick right now. Stroke that heavy rhythm while I tell you every filthy thing he did to my holes tonight—don't you dare break pace until I say so.",
+                    "Grab your cock and start pumping it slow and greasy while you smell his musk still radiating off my thighs. Listen to how wide he spread me and keep stroking like a good little cuckold.",
+                    "Spit on your hand and grip yourself tight, Hubby. You're going to stroke to every drop of cum he leaked inside and outside of me, matching my breath as I relive his weight on top of me.",
+                    "Get your hand moving on your shaft right this second. Keep your strokes hard and wet while I describe his thick crown slamming against my walls until I was begging for mercy.",
+                    "Start stroking your cock with both hands if you have to, Hubby. Listen to every vulgar grunt he made and how he used me like a cheap hotel toy while you sat home waiting."
+                ],
+                ends: [
+                    "Jack that dick as hard and fast as you can right now! Spill your load all over your chest while imagining his cum still dripping down my inner thighs—blow it right now!",
+                    "Pump it! Don't hold back—let your cum shoot everywhere while admitting out loud that his cock completely wrecked your wife's body tonight!",
+                    "Speed your fist up until your knuckles are white! Finish right now, Hubby, shoot your load while saying his name and tasting where he marked my skin!",
+                    "Take that finish line and burst! Rapid strokes, right now—spill all over yourself while listening to how cavernous and sore he left me for you!",
+                    "Blow your load right this second! Stroke until you spasm and drop your head back, knowing your tiny puddle is nothing compared to the absolute flood he pumped into me!"
+                ]
+            },
+            {
+                tone: "Humiliating & Submissive",
+                starts: [
+                    "On your knees by the bed, Hubby. Stroke yourself with your left hand only, keeping it slow and pathetic while you look up at the bruises his heavy grip left on my waist.",
+                    "Take your little tool out and start stroking it slowly, keeping your head bowed. You're going to service yourself while listening to how an actual dominant man took everything he wanted from me.",
+                    "Put your hands on your cock and stroke at half-speed. You aren't allowed to look away from the mess between my legs while you listen to the play-by-play of my complete surrender.",
+                    "Sit on the floor and stroke yourself quietly like a spectator. Every time I tell you about his size, squeeze yourself tight and remember your place in this house.",
+                    "Grip yourself and begin stroking, Hubby. No groaning, no whining—just quiet, steady strokes while I explain in detail how effortless it was for him to replace you tonight."
+                ],
+                ends: [
+                    "Now pump that pathetic cock as fast as you can. Finish on the floor at my feet and thank me for letting you listen to what a real man did to your wife.",
+                    "Speed it up and shoot your load into a tissue right now. Clean yourself off immediately, then crawl up here and start working on massaging the soreness he left in my back.",
+                    "Hurry up and finish! Stroke yourself hard, spill your pathetic little mess, and apologize for ever thinking your six inches could satisfy what he just unlocked.",
+                    "Take your finish right now with your eyes glued to my thighs. Let it out, Hubby, and whisper to my feet how grateful you are to clean up after him.",
+                    "Pump yourself over the edge right now! Spill your load while repeating out loud: 'He owns my wife's body and I'm just here to serve her.'"
+                ]
+            },
+            {
+                tone: "Very Mean, Harsh & Dominant",
+                starts: [
+                    "Get your hand on your dick and start stroking, and if you dare speed up before I give permission, I'll cut you off completely. Listen to how easily I forgot you even existed.",
+                    "Stroke that cock slow and steady, Hubby, and feel just how inadequate your little frame is compared to the brute who just spent four rounds breaking my composure.",
+                    "Put a hand around yourself and start pumping. Every thrust I describe should feel like an insult to your manhood, because you will never, ever make me whimper like he did.",
+                    "Keep your strokes agonizingly slow while I recount every millimeter he stretched me. Squeeze hard and accept that you're obsolete compared to the machine I spent the night with.",
+                    "Start stroking your dick and don't make a sound. You're going to listen to how he broke our little rules with zero remorse while I moaned his name into the pillows."
+                ],
+                ends: [
+                    "Stroke fast right now and get it over with! Blow your miserable load, look at my ruined posture, and realize you'll never satisfy me like that for the rest of your life.",
+                    "Hurry up and shoot! Pump it hard, finish in silence, and go sleep on the couch because I still want to smell his cologne on my sheets without you ruining it.",
+                    "Spill your pathetic load right now! Rapid strokes—finish like a desperate dog while remembering that your wife is officially addicted to another man's hardware.",
+                    "Take your finish this second! Pump your fist until you erupt, and then get on your knees and clean up my legs where he overflowed.",
+                    "Blow your load right now, Hubby! Stroke hard, shoot your little reminder, and accept that from now on, you're sharing me whenever he calls."
+                ]
+            },
+            {
+                tone: "Subtly Mean & Complimentary Hybrid",
+                starts: [
+                    "Sit next to me on the bed, Hubby. You have such handsome hands—wrap one around your cock and stroke nice and easy while I tell you how well he took care of me. You're sweet, but he was pure electricity.",
+                    "Start stroking yourself gently, baby. You've always been such a loyal, dedicated partner, which is why you deserve to hear every breathless detail of how this bull completely took over my world tonight.",
+                    "Put your hand on your shaft and stroke at an even tempo. I love our comfortable routine, but you need to hear how his raw leverage and massive frame stretched me out in ways you simply can't.",
+                    "Grip yourself softly and follow my breathing, Hubby. You're so good to me, so I want you touching yourself and feeling turned on while I explain why I couldn't say no to a single thing he demanded.",
+                    "Begin stroking nice and slow, darling. Keep your eyes on my flushed chest—you know I love coming home to you, but tonight you get to listen to what real, overwhelming hunger looks like."
+                ],
+                ends: [
+                    "Now speed up your stroke, my handsome boy. You're so good for listening to me—finish right across your chest while picturing his heavy frame pinning me down. You did so good.",
+                    "Take that finish line hard and fast right now! You're such a wonderful hubby for letting me have my fun—spill your load and come kiss my cheek while I still taste like him.",
+                    "Pump yourself over the edge right now, baby! Stroke hard, let it all out, and tell me how proud you are that your wife can attract a man that powerful. Good boy.",
+                    "Accelerate your hand and blow your load right this second! You're the best husband in the world for taking care of yourself while I get completely undone by him.",
+                    "Finish right now, Hubby! Fast strokes—spill for me, smile, and tell me you can't wait to send me back out to him next weekend so we can do this all over again."
+                ]
+            }
+        ]
+    };
+
+    let currentProfile = {};
+    let savedProfiles = [];
+
+    function randomItem(arr) { 
+        if (!arr || arr.length === 0) return "";
+        return arr[Math.floor(Math.random() * arr.length)]; 
+    }
+
+    function generateStory(name, meetLoc, destination) {
+        const topic = randomItem(data.conversationTopics);
+        return `You first locked eyes with ${name} while ${meetLoc}, where an accidental brush of hands quickly sparked a heated, low-voiced debate over ${topic}. The tension in the air was electric, making small talk impossible until he stepped in close, grabbed your wrist with quiet certainty, and led you straight away to continue our encounter ${destination}.`;
+    }
+
+    function buildRulerTicks() {
+        const container = document.getElementById('ruler-ticks-row');
+        if (!container) return;
+        container.innerHTML = "";
+        for (let i = 2; i <= 10; i++) {
+            const tick = document.createElement('div');
+            tick.className = 'tick-mark major';
+            const label = document.createElement('span');
+            label.className = 'tick-label';
+            label.innerText = i + '"';
+            tick.appendChild(label);
+            container.appendChild(tick);
+
+            if (i < 10) {
+                const half = document.createElement('div');
+                half.className = 'tick-mark';
+                container.appendChild(half);
+            }
+        }
+    }
+
+    function generateProfileObj() {
+        let h1 = randomItem(data.hobbies);
+        let h2 = randomItem(data.hobbies);
+        while (h1 === h2) h2 = randomItem(data.hobbies);
+
+        const meet = randomItem(data.meetLocations);
+        const dest = randomItem(data.travelDestinations);
+        const name = randomItem(data.names);
+        const height = randomItem(data.heights);
+        const toolLen = randomItem(data.toolLengths) || 7.5;
+        const circ = randomItem(data.circumcisionStatus);
+        const rule = randomItem(data.spousalRules);
+        const homecoming = randomItem(data.homecomingScenarios) || data.homecomingScenarios[0];
+        const persona = randomItem(data.personalities) || data.personalities[0];
+        const bullText = randomItem(data.bullTexts);
+        const syncTier = randomItem(data.synchronizedTiers) || data.synchronizedTiers[0];
+
+        const didBreak = Math.random() < syncTier.breachProb;
+        let breachVerdict = didBreak
+            ? `<span style="color:var(--hazard-color); font-weight:800;">🚨 BROKEN WITHOUT HESITATION</span> ("He was so overwhelming I didn't care about our deal.")`
+            : `<span style="color:#00e676; font-weight:800;">🛡️ Kept Under Control</span> ("Tempted to forget, but managed to enforce it.")`;
+
+        const starCount = Math.min(5, Math.max(1, Math.ceil(syncTier.pct / 20)));
+        let starStr = "";
+        for (let s = 0; s < starCount; s++) starStr += "⭐";
+
+        let starDesc = "";
+        if (syncTier.pct <= 35) {
+            starDesc = `"${syncTier.tier} — A pleasant, gentle diversion. Nice change of pace, but easy to leave behind."`;
+        } else if (syncTier.pct <= 65) {
+            starDesc = `"${syncTier.tier} — Left me pleasantly sore and distracted for days. Definitely worth booking again."`;
+        } else if (syncTier.pct <= 90) {
+            starDesc = `"${syncTier.tier} — Absolute euphoria. Hubby's ego cannot know how deeply I crave this man's weight."`;
+        } else {
+            starDesc = `"${syncTier.tier} — MIND COMPLETELY BROKEN. Hubby has to worry. If he finds out how addicted I am, our marriage is finished."`;
+        }
+
+        const roundsCount = syncTier.rounds || 2;
+        const chosenFlow = randomItem(data.positionFlows) || data.positionFlows[0];
+        let logisticsList = [];
+
+        for (let r = 1; r <= roundsCount; r++) {
+            const pos = chosenFlow[(r - 1) % chosenFlow.length];
+            const roundRelease = randomItem(data.releaseOptions) || data.releaseOptions[0];
+            const roundOrgasm = randomItem(data.orgasmTiers) || data.orgasmTiers[2];
+            const meterWidth = Math.floor(Math.random() * 35) + 65;
+
+            logisticsList.push(`
+                <div style="margin-bottom:12px; background: rgba(0,0,0,0.28); padding:10px 12px; border-radius:10px; border: 1px solid rgba(255,255,255,0.06);">
+                    <div style="font-weight:800; color:#38bdf8; font-size:0.88rem; margin-bottom:4px;">ROUND ${r} BREAKDOWN</div>
+                    
+                    <div style="margin-bottom:6px;">
+                        • <strong>Position (${pos.name}):</strong> 
+                        <span style="color:#e2e8f0;">${pos.desc}</span>
+                    </div>
+
+                    <div style="margin-bottom:6px; background: rgba(255,255,255,0.03); padding:6px 8px; border-radius:6px;">
+                        • <strong>Release Location:</strong> <span style="color:#ff6b81; font-weight:700;">${roundRelease.type}</span><br>
+                        <span style="font-size:0.77rem; color:#94a3b8;">${roundRelease.amountDesc}</span>
+                        <div class="meter-bar" style="margin:4px 0 3px;">
+                            <div class="meter-fill" style="width: ${meterWidth}%; background: linear-gradient(90deg, #38bdf8, #818cf8, #ff3366);"></div>
+                        </div>
+                        <span style="font-size:0.75rem; color:#cbd5e1; font-style:italic;">${roundRelease.cleanDesc}</span>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.22); padding:6px 8px; border-radius:6px; border-left: 2px solid ${roundOrgasm.color};">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="font-size:0.75rem; text-transform:uppercase; color:#fff;">Wife Orgasm Meter:</strong>
+                            <span style="font-size:0.76rem; font-weight:800; color:${roundOrgasm.color};">${roundOrgasm.label}</span>
+                        </div>
+                        <div class="meter-bar" style="height:5px; margin:4px 0;">
+                            <div class="meter-fill" style="width: ${roundOrgasm.fill}%; background: ${roundOrgasm.color};"></div>
+                        </div>
+                        <span style="font-size:0.75rem; color:#f1f5f9; font-style:italic;">${roundOrgasm.desc}</span>
+                    </div>
+                </div>
+            `);
+        }
+
+        const template = randomItem(data.toolSensationsTemplates);
+        const toolSensation = template
+            .replace(/{LEN}/g, toolLen)
+            .replace(/{CIRC}/g, circ);
+
+        // Generate Instructions for Hubby
+        const archetype = randomItem(data.instructionArchetypes) || data.instructionArchetypes[0];
+        const instructionStart = randomItem(archetype.starts);
+        const instructionEnd = randomItem(archetype.ends);
+
+        return {
+            name: name,
+            age: Math.floor(Math.random() * 21) + 26,
+            distance: (Math.random() * 8 + 0.8).toFixed(1),
+            origin: randomItem(data.origins),
+            meetLocation: meet,
+            beard: randomItem(data.facialHairTypes),
+            height: height,
+            heightInches: parseHeight(height),
+            style: randomItem(data.styles),
+            circumcision: circ,
+            toolLength: toolLen,
+            toolGirth: randomItem(data.toolGirths),
+            logisticsHtml: logisticsList.join(""),
+            h1: h1, 
+            occupation: randomItem(data.occupations),
+            hangout: randomItem(data.hangouts),
+            behavior: randomItem(data.behaviors),
+            destination: dest,
+            story: generateStory(name, meet, dest),
+            role: randomItem(data.fantasyRoles),
+            persona: persona,
+            reaction: randomItem(data.reactions),
+            toolSensation: toolSensation,
+            favTrait: randomItem(persona.favoriteTraits),
+            spousalRule: rule,
+            breachVerdict: breachVerdict,
+            replayInnuendo: randomItem(data.mentalReplayInnuendos),
+            bullText: bullText,
+            homecoming: homecoming,
+            syncTier: syncTier,
+            performances: roundsCount,
+            stamina: syncTier.staminaDesc,
+            waterworks: syncTier.waterworks,
+            breedHazard: syncTier.hazard,
+            aftermathStars: starStr,
+            aftermathStarsDesc: starDesc,
+            instructionTone: archetype.tone,
+            instructionStart: instructionStart,
+            instructionEnd: instructionEnd
+        };
+    }
+
+    function renderProfile(profile) {
+        if (!profile || !profile.name) return;
+        currentProfile = profile;
+
+        document.getElementById('p-name').innerText = profile.name;
+        document.getElementById('p-age').innerText = profile.age;
+        document.getElementById('p-origin').innerText = profile.origin;
+        document.getElementById('p-distance').innerText = `${profile.distance} miles away`;
+        document.getElementById('p-candidate-tag').innerText = profile.role;
+        document.getElementById('p-persona-tag').innerText = profile.persona.type;
+
+        document.getElementById('p-tags').innerHTML = `
+            <div class="tag">💼 ${profile.occupation}</div>
+            <div class="tag">📏 ${profile.height}</div>
+            <div class="tag">✂️ ${profile.circumcision}</div>
+            <div class="tag">🧔 ${profile.beard}</div>
+            <div class="tag">🎯 ${profile.h1}</div>
+        `;
+
+        document.getElementById('p-vibe-summary').innerHTML = `
+            <strong>Archetype:</strong> ${profile.behavior}.<br>
+            <strong>Wardrobe:</strong> ${profile.style}.<br>
+            <strong>Cruising at:</strong> ${profile.hangout}.
+        `;
+
+        document.querySelectorAll('.lbl-hubby-name').forEach(el => el.innerText = husbandBaseline.name);
+        document.getElementById('p-target-husband').innerText = husbandBaseline.name;
+        document.getElementById('p-hubby-name-pin').innerText = husbandBaseline.name;
+
+        document.getElementById('p-story').innerText = profile.story;
+        document.getElementById('p-reaction').innerText = profile.reaction;
+        document.getElementById('p-fav-trait').innerText = profile.favTrait;
+
+        document.getElementById('p-exp-tier').innerText = profile.syncTier.tier;
+        document.getElementById('p-exp-fill').style.width = `${profile.syncTier.pct}%`;
+        document.getElementById('p-exp-desc').innerText = (profile.syncTier.desc || '').replace(/Hubby/g, husbandBaseline.name);
+
+        document.getElementById('p-waterworks').innerText = profile.waterworks;
+        document.getElementById('p-positions-visual').innerHTML = profile.logisticsHtml;
+
+        document.getElementById('p-rule-text').innerText = `"${profile.spousalRule}"`;
+        document.getElementById('p-breach-verdict').innerHTML = profile.breachVerdict;
+
+        document.getElementById('p-aftermath-stars').innerText = profile.aftermathStars;
+        document.getElementById('p-aftermath-stars-desc').innerText = profile.aftermathStarsDesc;
+        document.getElementById('p-aftermath-soreness').innerText = `His ${profile.toolLength}" ${profile.circumcision} cock and ${profile.performances} nonstop rounds left my hips permanently aching and my walk visibly altered.`;
+
+        const diffInches = profile.heightInches - husbandBaseline.heightInches;
+        let diffLabel = "";
+        if (diffInches > 0) diffLabel = `+${diffInches}" taller than ${husbandBaseline.name}`;
+        else if (diffInches === 0) diffLabel = `Identical height to ${husbandBaseline.name}`;
+        else diffLabel = `Matches ${husbandBaseline.name}'s eye line`;
+        document.getElementById('p-height-delta').innerText = `${profile.height} (${diffLabel})`;
+
+        const rulerPct = Math.min(100, Math.max(0, ((profile.toolLength - 2) / 8) * 100));
+        document.getElementById('ruler-bar-fill').style.width = `${rulerPct}%`;
+        document.getElementById('ruler-marker-line').style.left = `${rulerPct}%`;
+        document.getElementById('p-ruler-tag').innerText = `${profile.toolLength}" (${profile.toolLength > 6 ? '+' + (profile.toolLength - 6) + '" over ' + husbandBaseline.name : 'Matches ' + husbandBaseline.name})`;
+        document.getElementById('p-tool-heat-sub').innerText = `Carries a ${profile.toolLength}" ${profile.circumcision} cock (${profile.toolGirth}).`;
+        document.getElementById('p-tool-sensation').innerText = (profile.toolSensation || '').replace(/Hubby/g, husbandBaseline.name);
+
+        const enginePct = (profile.performances / 4) * 100;
+        document.getElementById('p-engine-fill').style.width = `${enginePct}%`;
+        document.getElementById('p-engine-gauge-label').innerText = `${profile.performances} / 4 Rounds`;
+        document.getElementById('p-engine-summary').innerText = `${profile.performances} round${profile.performances > 1 ? 's' : ''} (${profile.stamina})`;
+
+        const satGaugeFill = Math.min(100, Math.max(25, 40 + (profile.syncTier.pct * 0.6)));
+        document.getElementById('p-sat-fill').style.width = `${satGaugeFill}%`;
+        document.getElementById('p-sat-gauge-label').innerText = `${Math.round(satGaugeFill)}% Rating`;
+        document.getElementById('p-satisfaction').innerText = `Satisfaction Verdict: ${profile.syncTier.tier}. Ruined my composure entirely — gave me chills that make ${husbandBaseline.name}'s routine efforts feel polite.`;
+
+        document.getElementById('p-breed-label').innerText = profile.breedHazard.level;
+        document.getElementById('p-breed-fill').style.width = `${profile.breedHazard.fill}%`;
+        document.getElementById('p-breed-sub').innerText = profile.breedHazard.desc;
+
+        document.getElementById('p-replay-val').innerText = (profile.replayInnuendo || '').replace(/Hubby/g, husbandBaseline.name);
+        document.getElementById('p-morning-text').innerText = (profile.bullText || '').replace(/Hubby/g, husbandBaseline.name);
+        
+        const hc = profile.homecoming;
+        const vibeEl = document.getElementById('p-homecoming-vibe');
+        vibeEl.className = `homecoming-vibe-tag ${hc.tagClass}`;
+        vibeEl.innerText = hc.vibe;
+        document.getElementById('p-homecoming-text').innerText = (hc.text || '').replace(/Hubby/g, husbandBaseline.name);
+
+        // Render Instructions for Hubby
+        document.getElementById('p-instruction-tone').innerText = profile.instructionTone;
+        const instructionBody = `
+            <p style="margin-bottom:10px;">"${profile.instructionStart.replace(/Hubby/g, husbandBaseline.name)}"</p>
+            <div style="font-size:0.82rem; color:var(--text-muted); font-style:italic; margin:8px 0; padding:6px 10px; background:rgba(0,0,0,0.25); border-radius:6px; border-left:2px solid var(--primary);">
+                [She pauses between slow sips of wine, detailing the heavy weight of ${profile.name}'s chest, his relentless pace, and the exact moment she surrendered control while ${husbandBaseline.name} obeys her rhythm.]
+            </div>
+            <p style="margin-top:10px;">"${profile.instructionEnd.replace(/Hubby/g, husbandBaseline.name)}"</p>
+        `;
+        document.getElementById('p-instruction-text').innerHTML = instructionBody;
+
+        const likeBtn = document.getElementById('like-btn');
+        likeBtn.innerHTML = "❤️";
+        likeBtn.disabled = false;
+        likeBtn.style.opacity = "1";
+
+        const pitchBtn = document.getElementById('pitch-btn');
+        pitchBtn.innerHTML = "🍸";
+        pitchBtn.disabled = false;
+
+        document.getElementById('toast-banner').style.display = 'none';
+    }
+
+    function generateProfile() {
+        try {
+            renderProfile(generateProfileObj());
+            const card = document.getElementById('profile-card');
+            if (card) card.scrollTop = 0;
+        } catch (err) {
+            console.error("Profile generation error:", err);
+        }
+    }
+
+    function pitchCandidate() {
+        const toast = document.getElementById('toast-banner');
+        const pitchText = `Audition Pitch for ${husbandBaseline.name}: Bull is ${currentProfile.name} (${currentProfile.height}, ${currentProfile.occupation}, ${currentProfile.persona.type}). Rating: ${currentProfile.syncTier.tier}. Cock Size: ${currentProfile.toolLength}" (${currentProfile.circumcision}). Rule Status: ${currentProfile.breachVerdict}. Grant hall pass?`;
+        
+        toast.innerHTML = `<strong>Proposal Dispatched to Partner!</strong><br>${pitchText}`;
+        toast.style.display = 'block';
+
+        const pitchBtn = document.getElementById('pitch-btn');
+        pitchBtn.innerHTML = "✔️";
+        pitchBtn.disabled = true;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(pitchText).catch(() => {});
+        }
+    }
+
+    function saveProfile() {
+        const savedSection = document.getElementById('saved-section');
+        const savedList = document.getElementById('saved-list');
+        const countSpan = document.getElementById('saved-count');
+        const likeBtn = document.getElementById('like-btn');
+
+        savedProfiles.unshift(currentProfile);
+        savedSection.style.display = 'block';
+
+        const card = document.createElement('div');
+        card.className = 'saved-card';
+        card.innerHTML = `
+            <div class="saved-avatar"><span style="font-size: 1.2rem;">🔥</span></div>
+            <div class="saved-info">
+                <h4>${currentProfile.name}, ${currentProfile.age} (${currentProfile.role} • ${currentProfile.persona.type})</h4>
+                <p>💼 ${currentProfile.occupation} • 📏 ${currentProfile.height} • 🔩 ${currentProfile.toolLength}" (${currentProfile.circumcision})</p>
+                <p>⭐ ${currentProfile.syncTier.tier} | 🏠 ${currentProfile.homecoming.vibe}</p>
+            </div>
+        `;
+
+        savedList.prepend(card);
+        countSpan.innerText = savedProfiles.length;
+
+        likeBtn.innerHTML = "🔥";
+        likeBtn.disabled = true;
+        likeBtn.style.opacity = "0.7";
+
+        setTimeout(() => {
+            generateProfile();
+        }, 350);
+    }
+
+    function superLike() {
+        const card = document.getElementById('profile-card');
+        card.style.transition = "transform 0.3s ease";
+        card.style.transform = "scale(1.03) translateY(-10px)";
+        setTimeout(() => {
+            card.style.transform = "none";
+            saveProfile();
+        }, 200);
+    }
+
+    window.onload = () => {
+        buildRulerTicks();
+        generateProfile();
+    };
+</script>
+
+</body>
+</html>
