@@ -82,109 +82,140 @@ function buildRulerTicks() {
     }
 }
 
-// --- MODULAR PROCEDURAL BUILDERS ---
+// --- DYNAMIC GRAMMAR BUILDERS ---
 
 function buildDynamicStory(bullName, meetLoc, dest, archetypeKey) {
     const g = data.storyGrammar;
     const introTpl = randomItem(g.intros);
-    const tensionTpl = randomItem(g.tensions[archetypeKey] || g.tensions["Shadow-Wielder"]);
+    const tensionPool = (g.tensions && g.tensions[archetypeKey]) ? g.tensions[archetypeKey] : g.tensions["Shadow-Wielder"];
+    const tensionTpl = randomItem(tensionPool);
     const pivotTpl = randomItem(g.pivots);
 
-    const part1 = introTpl.replace("{NAME}", bullName).replace("{LOCATION}", meetLoc);
-    const part2 = tensionTpl.replace("{NAME}", bullName);
-    const part3 = pivotTpl.replace("{NAME}", bullName).replace("{DEST}", dest);
+    const part1 = introTpl.replace(/{NAME}/g, bullName).replace(/{LOCATION}/g, meetLoc);
+    const part2 = tensionTpl.replace(/{NAME}/g, bullName);
+    const part3 = pivotTpl.replace(/{NAME}/g, bullName).replace(/{DEST}/g, dest);
 
     return `${part1} ${part2} ${part3}`;
 }
 
-function buildDynamicHardware(toolLen, circ, toolGirth, hubbyName, archetypeKey) {
+function buildDynamicHardware(toolLen, circ, toolGirth, hubbyName, archetypeKey, bullName) {
     const g = data.hardwareGrammar;
     const cmpTpl = randomItem(g.comparisons);
-    const mechTpl = randomItem(g.mechanics[archetypeKey] || g.mechanics["Shadow-Wielder"]);
+    const mechPool = (g.mechanics && g.mechanics[archetypeKey]) ? g.mechanics[archetypeKey] : g.mechanics["Shadow-Wielder"];
+    const mechTpl = randomItem(mechPool);
     const reactTpl = randomItem(g.reactions);
 
-    const part1 = cmpTpl.replace("{HUBBY}", hubbyName);
-    const part2 = mechTpl.replace("{LEN}", toolLen).replace("{CIRC}", circ).replace("{GIRTH}", toolGirth);
-    const part3 = reactTpl.replace("{HUBBY}", hubbyName);
+    const part1 = cmpTpl.replace(/{HUBBY}/g, hubbyName);
+    const part2 = mechTpl
+        .replace(/{NAME}/g, bullName)
+        .replace(/{LEN}/g, toolLen)
+        .replace(/{CIRC}/g, circ)
+        .replace(/{GIRTH}/g, toolGirth);
+    const part3 = reactTpl.replace(/{HUBBY}/g, hubbyName);
 
     return `${part1} ${part2} ${part3}`;
 }
 
+// --- SYNCHRONIZED PROFILE GENERATOR ---
+
 function generateProfileObj() {
-    // 1. Draw Persona Archetype first to anchor narrative state
+    // 1. Core Persona Archetype Anchor
     const persona = decks.personalities.draw();
     const archetypeKey = persona.type;
+    const vibeGroup = persona.vibeGroup || "dominant";
 
+    // 2. Coherent Setting Clusters (Couples occupation, meet location, destination, and hangout)
+    const settingProfiles = [
+        {
+            theme: "luxury",
+            occupations: ["Tech Startup Founder", "Venture Capital Managing Partner", "High-Rise Architect"],
+            meets: ["a private VIP booth at a luxury lounge", "the rooftop bar of a boutique hotel"],
+            destinations: ["back at his luxury penthouse", "in the back of his tinted towncar"],
+            hangouts: ["A rooftop cigar lounge overlooking the skyline", "A corner leather booth of a private club"]
+        },
+        {
+            theme: "underground",
+            occupations: ["Underworld Speakeasy Owner", "Private Security Contractor", "MMA Striking Coach"],
+            meets: ["a dimly lit speakeasy basement", "his private high-performance gym"],
+            destinations: ["in the restaurant's private VIP booth", "back at his luxury penthouse"],
+            hangouts: ["The back row of a late-night private screening", "A corner leather booth of a private club"]
+        },
+        {
+            theme: "retreat",
+            occupations: ["Smokejumper Firefighter", "Offshore Salvage Diver", "Ex-Military Tactical Advisor"],
+            meets: ["a mountain cabin retreat lobby", "a beachside resort café during vacation", "a sunlit walking trail through the park"],
+            destinations: ["in a private mountain cabin alcove", "at the beachside resort suite", "along the secluded beach shoreline"],
+            hangouts: ["A secluded cabin deck surrounded by tall pines", "A private balcony overlooking the ocean beach resort", "A scenic overlook along the mountain hiking trail"]
+        },
+        {
+            theme: "intellectual",
+            occupations: ["Boutique Asset Recovery Specialist", "Master Custom Fabricator"],
+            meets: ["an indie bookstore rare manuscripts section", "a scenic coffee and pastry lounge", "a quiet corner booth at a local coffee shop"],
+            destinations: ["at the quiet coffee house lounge", "back at your vacation hotel room"],
+            hangouts: ["The antique bookstore's rare manuscripts section", "A dimly lit indie coffee and pastry lounge"]
+        }
+    ];
+
+    const currentSetting = randomItem(settingProfiles);
+    const occupation = randomItem(currentSetting.occupations);
+    const meet = randomItem(currentSetting.meets);
+    const dest = randomItem(currentSetting.destinations);
+    const hangout = randomItem(currentSetting.hangouts);
+
+    // 3. Physical Specs & Spousal Baseline
     const name = decks.names.draw();
-    const meet = decks.meetLocations.draw();
-    const dest = decks.travelDestinations.draw();
     const height = randomItem(data.heights);
     const toolLen = randomItem(data.toolLengths) || 7.5;
     const circ = randomItem(data.circumcisionStatus);
     const toolGirth = randomItem(data.toolGirths);
     const rule = randomItem(data.spousalRules);
 
-    // 2. Derive narrative-coherent Sync Tier
+    // 4. Coordinated Satisfaction Tier (Filter by Persona Vibe)
     let eligibleTiers = data.synchronizedTiers;
-    if (persona.vibeGroup === "gentle") {
+    if (vibeGroup === "gentle") {
         eligibleTiers = data.synchronizedTiers.filter(t => t.pct <= 50);
-    } else if (persona.vibeGroup === "dominant" || persona.vibeGroup === "illicit") {
-        eligibleTiers = data.synchronizedTiers.filter(t => t.pct >= 50);
+    } else if (vibeGroup === "dominant") {
+        eligibleTiers = data.synchronizedTiers.filter(t => t.pct >= 50 && t.pct <= 85);
+    } else if (vibeGroup === "illicit") {
+        eligibleTiers = data.synchronizedTiers.filter(t => t.pct >= 65);
     }
     const syncTier = randomItem(eligibleTiers) || data.synchronizedTiers[0];
 
-    // 3. Spousal Rule breach probability tied to theme
+    // 5. Rule Breach Probability Driven by Tone
     let breachModifier = 0;
-    if (persona.vibeGroup === "illicit") breachModifier = 0.25;
-    if (persona.vibeGroup === "gentle") breachModifier = -0.20;
+    if (vibeGroup === "illicit") breachModifier = 0.25;
+    if (vibeGroup === "gentle") breachModifier = -0.25;
     const finalBreachProb = Math.min(0.98, Math.max(0.05, syncTier.breachProb + breachModifier));
 
     const didBreak = Math.random() < finalBreachProb;
-    let breachVerdict = didBreak
-        ? `<span style="color:var(--hazard-color); font-weight:800;">🚨 BROKEN WITHOUT HESITATION</span> ("He was so overwhelming I didn't care about our deal.")`
-        : `<span style="color:#00e676; font-weight:800;">🛡️ Kept Under Control</span> ("Tempted to forget, but managed to enforce it.")`;
+    const breachVerdict = didBreak
+        ? `<span style="color:var(--hazard-color); font-weight:800;">🚨 BROKEN WITHOUT HESITATION</span> ("${name}'s dominance made our agreement completely impossible to enforce.")`
+        : `<span style="color:#00e676; font-weight:800;">🛡️ Kept Under Control</span> ("Tempted to fold, but enforced boundaries before things went too far.")`;
 
-    // 4. Star rating
-    const starCount = Math.min(5, Math.max(1, Math.ceil(syncTier.pct / 20)));
-    let starStr = "";
-    for (let s = 0; s < starCount; s++) starStr += "⭐";
-
-    let starDesc = "";
-    if (syncTier.pct <= 35) {
-        starDesc = `"${syncTier.tier} — A pleasant, gentle diversion. Nice change of pace, but easy to leave behind."`;
-    } else if (syncTier.pct <= 65) {
-        starDesc = `"${syncTier.tier} — Left me pleasantly sore and distracted for days. Definitely worth booking again."`;
-    } else if (syncTier.pct <= 90) {
-        starDesc = `"${syncTier.tier} — Absolute euphoria. Hubby's ego cannot know how deeply I crave this man's weight."`;
-    } else {
-        starDesc = `"${syncTier.tier} — MIND COMPLETELY BROKEN. Hubby has to worry. If he finds out how addicted I am, our marriage is finished."`;
-    }
-
-    // 5. Coherent Homecoming Scenario
-    let matchingHomecomings = data.homecomingScenarios.filter(h => {
-        if (persona.vibeGroup === "gentle") return h.tagClass === "vibe-nice";
-        if (persona.vibeGroup === "dominant") return h.tagClass === "vibe-cruel";
-        return h.tagClass === "vibe-nasty";
-    });
-    const homecoming = randomItem(matchingHomecomings) || data.homecomingScenarios[0];
-
-    // 6. Round-by-Round Breakdown
+    // 6. Round-by-Round Breakdown & Finish Logistics
     const roundsCount = syncTier.rounds || 2;
     const chosenFlow = randomItem(data.positionFlows) || data.positionFlows[0];
     let logisticsList = [];
+    let recordedReleases = [];
 
     for (let r = 1; r <= roundsCount; r++) {
         const pos = chosenFlow[(r - 1) % chosenFlow.length];
-        
-        let releaseOptions = data.releaseOptions;
-        if (persona.vibeGroup === "gentle") {
-            releaseOptions = data.releaseOptions.filter(rel => !rel.type.includes("Anal") && !rel.type.includes("everywhere"));
-        } else if (persona.vibeGroup === "illicit") {
-            releaseOptions = data.releaseOptions.filter(rel => rel.type.includes("Anal") || rel.type.includes("Inside") || rel.type.includes("face"));
+
+        // Filter finish locations based on protection rules, breach status, and vibe
+        let candidateReleases = data.releaseOptions;
+        if (rule.toLowerCase().includes("protection") && !didBreak) {
+            candidateReleases = data.releaseOptions.filter(rel => rel.type.includes("condom"));
+        } else if (vibeGroup === "gentle") {
+            candidateReleases = data.releaseOptions.filter(rel => !rel.type.includes("ass") && !rel.type.includes("everywhere"));
+        } else if (vibeGroup === "illicit") {
+            candidateReleases = data.releaseOptions.filter(rel => rel.type.includes("ass") || rel.type.includes("vagina") || rel.type.includes("everywhere"));
         }
-        const roundRelease = randomItem(releaseOptions) || data.releaseOptions[0];
+
+        const roundRelease = randomItem(candidateReleases) || data.releaseOptions[0];
+        recordedReleases.push(roundRelease.type);
+
         const roundOrgasm = randomItem(data.orgasmTiers) || data.orgasmTiers[2];
-        const meterWidth = Math.floor(Math.random() * 35) + 65;
+        const meterWidth = Math.floor(Math.random() * 25) + 75;
 
         logisticsList.push(`
             <div style="margin-bottom:12px; background: rgba(0,0,0,0.28); padding:10px 12px; border-radius:10px; border: 1px solid rgba(255,255,255,0.06);">
@@ -215,24 +246,35 @@ function generateProfileObj() {
         `);
     }
 
-    // 7. Dynamic Story & Hardware Synthesis
+    // 7. Homecoming Scenario (Explicitly tied to the final round's finish)
+    const finalRelease = recordedReleases[recordedReleases.length - 1] || "";
+    let matchingHomecomings = data.homecomingScenarios.filter(h => {
+        if (finalRelease.includes("vagina") || finalRelease.includes("ass")) {
+            return h.text.toLowerCase().includes("inside") || h.tagClass === "vibe-nasty";
+        }
+        if (vibeGroup === "gentle") return h.tagClass === "vibe-nice";
+        if (vibeGroup === "dominant") return h.tagClass === "vibe-cruel";
+        return h.tagClass === "vibe-nasty";
+    });
+    const homecoming = randomItem(matchingHomecomings) || data.homecomingScenarios[0];
+
+    // 8. Husband Audio Instructions (Tied to Vibe Group)
+    const matchingInstructions = data.instructionArchetypes.filter(a => a.vibeGroup === vibeGroup);
+    const instArchetype = matchingInstructions.length > 0 ? randomItem(matchingInstructions) : data.instructionArchetypes[0];
+    const instructionStart = randomItem(instArchetype.starts);
+    const instructionEnd = randomItem(instArchetype.ends);
+
+    // 9. Procedural Stories & Physical Reports
     const story = buildDynamicStory(name, meet, dest, archetypeKey);
-    const toolSensation = buildDynamicHardware(toolLen, circ, toolGirth, husbandBaseline.name, archetypeKey);
+    const toolSensation = buildDynamicHardware(toolLen, circ, toolGirth, husbandBaseline.name, archetypeKey, name);
 
-    // 8. Husband Instructions linked to Archetype Tone
-    const matchingInstructions = data.instructionArchetypes.filter(a => a.vibeGroup === persona.vibeGroup);
-    const archetype = matchingInstructions.length > 0 ? randomItem(matchingInstructions) : data.instructionArchetypes[0];
-    const instructionStart = randomItem(archetype.starts);
-    const instructionEnd = randomItem(archetype.ends);
-
-    let h1 = decks.hobbies.draw();
-    let h2 = decks.hobbies.draw();
-    if (h1 === h2) h2 = decks.hobbies.draw();
+    const starCount = Math.min(5, Math.max(1, Math.ceil(syncTier.pct / 20)));
+    let starStr = "⭐".repeat(starCount);
 
     return {
         name: name,
-        age: Math.floor(Math.random() * 21) + 26,
-        distance: (Math.random() * 8 + 0.8).toFixed(1),
+        age: Math.floor(Math.random() * 15) + 28,
+        distance: (Math.random() * 6 + 1.2).toFixed(1),
         origin: decks.origins.draw(),
         meetLocation: meet,
         beard: decks.facialHairTypes.draw(),
@@ -243,9 +285,9 @@ function generateProfileObj() {
         toolLength: toolLen,
         toolGirth: toolGirth,
         logisticsHtml: logisticsList.join(""),
-        h1: h1,
-        occupation: decks.occupations.draw(),
-        hangout: decks.hangouts.draw(),
+        h1: decks.hobbies.draw(),
+        occupation: occupation,
+        hangout: hangout,
         behavior: decks.behaviors.draw(),
         destination: dest,
         story: story,
@@ -265,12 +307,14 @@ function generateProfileObj() {
         waterworks: syncTier.waterworks,
         breedHazard: syncTier.hazard,
         aftermathStars: starStr,
-        aftermathStarsDesc: starDesc,
-        instructionTone: archetype.tone,
+        aftermathStarsDesc: `"${syncTier.tier} — ${syncTier.desc.replace(/Hubby/g, husbandBaseline.name)}"`,
+        instructionTone: instArchetype.tone,
         instructionStart: instructionStart,
         instructionEnd: instructionEnd
     };
 }
+
+// --- RENDER CARD VIEW ---
 
 function renderProfile(profile) {
     if (!profile || !profile.name) return;
@@ -446,7 +490,7 @@ function superLike() {
     }, 200);
 }
 
-// --- BOOTSTRAP: FETCH JSON & INITIALIZE DECKS ---
+// --- BOOTSTRAP INITIALIZATION ---
 async function initApp() {
     try {
         const response = await fetch('content.json');
@@ -454,15 +498,11 @@ async function initApp() {
 
         // Populate shuffle decks
         decks.names = new Deck(data.names);
-        decks.meetLocations = new Deck(data.meetLocations);
-        decks.travelDestinations = new Deck(data.travelDestinations);
         decks.personalities = new Deck(data.personalities);
         decks.facialHairTypes = new Deck(data.facialHairTypes);
         decks.origins = new Deck(data.origins);
         decks.styles = new Deck(data.styles);
         decks.hobbies = new Deck(data.hobbies);
-        decks.occupations = new Deck(data.occupations);
-        decks.hangouts = new Deck(data.hangouts);
         decks.behaviors = new Deck(data.behaviors);
         decks.fantasyRoles = new Deck(data.fantasyRoles);
         decks.reactions = new Deck(data.reactions);
