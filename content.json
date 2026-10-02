@@ -16,18 +16,35 @@
     "Los Angeles, CA", "Edinburgh, Scotland", "Dublin, Ireland", "Miami, FL", 
     "Boston, MA", "Montreal, Canada", "Austin, TX", "Denver, CO", "Savannah, GA"
   ],
-  "meetLocations": [
-    "an indie bookstore rare manuscripts section", "a quiet corner booth at a local coffee shop", 
-    "a scenic coffee and pastry lounge", "a sunlit walking trail through the park", 
-    "a candlelit table at a cozy restaurant date", "a midnight screening at the movie theater", 
-    "a beachside resort café during vacation", "a mountain cabin retreat lobby", 
-    "a dimly lit speakeasy basement", "a private VIP booth at a luxury lounge", 
-    "his private high-performance gym", "the rooftop bar of a boutique hotel"
-  ],
-  "travelDestinations": [
-    "at the beachside resort suite", "in a private mountain cabin alcove", "back at his luxury penthouse", 
-    "in the restaurant's private VIP booth", "at the quiet coffee house lounge", "in the darkened movie theater VIP box", 
-    "along the secluded beach shoreline", "back at your vacation hotel room", "in the back of his tinted towncar"
+  "settingClusters": [
+    {
+      "theme": "luxury",
+      "occupations": ["Tech Startup Founder", "Venture Capital Managing Partner", "High-Rise Architect"],
+      "meets": ["a private VIP booth at a luxury lounge", "the rooftop bar of a boutique hotel"],
+      "destinations": ["back at his luxury penthouse suite", "in the private back of his tinted towncar"],
+      "hangouts": ["A rooftop cigar lounge overlooking the skyline", "A corner leather booth of an exclusive private club"]
+    },
+    {
+      "theme": "underground",
+      "occupations": ["Underworld Speakeasy Owner", "Private Security Contractor", "MMA Striking Coach"],
+      "meets": ["a dimly lit speakeasy basement", "his private high-performance combat gym"],
+      "destinations": ["in the club's secluded VIP back room", "back at his industrial loft penthouse"],
+      "hangouts": ["The back row of a late-night private screening", "A low-lit corner table at a members-only lounge"]
+    },
+    {
+      "theme": "retreat",
+      "occupations": ["Smokejumper Firefighter", "Offshore Salvage Diver", "Ex-Military Tactical Advisor"],
+      "meets": ["a mountain cabin retreat lobby", "a beachside resort café during vacation", "a sunlit walking trail through the pines"],
+      "destinations": ["in a private mountain cabin alcove", "at the secluded beachside resort suite", "along the private shoreline terrace"],
+      "hangouts": ["A secluded cabin deck surrounded by tall pines", "A private balcony overlooking the ocean resort", "A scenic overlook along the mountain hiking trail"]
+    },
+    {
+      "theme": "intellectual",
+      "occupations": ["Boutique Asset Recovery Specialist", "Master Custom Fabricator", "Rare Manuscripts Curator"],
+      "meets": ["an indie bookstore rare manuscripts section", "a quiet corner booth at a local artisan coffee shop"],
+      "destinations": ["at the quiet coffee house private lounge", "back at your downtown vacation hotel room"],
+      "hangouts": ["The antique bookstore's rare manuscripts section", "A dimly lit indie coffee and pastry lounge"]
+    }
   ],
   "heights": ["6'0\"", "6'1\"", "6'2\"", "6'3\"", "6'4\"", "6'5\"", "6'6\"", "6'7\""],
   "circumcisionStatus": ["circumcised", "uncircumcised"],
@@ -42,18 +59,6 @@
     "Reading classic dark romance & fantasy", "Browsing rare antique bookstores", "Enjoying artisan espresso tastings", 
     "Weekend mountain mountaineering", "Midnight coastal drives", "Private gym strength conditioning", 
     "Exploring underground gourmet kitchens", "Collecting leather-bound first editions", "Competitive Brazilian Jiu-Jitsu"
-  ],
-  "occupations": [
-    "Private Security Contractor", "Tech Startup Founder", "High-Rise Architect", 
-    "Master Custom Fabricator", "Underworld Speakeasy Owner", "Ex-Military Tactical Advisor", 
-    "Smokejumper Firefighter", "Offshore Salvage Diver", "MMA Striking Coach",
-    "Boutique Asset Recovery Specialist", "Venture Capital Managing Partner"
-  ],
-  "hangouts": [
-    "The antique bookstore's rare manuscripts section", "A corner leather booth of a private club", 
-    "A dimly lit indie coffee and pastry lounge", "A scenic overlook along the mountain hiking trail", 
-    "A private balcony overlooking the ocean beach resort", "The back row of a late-night private screening", 
-    "A secluded cabin deck surrounded by tall pines", "A rooftop cigar lounge overlooking the skyline"
   ],
   "fantasyRoles": [
     "One Night Stand", "Regular Bull", "Occasional Fling", "Weekend Obsession", 
@@ -165,7 +170,7 @@
   },
   "hardwareGrammar": {
     "comparisons": [
-      "While {HUBBY}'s 6\" baseline offers dependable, familiar comfort,",
+      "While {HUBBY}'s baseline offers dependable, familiar comfort,",
       "Compared to the gentle, measured fit I share with {HUBBY},",
       "{HUBBY}'s nightly hardware is completely pleasant, but",
       "I had completely forgotten what true anatomical disproportion felt like until"
@@ -193,7 +198,7 @@
       ],
       "Filthy-Mouthed Rogue": [
         "his thick {LEN}\" weapon shoved straight past my thresholds, the heavy {GIRTH} core stretching me so wide I gasped for air,",
-        "his {LEN}\" {CIRC} crown hit nerves {HUBBY} has never brushed in ten years of marriage, making me lose all composure within seconds,"
+        "his {LEN}\" {CIRC} crown hit nerves {HUBBY} has never brushed in ten years of marriage, making me lose all composure within seconds"
       ]
     },
     "reactions": [
