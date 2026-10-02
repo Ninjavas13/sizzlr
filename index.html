@@ -425,6 +425,7 @@
             width: 2px;
             background: var(--gold-accent);
             z-index: 9;
+            transition: left 0.3s ease;
         }
 
         .tool-sensation-box {
@@ -468,16 +469,6 @@
             background: var(--primary-gradient);
             border-radius: 4px;
             transition: width 0.4s ease;
-        }
-
-        .meter-mid-pin {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--gold-accent);
-            z-index: 2;
         }
 
         .exp-box {
@@ -626,8 +617,12 @@
             <input type="text" id="cfg-stamina" value="1 solid round a night">
         </div>
         <div class="settings-row">
-            <label>Hardware Baseline</label>
+            <label>Hardware Description</label>
             <input type="text" id="cfg-tool" value="6&quot; but thick">
+        </div>
+        <div class="settings-row">
+            <label>Hardware Length (Inches) for Ruler Scale</label>
+            <input type="number" id="cfg-tool-inches" value="6.0" step="0.5" min="2" max="10">
         </div>
         <button class="tag" style="width:100%; border-color:var(--gold-accent); color:var(--gold-accent); margin-top:8px; cursor:pointer;" onclick="applySettings()">Save & Re-Calibrate</button>
     </div>
@@ -687,12 +682,13 @@
                         <div class="ruler-track" id="ruler-box">
                             <div class="ruler-indicator" id="ruler-bar-fill"></div>
                             <div class="ruler-target-line" id="ruler-marker-line"></div>
-                            <div class="ruler-baseline-pin" style="left: 50%;" title="Hubby Baseline (6&quot;)"></div>
+                            <!-- Dynamic baseline pin positioning fix -->
+                            <div class="ruler-baseline-pin" id="ruler-baseline-pin" style="left: 50%;" title="Hubby Baseline"></div>
                             <div class="ruler-ticks" id="ruler-ticks-row"></div>
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:#64748b; margin-top:3px;">
                             <span>2"</span>
-                            <span style="color:var(--gold-accent); font-weight:700;">★ <span id="p-hubby-name-pin">Hubby</span> Baseline: 6"</span>
+                            <span style="color:var(--gold-accent); font-weight:700;">★ <span id="p-hubby-name-pin">Hubby</span> Baseline</span>
                             <span>10"</span>
                         </div>
                         <div style="font-size: 0.78rem; margin-top: 6px; color: var(--text-muted);" id="p-tool-heat-sub"></div>
@@ -725,7 +721,6 @@
                             <span id="p-sat-gauge-label" style="color:var(--gold-accent);"></span>
                         </div>
                         <div class="meter-bar">
-                            <div class="meter-mid-pin" title="Hubby Baseline (50%)"></div>
                             <div class="meter-fill" id="p-sat-fill" style="background: linear-gradient(90deg, #94a3b8 40%, var(--gold-accent) 65%, #ff3366 100%);"></div>
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size:0.66rem; color:#64748b; margin-top:2px;">
