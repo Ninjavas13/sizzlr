@@ -21,7 +21,8 @@ let husbandBaseline = {
     name: "Hubby",
     heightInches: 71,
     stamina: "1 solid round a night",
-    tool: "6\" but thick"
+    toolText: "6\" but thick",
+    toolInches: 6.0
 };
 
 let data = {};
@@ -49,8 +50,12 @@ function applySettings() {
     husbandBaseline.name = document.getElementById('cfg-name').value || "Hubby";
     husbandBaseline.heightInches = parseInt(document.getElementById('cfg-height').value, 10);
     husbandBaseline.stamina = document.getElementById('cfg-stamina').value;
-    husbandBaseline.tool = document.getElementById('cfg-tool').value;
+    husbandBaseline.toolText = document.getElementById('cfg-tool').value;
+    husbandBaseline.toolInches = parseFloat(document.getElementById('cfg-tool-inches').value) || 6.0;
+    
     toggleSettings();
+    
+    // Update dynamic ruler pin positions immediately upon applying settings
     if (currentProfile && currentProfile.name) {
         renderProfile(currentProfile);
     }
@@ -86,6 +91,7 @@ function buildRulerTicks() {
 
 function buildDynamicStory(bullName, meetLoc, dest, archetypeKey) {
     const g = data.storyGrammar;
+    if (!g) return "";
     const introTpl = randomItem(g.intros);
     const tensionPool = (g.tensions && g.tensions[archetypeKey]) ? g.tensions[archetypeKey] : g.tensions["Shadow-Wielder"];
     const tensionTpl = randomItem(tensionPool);
@@ -100,6 +106,7 @@ function buildDynamicStory(bullName, meetLoc, dest, archetypeKey) {
 
 function buildDynamicHardware(toolLen, circ, toolGirth, hubbyName, archetypeKey, bullName) {
     const g = data.hardwareGrammar;
+    if (!g) return "";
     const cmpTpl = randomItem(g.comparisons);
     const mechPool = (g.mechanics && g.mechanics[archetypeKey]) ? g.mechanics[archetypeKey] : g.mechanics["Shadow-Wielder"];
     const mechTpl = randomItem(mechPool);
@@ -124,39 +131,8 @@ function generateProfileObj() {
     const archetypeKey = persona.type;
     const vibeGroup = persona.vibeGroup || "dominant";
 
-    // 2. Coherent Setting Clusters (Couples occupation, meet location, destination, and hangout)
-    const settingProfiles = [
-        {
-            theme: "luxury",
-            occupations: ["Tech Startup Founder", "Venture Capital Managing Partner", "High-Rise Architect"],
-            meets: ["a private VIP booth at a luxury lounge", "the rooftop bar of a boutique hotel"],
-            destinations: ["back at his luxury penthouse", "in the back of his tinted towncar"],
-            hangouts: ["A rooftop cigar lounge overlooking the skyline", "A corner leather booth of a private club"]
-        },
-        {
-            theme: "underground",
-            occupations: ["Underworld Speakeasy Owner", "Private Security Contractor", "MMA Striking Coach"],
-            meets: ["a dimly lit speakeasy basement", "his private high-performance gym"],
-            destinations: ["in the restaurant's private VIP booth", "back at his luxury penthouse"],
-            hangouts: ["The back row of a late-night private screening", "A corner leather booth of a private club"]
-        },
-        {
-            theme: "retreat",
-            occupations: ["Smokejumper Firefighter", "Offshore Salvage Diver", "Ex-Military Tactical Advisor"],
-            meets: ["a mountain cabin retreat lobby", "a beachside resort café during vacation", "a sunlit walking trail through the park"],
-            destinations: ["in a private mountain cabin alcove", "at the beachside resort suite", "along the secluded beach shoreline"],
-            hangouts: ["A secluded cabin deck surrounded by tall pines", "A private balcony overlooking the ocean beach resort", "A scenic overlook along the mountain hiking trail"]
-        },
-        {
-            theme: "intellectual",
-            occupations: ["Boutique Asset Recovery Specialist", "Master Custom Fabricator"],
-            meets: ["an indie bookstore rare manuscripts section", "a scenic coffee and pastry lounge", "a quiet corner booth at a local coffee shop"],
-            destinations: ["at the quiet coffee house lounge", "back at your vacation hotel room"],
-            hangouts: ["The antique bookstore's rare manuscripts section", "A dimly lit indie coffee and pastry lounge"]
-        }
-    ];
-
-    const currentSetting = randomItem(settingProfiles);
+    // 2. Coherent Setting Clusters (Enforces strict narrative flow: luxury meets luxury, retreat meets retreat)
+    const currentSetting = randomItem(data.settingClusters) || data.settingClusters[0];
     const occupation = randomItem(currentSetting.occupations);
     const meet = randomItem(currentSetting.meets);
     const dest = randomItem(currentSetting.destinations);
@@ -201,7 +177,6 @@ function generateProfileObj() {
     for (let r = 1; r <= roundsCount; r++) {
         const pos = chosenFlow[(r - 1) % chosenFlow.length];
 
-        // Filter finish locations based on protection rules, breach status, and vibe
         let candidateReleases = data.releaseOptions;
         if (rule.toLowerCase().includes("protection") && !didBreak) {
             candidateReleases = data.releaseOptions.filter(rel => rel.type.includes("condom"));
@@ -246,7 +221,7 @@ function generateProfileObj() {
         `);
     }
 
-    // 7. Homecoming Scenario (Explicitly tied to the final round's finish)
+    // 7. Homecoming Scenario (Tied to final release)
     const finalRelease = recordedReleases[recordedReleases.length - 1] || "";
     let matchingHomecomings = data.homecomingScenarios.filter(h => {
         if (finalRelease.includes("vagina") || finalRelease.includes("ass")) {
@@ -361,7 +336,19 @@ function renderProfile(profile) {
 
     document.getElementById('p-aftermath-stars').innerText = profile.aftermathStars;
     document.getElementById('p-aftermath-stars-desc').innerText = profile.aftermathStarsDesc;
-    document.getElementById('p-aftermath-soreness').innerText = `His ${profile.toolLength}" ${profile.circumcision} cock and ${profile.performances} nonstop rounds left my hips deeply bruised and my stride visibly altered for the rest of the week.`;
+    
+    // Dynamic Aftermath Soreness scaling based on tier intensity
+    let sorenessText = "";
+    if (profile.syncTier.pct <= 30) {
+        sorenessText = `A mild, pleasant warmth from his ${profile.toolLength}" ${profile.circumcision} frame and ${profile.performances} comfortable rounds. Walked home feeling refreshed with zero lingering discomfort.`;
+    } else if (profile.syncTier.pct <= 60) {
+        sorenessText = `His ${profile.toolLength}" ${profile.circumcision} shaft and ${profile.performances} steady rounds left my muscles pleasantly tender and my posture subtly altered all morning.`;
+    } else if (profile.syncTier.pct <= 85) {
+        sorenessText = `His heavy ${profile.toolLength}" ${profile.circumcision} caliber and ${profile.performances} relentless rounds left my hips deeply bruised, my thighs aching, and my stride visibly altered for days.`;
+    } else {
+        sorenessText = `An absolute systemic override. His massive ${profile.toolLength}" ${profile.circumcision} frame and ${profile.performances} brutal rounds left my body completely wrecked, my legs shaking, and my soul thoroughly claimed.`;
+    }
+    document.getElementById('p-aftermath-soreness').innerText = sorenessText;
 
     const diffInches = profile.heightInches - husbandBaseline.heightInches;
     let diffLabel = "";
@@ -370,10 +357,17 @@ function renderProfile(profile) {
     else diffLabel = `Matches ${husbandBaseline.name}'s eye line`;
     document.getElementById('p-height-delta').innerText = `${profile.height} (${diffLabel})`;
 
+    // Dynamic Ruler Scale Calculations (Fixes hardcoded 50% pin bug)
     const rulerPct = Math.min(100, Math.max(0, ((profile.toolLength - 2) / 8) * 100));
+    const hubbyRulerPct = Math.min(100, Math.max(0, ((husbandBaseline.toolInches - 2) / 8) * 100));
+    
     document.getElementById('ruler-bar-fill').style.width = `${rulerPct}%`;
     document.getElementById('ruler-marker-line').style.left = `${rulerPct}%`;
-    document.getElementById('p-ruler-tag').innerText = `${profile.toolLength}" (${profile.toolLength > 6 ? '+' + (profile.toolLength - 6) + '" over ' + husbandBaseline.name : 'Matches ' + husbandBaseline.name})`;
+    
+    const baselinePin = document.getElementById('ruler-baseline-pin');
+    if (baselinePin) baselinePin.style.left = `${hubbyRulerPct}%`;
+
+    document.getElementById('p-ruler-tag').innerText = `${profile.toolLength}" (${profile.toolLength > husbandBaseline.toolInches ? '+' + (profile.toolLength - husbandBaseline.toolInches).toFixed(1) + '" over ' + husbandBaseline.name : 'Matches ' + husbandBaseline.name})`;
     document.getElementById('p-tool-heat-sub').innerText = `Carries a ${profile.toolLength}" ${profile.circumcision} cock (${profile.toolGirth}).`;
     document.getElementById('p-tool-sensation').innerText = profile.toolSensation;
 
