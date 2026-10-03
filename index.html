@@ -87,6 +87,8 @@
             padding: 18px;
             z-index: 50;
             box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            max-height: 75vh;
+            overflow-y: auto;
         }
 
         .settings-header {
@@ -589,14 +591,14 @@
             <span>🔥</span> Sizzlr
         </div>
         <div class="nav-icons">
-            <span onclick="toggleSettings()" title="Husband Baseline Settings">⚙️</span>
+            <span onclick="toggleSettings()" title="Settings & Calibration">⚙️</span>
         </div>
     </div>
 
-    <!-- Editable Baseline Calibration Panel -->
+    <!-- Calibration & Vibe Preferences Settings Modal -->
     <div class="settings-modal" id="settings-modal">
         <div class="settings-header">
-            <span>Husband Calibration</span>
+            <span>Calibration & Preferences</span>
             <span style="cursor:pointer;" onclick="toggleSettings()">✖</span>
         </div>
         <div class="settings-row">
@@ -624,10 +626,41 @@
             <label>Hardware Length (Inches) for Ruler Scale</label>
             <input type="number" id="cfg-tool-inches" value="6.0" step="0.5" min="2" max="10">
         </div>
+        <div class="settings-row">
+            <label>Preferred Narrative Vibe / Intensity</label>
+            <select id="cfg-vibe">
+                <option value="all">All / Random</option>
+                <option value="gentle">Gentle / Romantic</option>
+                <option value="dominant">Dominant / Intense</option>
+                <option value="illicit">Illicit / Filthy</option>
+            </select>
+        </div>
+        <div class="settings-row">
+            <label>Manual Override: Homecoming Vibe</label>
+            <select id="cfg-homecoming-override">
+                <option value="">Auto (Randomized)</option>
+                <option value="Sweet & Tender">Sweet & Tender</option>
+                <option value="Softly Playful">Softly Playful</option>
+                <option value="Intimate Debrief">Intimate Debrief</option>
+                <option value="Guilty & Demanding">Guilty & Demanding</option>
+                <option value="Possessive Re-Claiming">Possessive Re-Claiming</option>
+                <option value="Visual Inspection">Visual Inspection</option>
+                <option value="Husband Cleanup & Taste (Inside Finish)">Husband Cleanup & Taste</option>
+            </select>
+        </div>
+        <div class="settings-row">
+            <label>Manual Override: Instruction Tone</label>
+            <select id="cfg-tone-override">
+                <option value="">Auto (Randomized)</option>
+                <option value="Subtly Mean & Complimentary Hybrid">Subtly Mean & Complimentary</option>
+                <option value="Very Mean, Harsh & Dominant">Very Mean & Harsh</option>
+                <option value="Vulgar, Filthy & Nasty">Vulgar & Filthy</option>
+            </select>
+        </div>
         <button class="tag" style="width:100%; border-color:var(--gold-accent); color:var(--gold-accent); margin-top:8px; cursor:pointer;" onclick="applySettings()">Save & Re-Calibrate</button>
     </div>
 
-    <!-- Active Profile Card -->
+    <!-- Active Profile Card with Reorganized Narrative Arc -->
     <div class="card" id="profile-card">
         <div class="profile-details">
             <div>
@@ -647,7 +680,7 @@
             <div class="tags-container" id="p-tags"></div>
             <div style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px;" id="p-vibe-summary"></div>
 
-            <!-- COLLAPSIBLE ACCORDION SECTIONS -->
+            <!-- REORGANIZED COLLAPSIBLE SECTIONS (Chronological Narrative Arc) -->
 
             <!-- 1. How You Crossed Paths -->
             <div class="collapsible-card active" id="sec-story">
@@ -667,7 +700,39 @@
                 </div>
             </div>
 
-            <!-- 2. Head to Head vs. Hubby -->
+            <!-- 2. Encounter Logistics & Round-by-Round Breakdown (Moved up right after meeting) -->
+            <div class="collapsible-card card-pink" id="sec-reactions">
+                <div class="accordion-header" onclick="toggleSection('sec-reactions')">
+                    <span class="accordion-title" style="color: #ff6b81;">💄 Encounter Logistics & Round Breakdown</span>
+                    <span class="arrow-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="exp-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                            <span style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#ff6b81;">Experience Benchmark:</span>
+                            <span id="p-exp-tier" style="font-size:0.8rem; font-weight:800; color:var(--gold-accent);"></span>
+                        </div>
+                        <div class="meter-bar" style="height: 7px; margin-bottom: 6px;">
+                            <div class="meter-fill" id="p-exp-fill" style="width: 85%; background: linear-gradient(90deg, #ffc107, #ff3366, #e91e63);"></div>
+                        </div>
+                        <div style="font-size:0.82rem; color:#f1f5f9; font-style:italic;" id="p-exp-desc"></div>
+                    </div>
+
+                    <strong>Waterworks Index (Synchronized with Chemistry):</strong>
+                    <span id="p-waterworks" style="display:block; margin: 2px 0 8px;"></span>
+
+                    <div style="background: rgba(0,0,0,0.25); border-radius: 8px; padding: 10px 12px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.06);">
+                        <strong style="color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Round-by-Round Breakdown (Customize finish location per round):</strong>
+                        <div style="font-size: 0.85rem; margin-top: 6px; line-height: 1.5;" id="p-positions-visual"></div>
+                        <br>
+                        • <strong>Spousal Rule With <span class="lbl-hubby-name">Hubby</span>:</strong><br>
+                        <span id="p-rule-text" style="color:#ffcdd2;"></span><br>
+                        <strong style="font-size:0.78rem;">Compliance / Breach Verdict:</strong> <span id="p-breach-verdict"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Head-to-Head vs. Hubby (Comparative reflection after action) -->
             <div class="collapsible-card card-gold" id="sec-husband">
                 <div class="accordion-header" onclick="toggleSection('sec-husband')">
                     <span class="accordion-title" style="color: var(--gold-accent);">⚖️ Head-to-Head vs. <span id="p-target-husband">Hubby</span></span>
@@ -682,7 +747,6 @@
                         <div class="ruler-track" id="ruler-box">
                             <div class="ruler-indicator" id="ruler-bar-fill"></div>
                             <div class="ruler-target-line" id="ruler-marker-line"></div>
-                            <!-- Dynamic baseline pin positioning fix -->
                             <div class="ruler-baseline-pin" id="ruler-baseline-pin" style="left: 50%;" title="Hubby Baseline"></div>
                             <div class="ruler-ticks" id="ruler-ticks-row"></div>
                         </div>
@@ -733,7 +797,7 @@
 
                     <div class="ruler-container" style="border-color: rgba(255, 61, 113, 0.4);">
                         <div class="ruler-header">
-                            <span style="color:#ffcdd2;">⚠️ Pregnancy Illusion / Recklessness Hazard</span>
+                            <span style="color:#ffcdd2;">⚠️️ Pregnancy Illusion / Recklessness Hazard</span>
                             <span id="p-breed-label" style="color:var(--hazard-color); font-weight:800;"></span>
                         </div>
                         <div class="meter-bar" style="height: 8px;">
@@ -749,39 +813,7 @@
                 </div>
             </div>
 
-            <!-- 3. Wife's Confessions & Encounter Specs -->
-            <div class="collapsible-card card-pink" id="sec-reactions">
-                <div class="accordion-header" onclick="toggleSection('sec-reactions')">
-                    <span class="accordion-title" style="color: #ff6b81;">💄 Wife's Confessions & Encounter Specs</span>
-                    <span class="arrow-icon">▼</span>
-                </div>
-                <div class="accordion-content">
-                    <div class="exp-box">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                            <span style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#ff6b81;">Experience Benchmark:</span>
-                            <span id="p-exp-tier" style="font-size:0.8rem; font-weight:800; color:var(--gold-accent);"></span>
-                        </div>
-                        <div class="meter-bar" style="height: 7px; margin-bottom: 6px;">
-                            <div class="meter-fill" id="p-exp-fill" style="width: 85%; background: linear-gradient(90deg, #ffc107, #ff3366, #e91e63);"></div>
-                        </div>
-                        <div style="font-size:0.82rem; color:#f1f5f9; font-style:italic;" id="p-exp-desc"></div>
-                    </div>
-
-                    <strong>Waterworks Index (Synchronized with Chemistry):</strong>
-                    <span id="p-waterworks" style="display:block; margin: 2px 0 8px;"></span>
-
-                    <div style="background: rgba(0,0,0,0.25); border-radius: 8px; padding: 10px 12px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.06);">
-                        <strong style="color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Encounter Logistics & Round-by-Round Breakdown:</strong>
-                        <div style="font-size: 0.85rem; margin-top: 6px; line-height: 1.5;" id="p-positions-visual"></div>
-                        <br>
-                        • <strong>Spousal Rule With <span class="lbl-hubby-name">Hubby</span>:</strong><br>
-                        <span id="p-rule-text" style="color:#ffcdd2;"></span><br>
-                        <strong style="font-size:0.78rem;">Compliance / Breach Verdict:</strong> <span id="p-breach-verdict"></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. Wife Aftermath -->
+            <!-- 4. Wife Aftermath & Recovery (Homecoming & morning text) -->
             <div class="collapsible-card card-purple" id="sec-aftermath">
                 <div class="accordion-header" onclick="toggleSection('sec-aftermath')">
                     <span class="accordion-title" style="color: #a855f7;">🔥 Wife Aftermath & Recovery</span>
@@ -817,7 +849,7 @@
                 </div>
             </div>
 
-            <!-- 5. Instructions for Hubby -->
+            <!-- 5. Instructions for Hubby (With Typewriter Effect) -->
             <div class="collapsible-card card-blue" id="sec-instructions">
                 <div class="accordion-header" onclick="toggleSection('sec-instructions')">
                     <span class="accordion-title" style="color: #60a5fa;">🎙️ Instructions for <span class="lbl-hubby-name">Hubby</span></span>
