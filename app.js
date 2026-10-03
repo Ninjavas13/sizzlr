@@ -22,7 +22,10 @@ let husbandBaseline = {
     heightInches: 71,
     stamina: "1 solid round a night",
     toolText: "6\" but thick",
-    toolInches: 6.0
+    toolInches: 6.0,
+    preferredVibe: "all",
+    overrideHomecoming: "",
+    overrideTone: ""
 };
 
 let data = {};
@@ -52,18 +55,43 @@ function applySettings() {
     husbandBaseline.stamina = document.getElementById('cfg-stamina').value;
     husbandBaseline.toolText = document.getElementById('cfg-tool').value;
     husbandBaseline.toolInches = parseFloat(document.getElementById('cfg-tool-inches').value) || 6.0;
-    
+    husbandBaseline.preferredVibe = document.getElementById('cfg-vibe').value;
+    husbandBaseline.overrideHomecoming = document.getElementById('cfg-homecoming-override').value;
+    husbandBaseline.overrideTone = document.getElementById('cfg-tone-override').value;
+
     toggleSettings();
-    
-    // Update dynamic ruler pin positions immediately upon applying settings
-    if (currentProfile && currentProfile.name) {
-        renderProfile(currentProfile);
-    }
+    generateProfile();
 }
 
 function toggleSection(secId) {
     const card = document.getElementById(secId);
-    if (card) card.classList.toggle('active');
+    if (card) {
+        const wasActive = card.classList.contains('active');
+        card.classList.toggle('active');
+        
+        // Trigger Typewriter effect if opening instructions section
+        if (secId === 'sec-instructions' && !wasActive) {
+            runTypewriterEffect();
+        }
+    }
+}
+
+function runTypewriterEffect() {
+    const textEl = document.getElementById('p-instruction-text');
+    if (!textEl || !currentProfile.rawInstructionBody) return;
+    
+    const content = currentProfile.rawInstructionBody;
+    textEl.innerHTML = "";
+    let i = 0;
+    
+    function type() {
+        if (i < content.length) {
+            textEl.innerHTML += content.charAt(i);
+            i++;
+            setTimeout(type, 12);
+        }
+    }
+    type();
 }
 
 function buildRulerTicks() {
@@ -126,12 +154,17 @@ function buildDynamicHardware(toolLen, circ, toolGirth, hubbyName, archetypeKey,
 // --- SYNCHRONIZED PROFILE GENERATOR ---
 
 function generateProfileObj() {
-    // 1. Core Persona Archetype Anchor
-    const persona = decks.personalities.draw();
+    // 1. Persona Archetype Anchor (Filtered by User Vibe Preference if set)
+    let availablePersonalities = data.personalities;
+    if (husbandBaseline.preferredVibe && husbandBaseline.preferredVibe !== "all") {
+        availablePersonalities = data.personalities.filter(p => p.vibeGroup === husbandBaseline.preferredVibe);
+        if (availablePersonalities.length === 0) availablePersonalities = data.personalities;
+    }
+    const persona = randomItem(availablePersonalities);
     const archetypeKey = persona.type;
     const vibeGroup = persona.vibeGroup || "dominant";
 
-    // 2. Coherent Setting Clusters (Enforces strict narrative flow: luxury meets luxury, retreat meets retreat)
+    // 2. Coherent Setting Clusters
     const currentSetting = randomItem(data.settingClusters) || data.settingClusters[0];
     const occupation = randomItem(currentSetting.occupations);
     const meet = randomItem(currentSetting.meets);
@@ -146,7 +179,7 @@ function generateProfileObj() {
     const toolGirth = randomItem(data.toolGirths);
     const rule = randomItem(data.spousalRules);
 
-    // 4. Coordinated Satisfaction Tier (Filter by Persona Vibe)
+    // 4. Coordinated Satisfaction Tier
     let eligibleTiers = data.synchronizedTiers;
     if (vibeGroup === "gentle") {
         eligibleTiers = data.synchronizedTiers.filter(t => t.pct <= 50);
@@ -157,7 +190,7 @@ function generateProfileObj() {
     }
     const syncTier = randomItem(eligibleTiers) || data.synchronizedTiers[0];
 
-    // 5. Rule Breach Probability Driven by Tone
+    // 5. Rule Breach Probability
     let breachModifier = 0;
     if (vibeGroup === "illicit") breachModifier = 0.25;
     if (vibeGroup === "gentle") breachModifier = -0.25;
@@ -168,83 +201,56 @@ function generateProfileObj() {
         ? `<span style="color:var(--hazard-color); font-weight:800;">🚨 BROKEN WITHOUT HESITATION</span> ("${name}'s dominance made our agreement completely impossible to enforce.")`
         : `<span style="color:#00e676; font-weight:800;">🛡️ Kept Under Control</span> ("Tempted to fold, but enforced boundaries before things went too far.")`;
 
-    // 6. Round-by-Round Breakdown & Finish Logistics
+    // 6. Round-by-Round Breakdown with Interactive Release Options
     const roundsCount = syncTier.rounds || 2;
     const chosenFlow = randomItem(data.positionFlows) || data.positionFlows[0];
-    let logisticsList = [];
-    let recordedReleases = [];
+    let roundsData = [];
 
     for (let r = 1; r <= roundsCount; r++) {
         const pos = chosenFlow[(r - 1) % chosenFlow.length];
-
-        let candidateReleases = data.releaseOptions;
-        if (rule.toLowerCase().includes("protection") && !didBreak) {
-            candidateReleases = data.releaseOptions.filter(rel => rel.type.includes("condom"));
-        } else if (vibeGroup === "gentle") {
-            candidateReleases = data.releaseOptions.filter(rel => !rel.type.includes("ass") && !rel.type.includes("everywhere"));
-        } else if (vibeGroup === "illicit") {
-            candidateReleases = data.releaseOptions.filter(rel => rel.type.includes("ass") || rel.type.includes("vagina") || rel.type.includes("everywhere"));
-        }
-
-        const roundRelease = randomItem(candidateReleases) || data.releaseOptions[0];
-        recordedReleases.push(roundRelease.type);
-
+        const roundRelease = randomItem(data.releaseOptions) || data.releaseOptions[0];
         const roundOrgasm = randomItem(data.orgasmTiers) || data.orgasmTiers[2];
-        const meterWidth = Math.floor(Math.random() * 25) + 75;
 
-        logisticsList.push(`
-            <div style="margin-bottom:12px; background: rgba(0,0,0,0.28); padding:10px 12px; border-radius:10px; border: 1px solid rgba(255,255,255,0.06);">
-                <div style="font-weight:800; color:#38bdf8; font-size:0.88rem; margin-bottom:4px;">ROUND ${r} BREAKDOWN</div>
-                <div style="margin-bottom:6px;">
-                    • <strong>Position (${pos.name}):</strong> 
-                    <span style="color:#e2e8f0;">${pos.desc.replace(/Hubby/g, husbandBaseline.name)}</span>
-                </div>
-                <div style="margin-bottom:6px; background: rgba(255,255,255,0.03); padding:6px 8px; border-radius:6px;">
-                    • <strong>Release Location:</strong> <span style="color:#ff6b81; font-weight:700;">${roundRelease.type}</span><br>
-                    <span style="font-size:0.77rem; color:#94a3b8;">${roundRelease.amountDesc}</span>
-                    <div class="meter-bar" style="margin:4px 0 3px;">
-                        <div class="meter-fill" style="width: ${meterWidth}%; background: linear-gradient(90deg, #38bdf8, #818cf8, #ff3366);"></div>
-                    </div>
-                    <span style="font-size:0.75rem; color:#cbd5e1; font-style:italic;">${roundRelease.cleanDesc}</span>
-                </div>
-                <div style="background: rgba(0,0,0,0.22); padding:6px 8px; border-radius:6px; border-left: 2px solid ${roundOrgasm.color};">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <strong style="font-size:0.75rem; text-transform:uppercase; color:#fff;">Wife Orgasm Meter:</strong>
-                        <span style="font-size:0.76rem; font-weight:800; color:${roundOrgasm.color};">${roundOrgasm.label}</span>
-                    </div>
-                    <div class="meter-bar" style="height:5px; margin:4px 0;">
-                        <div class="meter-fill" style="width: ${roundOrgasm.fill}%; background: ${roundOrgasm.color};"></div>
-                    </div>
-                    <span style="font-size:0.75rem; color:#f1f5f9; font-style:italic;">${roundOrgasm.desc}</span>
-                </div>
-            </div>
-        `);
+        roundsData.push({
+            roundNum: r,
+            positionName: pos.name,
+            positionDesc: pos.desc,
+            selectedRelease: roundRelease,
+            orgasm: roundOrgasm,
+            meterWidth: Math.floor(Math.random() * 25) + 75
+        });
     }
 
-    // 7. Homecoming Scenario (Tied to final release)
-    const finalRelease = recordedReleases[recordedReleases.length - 1] || "";
-    let matchingHomecomings = data.homecomingScenarios.filter(h => {
-        if (finalRelease.includes("vagina") || finalRelease.includes("ass")) {
-            return h.text.toLowerCase().includes("inside") || h.tagClass === "vibe-nasty";
-        }
-        if (vibeGroup === "gentle") return h.tagClass === "vibe-nice";
-        if (vibeGroup === "dominant") return h.tagClass === "vibe-cruel";
-        return h.tagClass === "vibe-nasty";
-    });
-    const homecoming = randomItem(matchingHomecomings) || data.homecomingScenarios[0];
+    // 7. Homecoming Scenario (Manual Override or Dynamic)
+    let homecoming = randomItem(data.homecomingScenarios) || data.homecomingScenarios[0];
+    if (husbandBaseline.overrideHomecoming) {
+        const found = data.homecomingScenarios.find(h => h.vibe === husbandBaseline.overrideHomecoming);
+        if (found) homecoming = found;
+    }
 
-    // 8. Husband Audio Instructions (Tied to Vibe Group)
-    const matchingInstructions = data.instructionArchetypes.filter(a => a.vibeGroup === vibeGroup);
+    // 8. Husband Audio Instructions
+    let matchingInstructions = data.instructionArchetypes.filter(a => a.vibeGroup === vibeGroup);
+    if (husbandBaseline.overrideTone) {
+        const foundTone = data.instructionArchetypes.find(a => a.tone === husbandBaseline.overrideTone);
+        if (foundTone) matchingInstructions = [foundTone];
+    }
     const instArchetype = matchingInstructions.length > 0 ? randomItem(matchingInstructions) : data.instructionArchetypes[0];
     const instructionStart = randomItem(instArchetype.starts);
     const instructionEnd = randomItem(instArchetype.ends);
 
-    // 9. Procedural Stories & Physical Reports
     const story = buildDynamicStory(name, meet, dest, archetypeKey);
     const toolSensation = buildDynamicHardware(toolLen, circ, toolGirth, husbandBaseline.name, archetypeKey, name);
 
     const starCount = Math.min(5, Math.max(1, Math.ceil(syncTier.pct / 20)));
     let starStr = "⭐".repeat(starCount);
+
+    const rawInstructionBody = `
+        <p style="margin-bottom:10px;">"${instructionStart.replace(/Hubby/g, husbandBaseline.name)}"</p>
+        <div style="font-size:0.82rem; color:var(--text-muted); font-style:italic; margin:8px 0; padding:6px 10px; background:rgba(0,0,0,0.25); border-radius:6px; border-left:2px solid var(--primary);">
+            [She traces the thumbprints left on her hips, quietly describing how effortlessly ${name} controlled her cadence while ${husbandBaseline.name} obeys.]
+        </div>
+        <p style="margin-top:10px;">"${instructionEnd.replace(/Hubby/g, husbandBaseline.name)}"</p>
+    `;
 
     return {
         name: name,
@@ -259,7 +265,7 @@ function generateProfileObj() {
         circumcision: circ,
         toolLength: toolLen,
         toolGirth: toolGirth,
-        logisticsHtml: logisticsList.join(""),
+        roundsData: roundsData,
         h1: decks.hobbies.draw(),
         occupation: occupation,
         hangout: hangout,
@@ -284,12 +290,69 @@ function generateProfileObj() {
         aftermathStars: starStr,
         aftermathStarsDesc: `"${syncTier.tier} — ${syncTier.desc.replace(/Hubby/g, husbandBaseline.name)}"`,
         instructionTone: instArchetype.tone,
-        instructionStart: instructionStart,
-        instructionEnd: instructionEnd
+        rawInstructionBody: rawInstructionBody
     };
 }
 
 // --- RENDER CARD VIEW ---
+
+function renderRoundsLogistics() {
+    const container = document.getElementById('p-positions-visual');
+    if (!container || !currentProfile.roundsData) return;
+
+    let logisticsList = [];
+    currentProfile.roundsData.forEach((rd, idx) => {
+        // Build release option dropdown for manual changing after each round
+        let releaseOptionsHtml = data.releaseOptions.map(rel => {
+            const isSelected = rel.type === rd.selectedRelease.type ? 'selected' : '';
+            return `<option value="${rel.type}" ${isSelected}>${rel.type}</option>`;
+        }).join('');
+
+        logisticsList.push(`
+            <div style="margin-bottom:12px; background: rgba(0,0,0,0.28); padding:10px 12px; border-radius:10px; border: 1px solid rgba(255,255,255,0.06);" data-round-idx="${idx}">
+                <div style="font-weight:800; color:#38bdf8; font-size:0.88rem; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>ROUND ${rd.roundNum} BREAKDOWN</span>
+                    <span style="font-size:0.75rem; color:var(--gold-accent);">✏️ Change Finish</span>
+                </div>
+                <div style="margin-bottom:6px;">
+                    • <strong>Position (${rd.positionName}):</strong> 
+                    <span style="color:#e2e8f0;">${rd.positionDesc.replace(/Hubby/g, husbandBaseline.name)}</span>
+                </div>
+                <div style="margin-bottom:6px; background: rgba(255,255,255,0.03); padding:6px 8px; border-radius:6px;">
+                    • <strong>Release Location:</strong> 
+                    <select class="round-release-dropdown" onchange="updateRoundRelease(${idx}, this.value)" style="background:#171a24; color:#fff; border:1px solid #38bdf8; border-radius:4px; padding:3px 6px; font-size:0.78rem; margin-top:2px; margin-bottom:4px; width:100%; outline:none;">
+                        ${releaseOptionsHtml}
+                    </select>
+                    <span style="font-size:0.77rem; color:#94a3b8;" id="rel-desc-${idx}">${rd.selectedRelease.amountDesc}</span>
+                    <div class="meter-bar" style="margin:4px 0 3px;">
+                        <div class="meter-fill" style="width: ${rd.meterWidth}%; background: linear-gradient(90deg, #38bdf8, #818cf8, #ff3366);"></div>
+                    </div>
+                    <span style="font-size:0.75rem; color:#cbd5e1; font-style:italic;" id="rel-clean-${idx}">${rd.selectedRelease.cleanDesc}</span>
+                </div>
+                <div style="background: rgba(0,0,0,0.22); padding:6px 8px; border-radius:6px; border-left: 2px solid ${rd.orgasm.color};">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong style="font-size:0.75rem; text-transform:uppercase; color:#fff;">Wife Orgasm Meter:</strong>
+                        <span style="font-size:0.76rem; font-weight:800; color:${rd.orgasm.color};">${rd.orgasm.label}</span>
+                    </div>
+                    <div class="meter-bar" style="height:5px; margin:4px 0;">
+                        <div class="meter-fill" style="width: ${rd.orgasm.fill}%; background: ${rd.orgasm.color};"></div>
+                    </div>
+                    <span style="font-size:0.75rem; color:#f1f5f9; font-style:italic;">${rd.orgasm.desc}</span>
+                </div>
+            </div>
+        `);
+    });
+    container.innerHTML = logisticsList.join("");
+}
+
+function updateRoundRelease(roundIdx, newType) {
+    const found = data.releaseOptions.find(r => r.type === newType);
+    if (found && currentProfile.roundsData[roundIdx]) {
+        currentProfile.roundsData[roundIdx].selectedRelease = found;
+        document.getElementById(`rel-desc-${roundIdx}`).innerText = found.amountDesc;
+        document.getElementById(`rel-clean-${roundIdx}`).innerText = found.cleanDesc;
+    }
+}
 
 function renderProfile(profile) {
     if (!profile || !profile.name) return;
@@ -329,7 +392,9 @@ function renderProfile(profile) {
     document.getElementById('p-exp-desc').innerText = (profile.syncTier.desc || '').replace(/Hubby/g, husbandBaseline.name);
 
     document.getElementById('p-waterworks').innerText = profile.waterworks;
-    document.getElementById('p-positions-visual').innerHTML = profile.logisticsHtml;
+    
+    // Render rounds logistics with interactive finish selectors
+    renderRoundsLogistics();
 
     document.getElementById('p-rule-text').innerText = `"${profile.spousalRule}"`;
     document.getElementById('p-breach-verdict').innerHTML = profile.breachVerdict;
@@ -337,7 +402,6 @@ function renderProfile(profile) {
     document.getElementById('p-aftermath-stars').innerText = profile.aftermathStars;
     document.getElementById('p-aftermath-stars-desc').innerText = profile.aftermathStarsDesc;
     
-    // Dynamic Aftermath Soreness scaling based on tier intensity
     let sorenessText = "";
     if (profile.syncTier.pct <= 30) {
         sorenessText = `A mild, pleasant warmth from his ${profile.toolLength}" ${profile.circumcision} frame and ${profile.performances} comfortable rounds. Walked home feeling refreshed with zero lingering discomfort.`;
@@ -357,7 +421,6 @@ function renderProfile(profile) {
     else diffLabel = `Matches ${husbandBaseline.name}'s eye line`;
     document.getElementById('p-height-delta').innerText = `${profile.height} (${diffLabel})`;
 
-    // Dynamic Ruler Scale Calculations (Fixes hardcoded 50% pin bug)
     const rulerPct = Math.min(100, Math.max(0, ((profile.toolLength - 2) / 8) * 100));
     const hubbyRulerPct = Math.min(100, Math.max(0, ((husbandBaseline.toolInches - 2) / 8) * 100));
     
@@ -395,14 +458,7 @@ function renderProfile(profile) {
     document.getElementById('p-homecoming-text').innerText = (hc.text || '').replace(/Hubby/g, husbandBaseline.name);
 
     document.getElementById('p-instruction-tone').innerText = profile.instructionTone;
-    const instructionBody = `
-        <p style="margin-bottom:10px;">"${profile.instructionStart.replace(/Hubby/g, husbandBaseline.name)}"</p>
-        <div style="font-size:0.82rem; color:var(--text-muted); font-style:italic; margin:8px 0; padding:6px 10px; background:rgba(0,0,0,0.25); border-radius:6px; border-left:2px solid var(--primary);">
-            [She traces the thumbprints left on her hips, quietly describing how effortlessly ${profile.name} controlled her cadence while ${husbandBaseline.name} obeys.]
-        </div>
-        <p style="margin-top:10px;">"${profile.instructionEnd.replace(/Hubby/g, husbandBaseline.name)}"</p>
-    `;
-    document.getElementById('p-instruction-text').innerHTML = instructionBody;
+    document.getElementById('p-instruction-text').innerHTML = ""; // Will be typed out when opened
 
     const likeBtn = document.getElementById('like-btn');
     likeBtn.innerHTML = "❤️";
