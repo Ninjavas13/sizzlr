@@ -223,7 +223,7 @@
   ],
   "releaseOptions": [
     {
-      "type": "🛡️ In a condom",
+      "type": "🛡️️ In a condom",
       "amountDesc": "A heavy, tightly filled latex reservoir — like a thick water balloon ready to burst.",
       "cleanDesc": "Completely contained and sanitary; zero internal mess left behind to worry about."
     },
@@ -299,64 +299,64 @@
       "pct": 25,
       "desc": "\"Felt like home turf with a fresh coat of paint. Good rhythm, polite finish, leaving me thankful for Hubby's familiar touch.\"",
       "waterworks": "💧 Steady Trickle — Comfortable, warm lubrication; comparable to a good Saturday night with Hubby.",
-      "hazard": { "level": "Strict Protocol (5% Illusion)", "fill": 24, "desc": "Kept clear boundaries; zero impulse to take foolish chances." },
-      "breachProb": 0.15,
-      "staminaDesc": "Weekend warrior pace (standard 40-minute engine)."
+      "breachProb": 0.15
     },
     {
       "tier": "3. Definite Step Up (The Heart Rate Spike)",
       "pct": 38,
       "desc": "\"Noticeably firmer grip and heavier leverage. Makes Hubby's nightly efforts feel a bit pedestrian and tame.\"",
       "waterworks": "💦 Heavy Spring Thaw — Running down my inner thighs the second he pinned my waist to the mattress.",
-      "hazard": { "level": "Slightly Reckless (35% Illusion)", "fill": 42, "desc": "Letting him finish inside would be a dangerous game." },
-      "breachProb": 0.35,
-      "staminaDesc": "High-torque diesel engine (slow build, never stalled)."
+      "breachProb": 0.35
     },
     {
       "tier": "4. Guilty Euphoria (Biting the Pillow)",
       "pct": 50,
       "desc": "\"Had to bury my face in the cushions so the entire floor didn't hear me whining. Hubby could never keep up with this stamina.\"",
       "waterworks": "💦 Drenched Satin — Needed fresh towels midway through; completely soaked through the sheets.",
-      "hazard": { "level": "Slightly Reckless (50% Illusion)", "fill": 55, "desc": "Part of me wanted him to leave an impossible reminder inside me." },
-      "breachProb": 0.55,
-      "staminaDesc": "Elite marathon runner endurance (four relentless overtime shifts)."
+      "breachProb": 0.55
     },
     {
       "tier": "5. Unfair Competition (Wife Composure Obliterated)",
       "pct": 65,
       "desc": "\"Took complete charge and didn't give me a second to catch my breath. Hubby is sweet, but he's basically retired compared to this.\"",
       "waterworks": "🌊 Slip-n-slide Alert — Absolute frictionless deluge; dripping audibly with every single stroke.",
-      "hazard": { "level": "Dangerously Compliant (75% Illusion)", "fill": 75, "desc": "When he demanded to finish deep inside, I wouldn't have cared about consequences." },
-      "breachProb": 0.80,
-      "staminaDesc": "Olympic gold stamina (refused to let her rest until dawn)."
+      "breachProb": 0.80
     },
     {
       "tier": "6. Walking Disorder (Soul Stolen by Sunrise)",
       "pct": 78,
       "desc": "\"Shaking knees, ruined makeup, and a permanent blush. Hubby is completely irrelevant tonight.\"",
       "waterworks": "🌊💦 Gushing Tidal Surge — Completely lost control during the third lap; erupted across his thighs in an explosive release.",
-      "hazard": { "level": "Severe Breeding Hazard (88% Illusion)", "fill": 88, "desc": "Intoxicated by his weight; begging him to claim me just to stay connected." },
-      "breachProb": 0.92,
-      "staminaDesc": "Insatiable machine (you will tap out first, guaranteed)."
+      "breachProb": 0.92
     },
     {
       "tier": "7. All-Time High (Hubby's Ego Cannot Know)",
       "pct": 90,
       "desc": "\"An absolute blackout masterclass. Hubby who? If he found out how good this felt, he'd pack a bag and leave.\"",
       "waterworks": "⛲ Unprecedented Squirting Blackout — Multiple convulsive gushes that ruined the hotel mattress topper; vision went white.",
-      "hazard": { "level": "Full Breeding Threat (98% Illusion)", "fill": 98, "desc": "Irreversible alpha hazard; husband would definitely be raising another man's child." },
-      "breachProb": 0.98,
-      "staminaDesc": "Pure unrelenting spite fuel (battered home base all night)."
+      "breachProb": 0.98
     },
     {
       "tier": "8. Transcendent Ruin (Gods of Mount Olympus)",
       "pct": 100,
       "desc": "\"Mind completely broken, vision went blurry, toes permanently curled. Hubby is ancient history.\"",
       "waterworks": "⛲🌊 Cataclysmic Squirting Deluge — Complete loss of reality; triggered violent pelvic spasms that drenched the sheets three times over.",
-      "hazard": { "level": "Complete Biological Surrender (100% Illusion)", "fill": 100, "desc": "Primal override; let him claim me until my body broke completely." },
-      "breachProb": 1.0,
-      "staminaDesc": "Immortal titan engine (destroyed the mattress and kept swinging)."
+      "breachProb": 1.0
     }
+  ],
+  "staminaRatings": [
+    "⚡ The Espresso Shot — Fast, furious, and finished before you can catch your breath.",
+    "🚙 The Scenic Route — Steady, reliable, and pacing itself for a long, satisfying journey.",
+    "🔥 The Diesel Engine — Slow build, relentless torque, and refuses to stall under pressure.",
+    "🌙 The Midnight Marathon — Going strong for hours, treating the clock as a suggestion.",
+    "⚙️️ The Insatiable Machine — Zero cooldown period, keeping you breathless until sunrise.",
+    "🌌 The Immortal Titan Engine — Infinite endurance; you will tap out long before he slows down."
+  ],
+  "recklessnessScales": [
+    { "level": "🛡️ Strictly Guarded (Tame)", "fill": 20, "desc": "Kept every boundary intact; zero risk taken, entirely safe and predictable." },
+    { "level": "⚠️ Mildly Enticed (Cautious)", "fill": 45, "desc": "Felt the strong urge to push limits and break rules, but pulled back right before crossing the line." },
+    { "level": "🔥 Dangerously Compliant (Wild)", "fill": 75, "desc": "Threw caution to the wind, letting him take total control and push every forbidden boundary." },
+    { "level": "🌪️ Total Loss of Control (Very Wild)", "fill": 100, "desc": "Absolute reckless surrender; craved complete possession without a single safety net or care in the world." }
   ],
   "waterworksOptions": [
     "💧 Steady Trickle — Comfortable, warm lubrication; comparable to a good Saturday night with Hubby.",
