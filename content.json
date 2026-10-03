@@ -16,32 +16,52 @@
     "Los Angeles, CA", "Edinburgh, Scotland", "Dublin, Ireland", "Miami, FL", 
     "Boston, MA", "Montreal, Canada", "Austin, TX", "Denver, CO", "Savannah, GA"
   ],
+  "crossedPathsOptions": [
+    "He was my masseuse",
+    "met at bookstore",
+    "met online",
+    "flirted with me at bar",
+    "met at work",
+    "hired him as a handyman",
+    "bartender at the bar",
+    "male stripper who was hired for a party",
+    "met on a business trip",
+    "met at a conference"
+  ],
+  "crossedPathsNarratives": {
+    "He was my masseuse": "He was recommended as a deep-tissue recovery masseuse, but his heavy hands and unblinking gaze during the session blurred every professional boundary until the massage table became something entirely different.",
+    "met at bookstore": "We reached for the same rare dark romance first edition in the quiet aisles of the downtown bookstore, his fingers brushing mine before he leaned in and murmured a challenge.",
+    "met online": "We matched on a discreet local app late one night; his stark, no-nonsense profile and commanding bio immediately drew me in before we ever exchanged a word in person.",
+    "flirted with me at bar": "He caught my eye from across the dimly lit hotel bar, sending over a neat bourbon with a smirk that communicated his intentions loud and clear.",
+    "met at work": "Working late on the corporate merger floor, he stayed behind in the executive suite, cornering me by the glass windows while the city slept outside.",
+    "hired him as a handyman": "I hired him to fix the heavy iron locks on the back gate, but watching his broad shoulders strain against his shirt while he worked left me completely distracted.",
+    "bartender at the bar": "He was running the late-night shift behind the mahogany bar, pouring drinks with quiet confidence and sliding mine across with a knowing look.",
+    "male stripper who was hired for a party": "We hired him for a private bachelorette party entertainment, but his overwhelming presence and dominant control over the room made me the sole focus of his attention.",
+    "met on a business trip": "Seated next to each other on a red-eye flight across the country, a delayed takeoff turned into an intense, whispered conversation in the dark cabin.",
+    "met at a conference": "Trapped in a tedious multi-day industry conference in downtown Chicago, we locked eyes across a crowded networking reception and slipped away to the quiet hotel lounge."
+  },
   "settingClusters": [
     {
       "theme": "luxury",
       "occupations": ["Tech Startup Founder", "Venture Capital Managing Partner", "High-Rise Architect"],
-      "meets": ["a private VIP booth at a luxury lounge", "the rooftop bar of a boutique hotel"],
       "destinations": ["back at his luxury penthouse suite", "in the private back of his tinted towncar"],
       "hangouts": ["A rooftop cigar lounge overlooking the skyline", "A corner leather booth of an exclusive private club"]
     },
     {
       "theme": "underground",
       "occupations": ["Underworld Speakeasy Owner", "Private Security Contractor", "MMA Striking Coach"],
-      "meets": ["a dimly lit speakeasy basement", "his private high-performance combat gym"],
       "destinations": ["in the club's secluded VIP back room", "back at his industrial loft penthouse"],
       "hangouts": ["The back row of a late-night private screening", "A low-lit corner table at a members-only lounge"]
     },
     {
       "theme": "retreat",
       "occupations": ["Smokejumper Firefighter", "Offshore Salvage Diver", "Ex-Military Tactical Advisor"],
-      "meets": ["a mountain cabin retreat lobby", "a beachside resort café during vacation", "a sunlit walking trail through the pines"],
       "destinations": ["in a private mountain cabin alcove", "at the secluded beachside resort suite", "along the private shoreline terrace"],
       "hangouts": ["A secluded cabin deck surrounded by tall pines", "A private balcony overlooking the ocean resort", "A scenic overlook along the mountain hiking trail"]
     },
     {
       "theme": "intellectual",
       "occupations": ["Boutique Asset Recovery Specialist", "Master Custom Fabricator", "Rare Manuscripts Curator"],
-      "meets": ["an indie bookstore rare manuscripts section", "a quiet corner booth at a local artisan coffee shop"],
       "destinations": ["at the quiet coffee house private lounge", "back at your downtown vacation hotel room"],
       "hangouts": ["The antique bookstore's rare manuscripts section", "A dimly lit indie coffee and pastry lounge"]
     }
@@ -129,45 +149,6 @@
       ]
     }
   ],
-  "storyGrammar": {
-    "intros": [
-      "I first locked eyes with {NAME} while at {LOCATION}.",
-      "I never planned on meeting someone like {NAME}, but there he was at {LOCATION}.",
-      "My composure completely slipped the moment {NAME} stepped into my periphery at {LOCATION}.",
-      "It started as an innocent afternoon until {NAME} occupied the adjacent space at {LOCATION}."
-    ],
-    "tensions": {
-      "Shadow-Wielder": [
-        "He moved with a lethal, unhurried grace, watching me over the rim of his glass until the silence between us hummed like a live wire.",
-        "He didn't introduce himself; he simply blocked my path with his broad frame and asked, in a velvet-low voice, why I was pretending not to look."
-      ],
-      "Golden Retriever Alpha": [
-        "His smile was devastatingly open, yet the sheer size of his shoulders and chest made every polite word feel dangerously loaded.",
-        "He laughed at a witty remark I made, his eyes dipping down to my mouth with a hungry reverence that left my face burning."
-      ],
-      "Arrogant Brat-Tamer": [
-        "He took one look at my guarded posture, offered a wicked half-smirk, and challenged every opinion I voiced with infuriating confidence.",
-        "He casually leaned over my shoulder, criticizing my cocktail choice before ordering me something twice as strong without asking."
-      ],
-      "Silent Stoic Brute": [
-        "He never smiled once. He simply stood there, six feet of granite and intent, fixing me with an unblinking gaze that pinned me in place.",
-        "He reached across the table to move my glass, his knuckles grazing my wrist and sending an instantaneous shiver straight to my core."
-      ],
-      "Dangerous Sovereign": [
-        "The staff treated him with visible deference, yet the moment our eyes connected, he gave me his undivided, predatory focus.",
-        "He leaned close enough for me to smell cedarwood and bourbon, murmured that I looked far too well-behaved, and offered his hand."
-      ],
-      "Filthy-Mouthed Rogue": [
-        "He leaned in under the pretext of borrowing a lighter and whispered something so utterly dirty against my ear that my knees trembled.",
-        "He smirked at my wedding band, tapped the rim of his glass against mine, and asked how long it had been since someone wrecked me properly."
-      ]
-    },
-    "pivots": [
-      "Before good sense could intervene, he palmed the small of my back and steered me straight toward {DEST}.",
-      "There was zero pretense of small talk left; he took my wrist with quiet certainty and led me away toward {DEST}.",
-      "My defenses folded in seconds; I caught my breath, took his hand, and let him walk me straight toward {DEST}."
-    ]
-  },
   "hardwareGrammar": {
     "comparisons": [
       "While {HUBBY}'s baseline offers dependable, familiar comfort,",
@@ -278,18 +259,6 @@
       { "name": "Doggy Style", "desc": "Pulled up against the window for deep, punishing extension." },
       { "name": "Cowgirl", "desc": "Forced to ride his heavy frame at a breakneck, exhausting pace." },
       { "name": "Prone Anal Surrender", "desc": "A taboo she almost never allows Hubby: pressed face-down into the pillows, his quiet authority coaxed her to relax until she was arched and whimpering in illicit bliss." }
-    ],
-    [
-      { "name": "Standing Edge", "desc": "Lifted against the hotel door for an immediate, breathless entry." },
-      { "name": "Doggy Style Anal", "desc": "Something Hubby has begged for years to try: the bull held her hips with iron certainty, gently guided his thick crown into her tightest canal, and bottomed out to her shocked gasps of raw pleasure." },
-      { "name": "Reverse Cowgirl", "desc": "Leaning back against his chest as he stretched her completely open." },
-      { "name": "Missionary", "desc": "Pinned flat under his weight while he whispered dark commands." }
-    ],
-    [
-      { "name": "Edge of the Bed", "desc": "Seated on the edge with her legs locked securely around his shoulders." },
-      { "name": "Cowgirl", "desc": "Controlling the rhythm until he seized her waist and took over." },
-      { "name": "Doggy Style", "desc": "Relentless, heavy thrusting that left her whimpering into the sheets." },
-      { "name": "Spooning", "desc": "Exhausted collapse into a side-lying finish with deep friction." }
     ]
   ],
   "orgasmTiers": [
@@ -332,7 +301,6 @@
       "waterworks": "💧 Steady Trickle — Comfortable, warm lubrication; comparable to a good Saturday night with Hubby.",
       "hazard": { "level": "Strict Protocol (5% Illusion)", "fill": 24, "desc": "Kept clear boundaries; zero impulse to take foolish chances." },
       "breachProb": 0.15,
-      "rounds": 2,
       "staminaDesc": "Weekend warrior pace (standard 40-minute engine)."
     },
     {
@@ -342,7 +310,6 @@
       "waterworks": "💦 Heavy Spring Thaw — Running down my inner thighs the second he pinned my waist to the mattress.",
       "hazard": { "level": "Slightly Reckless (35% Illusion)", "fill": 42, "desc": "Letting him finish inside would be a dangerous game." },
       "breachProb": 0.35,
-      "rounds": 3,
       "staminaDesc": "High-torque diesel engine (slow build, never stalled)."
     },
     {
@@ -352,7 +319,6 @@
       "waterworks": "💦 Drenched Satin — Needed fresh towels midway through; completely soaked through the sheets.",
       "hazard": { "level": "Slightly Reckless (50% Illusion)", "fill": 55, "desc": "Part of me wanted him to leave an impossible reminder inside me." },
       "breachProb": 0.55,
-      "rounds": 4,
       "staminaDesc": "Elite marathon runner endurance (four relentless overtime shifts)."
     },
     {
@@ -362,7 +328,6 @@
       "waterworks": "🌊 Slip-n-slide Alert — Absolute frictionless deluge; dripping audibly with every single stroke.",
       "hazard": { "level": "Dangerously Compliant (75% Illusion)", "fill": 75, "desc": "When he demanded to finish deep inside, I wouldn't have cared about consequences." },
       "breachProb": 0.80,
-      "rounds": 4,
       "staminaDesc": "Olympic gold stamina (refused to let her rest until dawn)."
     },
     {
@@ -372,7 +337,6 @@
       "waterworks": "🌊💦 Gushing Tidal Surge — Completely lost control during the third lap; erupted across his thighs in an explosive release.",
       "hazard": { "level": "Severe Breeding Hazard (88% Illusion)", "fill": 88, "desc": "Intoxicated by his weight; begging him to claim me just to stay connected." },
       "breachProb": 0.92,
-      "rounds": 4,
       "staminaDesc": "Insatiable machine (you will tap out first, guaranteed)."
     },
     {
@@ -382,7 +346,6 @@
       "waterworks": "⛲ Unprecedented Squirting Blackout — Multiple convulsive gushes that ruined the hotel mattress topper; vision went white.",
       "hazard": { "level": "Full Breeding Threat (98% Illusion)", "fill": 98, "desc": "Irreversible alpha hazard; husband would definitely be raising another man's child." },
       "breachProb": 0.98,
-      "rounds": 4,
       "staminaDesc": "Pure unrelenting spite fuel (battered home base all night)."
     },
     {
@@ -392,9 +355,17 @@
       "waterworks": "⛲🌊 Cataclysmic Squirting Deluge — Complete loss of reality; triggered violent pelvic spasms that drenched the sheets three times over.",
       "hazard": { "level": "Complete Biological Surrender (100% Illusion)", "fill": 100, "desc": "Primal override; let him claim me until my body broke completely." },
       "breachProb": 1.0,
-      "rounds": 4,
       "staminaDesc": "Immortal titan engine (destroyed the mattress and kept swinging)."
     }
+  ],
+  "waterworksOptions": [
+    "💧 Steady Trickle — Comfortable, warm lubrication; comparable to a good Saturday night with Hubby.",
+    "💦 Heavy Spring Thaw — Running down my inner thighs the second he pinned my waist to the mattress.",
+    "💦 Drenched Satin — Needed fresh towels midway through; completely soaked through the sheets.",
+    "🌊 Slip-n-slide Alert — Absolute frictionless deluge; dripping audibly with every single stroke.",
+    "🌊💦 Gushing Tidal Surge — Completely lost control during the third lap; erupted across his thighs in an explosive release.",
+    "⛲ Unprecedented Squirting Blackout — Multiple convulsive gushes that ruined the hotel mattress topper; vision went white.",
+    "⛲🌊 Cataclysmic Squirting Deluge — Complete loss of reality; triggered violent pelvic spasms that drenched the sheets three times over."
   ],
   "homecomingScenarios": [
     {
