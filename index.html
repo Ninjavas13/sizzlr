@@ -595,7 +595,7 @@
         </div>
     </div>
 
-    <!-- Calibration & Vibe Preferences Settings Modal -->
+    <!-- Calibration & Customization Settings Modal -->
     <div class="settings-modal" id="settings-modal">
         <div class="settings-header">
             <span>Calibration & Preferences</span>
@@ -627,16 +627,48 @@
             <input type="number" id="cfg-tool-inches" value="6.0" step="0.5" min="2" max="10">
         </div>
         <div class="settings-row">
-            <label>Preferred Narrative Vibe / Intensity</label>
-            <select id="cfg-vibe">
-                <option value="all">All / Random</option>
-                <option value="gentle">Gentle / Romantic</option>
-                <option value="dominant">Dominant / Intense</option>
-                <option value="illicit">Illicit / Filthy</option>
+            <label>Experience Level Slider (1 - 8)</label>
+            <select id="cfg-exp-level">
+                <option value="auto">Auto (Randomized)</option>
+                <option value="1">1 - Familiar Comfort</option>
+                <option value="2">2 - Heart Rate Spike</option>
+                <option value="3">3 - Guilty Euphoria</option>
+                <option value="4">4 - Unfair Competition</option>
+                <option value="5">5 - Walking Disorder</option>
+                <option value="6">6 - All-Time High</option>
+                <option value="7">7 - Transcendent Ruin</option>
+                <option value="8">8 - Gods of Mount Olympus</option>
             </select>
         </div>
         <div class="settings-row">
-            <label>Manual Override: Homecoming Vibe</label>
+            <label>Waterworks Selection Toggle</label>
+            <select id="cfg-waterworks">
+                <option value="auto">Auto (Synchronized)</option>
+                <option value="💧 Steady Trickle — Comfortable lubrication.">💧 Steady Trickle</option>
+                <option value="💦 Heavy Spring Thaw — Running down thighs.">💦 Heavy Spring Thaw</option>
+                <option value="💦 Drenched Satin — Soaked through sheets.">💦 Drenched Satin</option>
+                <option value="🌊 Slip-n-slide Alert — Frictionless deluge.">🌊 Slip-n-slide Alert</option>
+                <option value="⛲ Unprecedented Squirting Blackout — Multiple convulsive gushes.">⛲ Unprecedented Squirting Blackout</option>
+            </select>
+        </div>
+        <div class="settings-row">
+            <label>How You Crossed Paths (Meet Origin)</label>
+            <select id="cfg-crossed-paths">
+                <option value="auto">Auto (Randomized)</option>
+                <option value="He was my masseuse">He was my masseuse</option>
+                <option value="met at bookstore">Met at bookstore</option>
+                <option value="met online">Met online</option>
+                <option value="flirted with me at bar">Flirted with me at bar</option>
+                <option value="met at work">Met at work</option>
+                <option value="hired him as a handyman">Hired him as a handyman</option>
+                <option value="bartender at the bar">Bartender at the bar</option>
+                <option value="male stripper who was hired for a party">Male stripper hired for party</option>
+                <option value="met on a business trip">Met on a business trip</option>
+                <option value="met at a conference">Met at a conference</option>
+            </select>
+        </div>
+        <div class="settings-row">
+            <label>Homecoming Vibe Tone Toggle</label>
             <select id="cfg-homecoming-override">
                 <option value="">Auto (Randomized)</option>
                 <option value="Sweet & Tender">Sweet & Tender</option>
@@ -649,7 +681,7 @@
             </select>
         </div>
         <div class="settings-row">
-            <label>Manual Override: Instruction Tone</label>
+            <label>Instruction Tone Override</label>
             <select id="cfg-tone-override">
                 <option value="">Auto (Randomized)</option>
                 <option value="Subtly Mean & Complimentary Hybrid">Subtly Mean & Complimentary</option>
@@ -660,7 +692,7 @@
         <button class="tag" style="width:100%; border-color:var(--gold-accent); color:var(--gold-accent); margin-top:8px; cursor:pointer;" onclick="applySettings()">Save & Re-Calibrate</button>
     </div>
 
-    <!-- Active Profile Card with Reorganized Narrative Arc -->
+    <!-- Active Profile Card -->
     <div class="card" id="profile-card">
         <div class="profile-details">
             <div>
@@ -680,7 +712,7 @@
             <div class="tags-container" id="p-tags"></div>
             <div style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px;" id="p-vibe-summary"></div>
 
-            <!-- REORGANIZED COLLAPSIBLE SECTIONS (Chronological Narrative Arc) -->
+            <!-- COLLAPSIBLE SECTIONS (Chronological Narrative Arc) -->
 
             <!-- 1. How You Crossed Paths -->
             <div class="collapsible-card active" id="sec-story">
@@ -700,7 +732,7 @@
                 </div>
             </div>
 
-            <!-- 2. Encounter Logistics & Round-by-Round Breakdown (Moved up right after meeting) -->
+            <!-- 2. Encounter Logistics & Round-by-Round Breakdown -->
             <div class="collapsible-card card-pink" id="sec-reactions">
                 <div class="accordion-header" onclick="toggleSection('sec-reactions')">
                     <span class="accordion-title" style="color: #ff6b81;">💄 Encounter Logistics & Round Breakdown</span>
@@ -718,11 +750,11 @@
                         <div style="font-size:0.82rem; color:#f1f5f9; font-style:italic;" id="p-exp-desc"></div>
                     </div>
 
-                    <strong>Waterworks Index (Synchronized with Chemistry):</strong>
+                    <strong>Waterworks Index:</strong>
                     <span id="p-waterworks" style="display:block; margin: 2px 0 8px;"></span>
 
                     <div style="background: rgba(0,0,0,0.25); border-radius: 8px; padding: 10px 12px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.06);">
-                        <strong style="color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Round-by-Round Breakdown (Customize finish location per round):</strong>
+                        <strong style="color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Round-by-Round Breakdown (Customize finish per round):</strong>
                         <div style="font-size: 0.85rem; margin-top: 6px; line-height: 1.5;" id="p-positions-visual"></div>
                         <br>
                         • <strong>Spousal Rule With <span class="lbl-hubby-name">Hubby</span>:</strong><br>
@@ -732,7 +764,7 @@
                 </div>
             </div>
 
-            <!-- 3. Head-to-Head vs. Hubby (Comparative reflection after action) -->
+            <!-- 3. Head-to-Head vs. Hubby -->
             <div class="collapsible-card card-gold" id="sec-husband">
                 <div class="accordion-header" onclick="toggleSection('sec-husband')">
                     <span class="accordion-title" style="color: var(--gold-accent);">⚖️ Head-to-Head vs. <span id="p-target-husband">Hubby</span></span>
@@ -797,7 +829,7 @@
 
                     <div class="ruler-container" style="border-color: rgba(255, 61, 113, 0.4);">
                         <div class="ruler-header">
-                            <span style="color:#ffcdd2;">⚠️️ Pregnancy Illusion / Recklessness Hazard</span>
+                            <span style="color:#ffcdd2;">⚠️ Pregnancy Illusion / Recklessness Hazard</span>
                             <span id="p-breed-label" style="color:var(--hazard-color); font-weight:800;"></span>
                         </div>
                         <div class="meter-bar" style="height: 8px;">
@@ -813,7 +845,7 @@
                 </div>
             </div>
 
-            <!-- 4. Wife Aftermath & Recovery (Homecoming & morning text) -->
+            <!-- 4. Wife Aftermath & Recovery -->
             <div class="collapsible-card card-purple" id="sec-aftermath">
                 <div class="accordion-header" onclick="toggleSection('sec-aftermath')">
                     <span class="accordion-title" style="color: #a855f7;">🔥 Wife Aftermath & Recovery</span>
@@ -860,7 +892,7 @@
                         <span style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#60a5fa;">Tone / Dynamic:</span>
                         <span id="p-instruction-tone" style="font-size:0.78rem; font-weight:800; color:var(--gold-accent);"></span>
                     </div>
-                    <div class="story-text" style="border-left-color: #60a5fa; font-style: normal; line-height: 1.55; color: #f1f5f9;" id="p-instruction-text"></div>
+                    <div class="story-text" style="border-left-color: #60a5fa; font-style: normal; line-height: 1.55; color: #f1f5f9; white-space: pre-line;" id="p-instruction-text"></div>
                 </div>
             </div>
 
