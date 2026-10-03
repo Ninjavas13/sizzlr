@@ -72,31 +72,8 @@ function applySettings() {
 function toggleSection(secId) {
     const card = document.getElementById(secId);
     if (card) {
-        const wasActive = card.classList.contains('active');
         card.classList.toggle('active');
-        if (secId === 'sec-instructions' && !wasActive) {
-            runTypewriterEffect();
-        }
     }
-}
-
-// Fixed Bug: Typewriter effect using plain text storage to prevent raw HTML code leakage
-function runTypewriterEffect() {
-    const textEl = document.getElementById('p-instruction-text');
-    if (!textEl || !currentProfile.instructionPlaintext) return;
-    
-    const content = currentProfile.instructionPlaintext;
-    textEl.innerHTML = "";
-    let i = 0;
-    
-    function type() {
-        if (i < content.length) {
-            textEl.innerHTML += content.charAt(i);
-            i++;
-            setTimeout(type, 10);
-        }
-    }
-    type();
 }
 
 function buildRulerTicks() {
@@ -120,9 +97,8 @@ function buildRulerTicks() {
     }
 }
 
-// Weighted orgasm picker to favor higher satisfaction orgasms over smaller
 function getWeightedOrgasm() {
-    const weights = [1, 2, 4, 7, 10]; // Favors higher tiers (index 3 and 4)
+    const weights = [1, 2, 4, 7, 10];
     const totalWeight = weights.reduce((a, b) => a + b, 0);
     let randomVal = Math.random() * totalWeight;
     for (let i = 0; i < data.orgasmTiers.length; i++) {
@@ -147,7 +123,6 @@ function generateProfileObj() {
     const dest = randomItem(currentSetting.destinations);
     const hangout = randomItem(currentSetting.hangouts);
 
-    // Crossed paths narrative choice or random
     let meetChoice = husbandBaseline.crossedPathsChoice;
     if (!meetChoice || meetChoice === "auto") {
         meetChoice = randomItem(data.crossedPathsOptions);
@@ -161,7 +136,6 @@ function generateProfileObj() {
     const toolGirth = randomItem(data.toolGirths);
     const rule = randomItem(data.spousalRules);
 
-    // Experience Level Selection (Slider 1-8 or Auto)
     let syncTier;
     if (husbandBaseline.experienceLevel && husbandBaseline.experienceLevel !== "auto") {
         const lvlIdx = parseInt(husbandBaseline.experienceLevel, 10) - 1;
@@ -177,9 +151,6 @@ function generateProfileObj() {
     let breachModifier = vibeGroup === "illicit" ? 0.25 : (vibeGroup === "gentle" ? -0.25 : 0);
     const finalBreachProb = Math.min(0.98, Math.max(0.05, syncTier.breachProb + breachModifier));
     const didBreak = Math.random() < finalBreachProb;
-    const breachVerdict = didBreak
-        ? `<span style="color:var(--hazard-color); font-weight:800;">🚨 BROKEN WITHOUT HESITATION</span> ("${name}'s dominance made our agreement completely impossible to enforce.")`
-        : `<span style="color:#00e676; font-weight:800;">🛡️ Kept Under Control</span> ("Tempted to fold, but enforced boundaries before things went too far.")`;
 
     // Random round count from 1 to 4
     const roundsCount = Math.floor(Math.random() * 4) + 1;
@@ -201,20 +172,17 @@ function generateProfileObj() {
         });
     }
 
-    // Waterworks override or dynamic
     let waterworksText = syncTier.waterworks;
     if (husbandBaseline.waterworksChoice && husbandBaseline.waterworksChoice !== "auto") {
         waterworksText = husbandBaseline.waterworksChoice;
     }
 
-    // Homecoming Vibe / Tone Override
     let homecoming = randomItem(data.homecomingScenarios) || data.homecomingScenarios[0];
     if (husbandBaseline.overrideHomecoming) {
         const found = data.homecomingScenarios.find(h => h.vibe === husbandBaseline.overrideHomecoming);
         if (found) homecoming = found;
     }
 
-    // Instruction Tone Override
     let matchingInstructions = data.instructionArchetypes.filter(a => a.vibeGroup === vibeGroup);
     if (husbandBaseline.overrideTone) {
         const foundTone = data.instructionArchetypes.find(a => a.tone === husbandBaseline.overrideTone);
@@ -224,7 +192,8 @@ function generateProfileObj() {
     const instructionStart = randomItem(instArchetype.starts);
     const instructionEnd = randomItem(instArchetype.ends);
 
-    const instructionPlaintext = `"${instructionStart.replace(/Hubby/g, husbandBaseline.name)}" \n\n[She traces the thumbprints left on her hips, quietly describing how effortlessly ${name} controlled her cadence while ${husbandBaseline.name} obeys.]\n\n "${instructionEnd.replace(/Hubby/g, husbandBaseline.name)}"`;
+    const staminaRating = randomItem(data.staminaRatings);
+    const recklessnessItem = randomItem(data.recklessnessScales);
 
     const starCount = Math.min(5, Math.max(1, Math.ceil(syncTier.pct / 20)));
     let starStr = "⭐".repeat(starCount);
@@ -255,20 +224,30 @@ function generateProfileObj() {
         toolSensation: `His ${toolLen}" ${circ} frame and ${toolGirth} left me completely undone.`,
         favTrait: randomItem(persona.favoriteTraits),
         spousalRule: rule,
-        breachVerdict: breachVerdict,
+        defaultDidBreak: didBreak,
+        recklessness: recklessnessItem,
+        staminaRating: staminaRating,
         replayInnuendo: decks.mentalReplayInnuendos.draw(),
         bullText: decks.bullTexts.draw(),
         homecoming: homecoming,
         syncTier: syncTier,
         performances: roundsCount,
-        stamina: syncTier.staminaDesc,
         waterworks: waterworksText,
-        breedHazard: syncTier.hazard,
         aftermathStars: starStr,
         aftermathStarsDesc: `"${syncTier.tier} — ${syncTier.desc.replace(/Hubby/g, husbandBaseline.name)}"`,
         instructionTone: instArchetype.tone,
-        instructionPlaintext: instructionPlaintext
+        instructionStart: instructionStart,
+        instructionEnd: instructionEnd
     };
+}
+
+function chooseRuleBreak(broken) {
+    const verdictEl = document.getElementById('p-breach-verdict');
+    if (broken) {
+        verdictEl.innerHTML = `<span style="color:var(--hazard-color); font-weight:800;">🚨 BROKEN BY CHOICE</span> ("You chose to abandon the agreement, throwing caution to the wind.")`;
+    } else {
+        verdictEl.innerHTML = `<span style="color:#00e676; font-weight:800;">🛡️ ENFORCED BY CHOICE</span> ("You stood your ground and kept boundaries firmly under control.")`;
+    }
 }
 
 function renderRoundsLogistics() {
@@ -328,6 +307,17 @@ function updateRoundRelease(roundIdx, newType) {
     }
 }
 
+function changeHomecomingVibe(vibeName) {
+    const found = data.homecomingScenarios.find(h => h.vibe === vibeName);
+    if (found) {
+        currentProfile.homecoming = found;
+        const vibeEl = document.getElementById('p-homecoming-vibe');
+        vibeEl.className = `homecoming-vibe-tag ${found.tagClass}`;
+        vibeEl.innerText = found.vibe;
+        document.getElementById('p-homecoming-text').innerText = (found.text || '').replace(/Hubby/g, husbandBaseline.name);
+    }
+}
+
 function renderProfile(profile) {
     if (!profile || !profile.name) return;
     currentProfile = profile;
@@ -365,11 +355,24 @@ function renderProfile(profile) {
     document.getElementById('p-exp-fill').style.width = `${profile.syncTier.pct}%`;
     document.getElementById('p-exp-desc').innerText = (profile.syncTier.desc || '').replace(/Hubby/g, husbandBaseline.name);
 
+    // Recklessness Scale (Moved right after experience item)
+    document.getElementById('p-reckless-label').innerText = profile.recklessness.level;
+    document.getElementById('p-reckless-fill').style.width = `${profile.recklessness.fill}%`;
+    document.getElementById('p-reckless-sub').innerText = profile.recklessness.desc;
+
     document.getElementById('p-waterworks').innerText = profile.waterworks;
     renderRoundsLogistics();
 
     document.getElementById('p-rule-text').innerText = `"${profile.spousalRule}"`;
-    document.getElementById('p-breach-verdict').innerHTML = profile.breachVerdict;
+    
+    // Interactive Rule Verdict Choice UI
+    document.getElementById('p-breach-verdict').innerHTML = `
+        <div>Did you break this rule?</div>
+        <div style="margin-top:6px; display:flex; gap:8px;">
+            <button onclick="chooseRuleBreak(false)" style="background:rgba(0,230,118,0.2); color:#00e676; border:1px solid #00e676; padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:700;">✅ Kept Rule</button>
+            <button onclick="chooseRuleBreak(true)" style="background:rgba(255,51,102,0.2); color:var(--primary); border:1px solid var(--primary); padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:700;">🚨 Broke Rule</button>
+        </div>
+    `;
 
     document.getElementById('p-aftermath-stars').innerText = profile.aftermathStars;
     document.getElementById('p-aftermath-stars-desc').innerText = profile.aftermathStarsDesc;
@@ -394,31 +397,37 @@ function renderProfile(profile) {
     document.getElementById('p-tool-heat-sub').innerText = `Carries a ${profile.toolLength}" ${profile.circumcision} cock (${profile.toolGirth}).`;
     document.getElementById('p-tool-sensation').innerText = profile.toolSensation;
 
-    const enginePct = (profile.performances / 4) * 100;
-    document.getElementById('p-engine-fill').style.width = `${enginePct}%`;
-    document.getElementById('p-engine-gauge-label').innerText = `${profile.performances} / 4 Rounds`;
-    document.getElementById('p-engine-summary').innerText = `${profile.performances} round${profile.performances > 1 ? 's' : ''} (${profile.stamina})`;
+    // Stamina Rating (No round references)
+    document.getElementById('p-stamina-rating-text').innerText = profile.staminaRating;
 
     const satGaugeFill = Math.min(100, Math.max(25, 40 + (profile.syncTier.pct * 0.6)));
     document.getElementById('p-sat-fill').style.width = `${satGaugeFill}%`;
     document.getElementById('p-sat-gauge-label').innerText = `${Math.round(satGaugeFill)}% Rating`;
     document.getElementById('p-satisfaction').innerText = `Satisfaction Verdict: ${profile.syncTier.tier}. Delivered an electric, devastating intensity.`;
 
-    document.getElementById('p-breed-label').innerText = profile.breedHazard.level;
-    document.getElementById('p-breed-fill').style.width = `${profile.breedHazard.fill}%`;
-    document.getElementById('p-breed-sub').innerText = profile.breedHazard.desc;
-
     document.getElementById('p-replay-val').innerText = (profile.replayInnuendo || '').replace(/Hubby/g, husbandBaseline.name);
     document.getElementById('p-morning-text').innerText = (profile.bullText || '').replace(/Hubby/g, husbandBaseline.name);
     
+    // Homecoming Vibe Selector Dropdown
     const hc = profile.homecoming;
     const vibeEl = document.getElementById('p-homecoming-vibe');
     vibeEl.className = `homecoming-vibe-tag ${hc.tagClass}`;
     vibeEl.innerText = hc.vibe;
     document.getElementById('p-homecoming-text').innerText = (hc.text || '').replace(/Hubby/g, husbandBaseline.name);
+    
+    const homecomingSelect = document.getElementById('homecoming-tone-select');
+    if (homecomingSelect) homecomingSelect.value = hc.vibe;
 
+    // Hubby Instructions (Original style, no typewriter bug)
     document.getElementById('p-instruction-tone').innerText = profile.instructionTone;
-    document.getElementById('p-instruction-text').innerText = "";
+    const instructionBody = `
+        <p style="margin-bottom:10px;">"${profile.instructionStart.replace(/Hubby/g, husbandBaseline.name)}"</p>
+        <div style="font-size:0.82rem; color:var(--text-muted); font-style:italic; margin:8px 0; padding:6px 10px; background:rgba(0,0,0,0.25); border-radius:6px; border-left:2px solid var(--primary);">
+            [She traces the thumbprints left on her hips, quietly describing how effortlessly ${profile.name} controlled her cadence while ${husbandBaseline.name} obeys.]
+        </div>
+        <p style="margin-top:10px;">"${profile.instructionEnd.replace(/Hubby/g, husbandBaseline.name)}"</p>
+    `;
+    document.getElementById('p-instruction-text').innerHTML = instructionBody;
 
     const likeBtn = document.getElementById('like-btn');
     likeBtn.innerHTML = "❤️";
